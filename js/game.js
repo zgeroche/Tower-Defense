@@ -1,3 +1,4 @@
+//-------------------------------------------------------SETUP-----------------------------------------------------
 //master config for game
 var config = {
     type: Phaser.AUTO,
@@ -18,20 +19,24 @@ var config = {
 //begin game
 var game = new Phaser.Game(config);
 
-//global variables
+//--------------------------------------------------GLOBAL VARIABLES-------------------------------------------
 var path;
-var turrets;
-var enemies;
+var TOWER_GROUP;
+var ENEMY_GROUP;
 
 var ENEMY_SPEED = 1/10000;
 //var ENEMY_SPEED = 1/Math.floor((Math.random() * 10000) + 10000);
 var ENEMY_HP = 1000;
 var ENEMY_SPAWN_RATE = 2000;
 //var ENEMY_SPAWN_RATE = Math.floor((Math.random() * 1000) + 1000);
-var BULLET_DAMAGE = 50;
-var TURRET_FIRE_RATE = 300;
+var ATTACK_DAMAGE = 50;
+var TOWER_FIRE_RATE = 300;
 
-//map for turret placement, 0=can place, -1=cannot place, 1=can place with turrent already occupying space
+//stats for each tower type loaded from file rather than defined here, but for now do this
+var peasantObj = {towerId:0, towerName:"peasant", upgrade:true, str:10, atkRange:"short", atkType:"physical", atkRate:"medium", hitfly:false};
+var soldierObj = {towerId:1, towerName:"soldier", upgrade:true, str:10, atkRange:"short", atkType:"physical", atkRate:"medium", hitfly:false};
+
+//map for tower placement, 0=can place, -1=cannot place, 1=can place with turrent already occupying space
 var map =  [[ 0,-1, 0,-1,-1,-1,-1,-1,-1,-1],
             [ 0,-1, 0, 0, 0, 0, 0, 0, 0,-1],
             [ 0,-1,-1,-1,-1,-1,-1,-1, 0,-1],
@@ -40,32 +45,63 @@ var map =  [[ 0,-1, 0,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1, 0,-1, 0,-1],
             [-1,-1,-1,-1,-1,-1, 0,-1, 0,-1],
             [-1,-1,-1,-1,-1,-1, 0,-1, 0,-1]];
-			
-//Preload function loads assets before game starts
-function preload() {    
-    //this.load.atlas('sprites', 'assets/spritesheet.png', 'assets/spritesheet.json');
-    this.load.atlas('sprites', 'assets/deathknight.png', 'assets/deathknight.json');
-    //this.load.spritesheet('sprites', 'assets/fairies.png', { frameWidth: 52, frameHeight: 75, startFrame: 0, endFrame: 2});
-    //this.load.spritesheet('sprites', 'assets/sprites/2/deathknight.png', { frameWidth: 90, frameHeight: 85, startFrame: 0, endFrame: 2});
-	this.load.spritesheet('bard', 'assets/bard.png', { frameWidth: 52, frameHeight: 75});
-    this.load.image('bullet', 'assets/coin.png');
-	this.load.image('map', 'assets/map.png', { frameWidth: 640, frameHeight: 512});
+
+//------------------------------------------FUNCTIONS---------------------------------------------------			
+function getEnemy(x, y, distance) {
+    var enemyUnits = ENEMY_GROUP.getChildren();
+    for(var i = 0; i < enemyUnits.length; i++) {       
+        if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) < distance)
+            return enemyUnits[i];
+    }
+    return false;
+} 
+
+function damageEnemy(enemy, attack) {  
+    // only if both enemy and attack are alive
+    if (enemy.active === true && attack.active === true) {
+        // we remove the attack right away
+        attack.setActive(false);
+        attack.setVisible(false);    
+        
+        // decrease the enemy hp with ATTACK_DAMAGE
+        enemy.receiveDamage(ATTACK_DAMAGE);
+    }
 }
-//enemy class
-var Enemy = new Phaser.Class({
 
-        Extends: Phaser.GameObjects.Image,
+function drawLines(graphics) {
+    graphics.lineStyle(1, 0x0000ff, 0.8);
+    for(var i = 0; i < 8; i++) {
+        graphics.moveTo(0, i * 64);
+        graphics.lineTo(640, i * 64);
+    }
+    for(var j = 0; j < 10; j++) {
+        graphics.moveTo(j * 64, 0);
+        graphics.lineTo(j * 64, 512);
+    }
+    graphics.strokePath();
+}	
 
-        initialize:
 
-        function Enemy (scene)
+function addAttack(x, y, angle) {
+    var attack = attacks.get();
+    if (attack)
+    {
+        attack.fire(x, y, angle);
+    }
+}
+
+//---------------------------------------------------------CLASSES--------------------------------------------
+class Enemy extends Phaser.GameObjects.Image {
+
+        constructor (scene)
         {
-            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'walk_down_1');
+			super(scene);
+            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'deathknight', 'walk_down_1');
             this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
             this.hp = 0;
-        },
+        }
 
-        startOnPath: function ()
+        startOnPath ()
         {
             this.follower.t = 0;
             this.hp = ENEMY_HP;
@@ -73,8 +109,9 @@ var Enemy = new Phaser.Class({
             path.getPoint(this.follower.t, this.follower.vec);
             
             this.setPosition(this.follower.vec.x, this.follower.vec.y);            
-        },
-        receiveDamage: function(damage) {
+        }
+		
+        receiveDamage(damage) {
             this.hp -= damage;           
             
             // if hp drops below 0 we deactivate this enemy
@@ -82,8 +119,9 @@ var Enemy = new Phaser.Class({
                 this.setActive(false);
                 this.setVisible(false);      
             }
-        },
-        update: function (time, delta)
+        }
+		
+        update (time, delta)
         {
 			//ENEMY_SPEED = 1/Math.floor((Math.random() * (10000 - 5000)) + 5000);
             this.follower.t += ENEMY_SPEED * delta;
@@ -98,89 +136,149 @@ var Enemy = new Phaser.Class({
             }
         }
 
-});
+};
 
-function getEnemy(x, y, distance) {
-    var enemyUnits = enemies.getChildren();
-    for(var i = 0; i < enemyUnits.length; i++) {       
-        if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) < distance)
-            return enemyUnits[i];
-    }
-    return false;
-} 
+//towers class
+class Tower extends Phaser.GameObjects.Image {
 
-//turret aka towers class
-var Turret = new Phaser.Class({
-
-        Extends: Phaser.GameObjects.Image,
-
-        initialize:
-
-        function Turret (scene)
+        constructor (scene, towerId, towerName, upgrade, str, atkRange, atkType, atkRate, hitFly)
         {
-            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bard', 'turret');
+			super(scene);
+            //Phaser.GameObjects.Image.call(this, scene, 0, 0, 'goldenarmor', 'sprite25');
             this.nextTic = 0;
-        },
-		place: function(i, j) {            
-            this.y = i * 64 + 64/2;
-            this.x = j * 64 + 64/2;
-            map[i][j] = 1;
-        },
-		remove: function(i, j) {            
-            map[i][j] = 0;       
-        },
-        fire: function() {
+			this.towerId = towerId; //each tower has unique id
+			this.towerName = towerName;
+			this.upgrade = upgrade; //true = can upgrade, false = can't upgrade
+			this.str = str; //value tha determines attack strength
+			this.atkRange = atkRange;
+			this.atkType = atkType;
+			this.atkRate = atkRate; 
+			this.hitFly = hitFly; //true = can hit flying enemeies, false = cannot hit flying enemies
+			//this.aoeRange = aoeRange; //area of effect range
+			//this.spc = spc; //has special attack, each value represents special type, 0 = none, 1 = chance to stun, etc.
+        }
+		
+		placeTower(pointer) {
+			var i = Math.floor(pointer.y/64);
+			var j = Math.floor(pointer.x/64);
+			if(map[i][j] === 0) {
+				//console.log(tower);
+				if (this)
+				{
+					this.setActive(true);
+					this.setVisible(true);
+					this.y = i * 64 + 64/2;
+					this.x = j * 64 + 64/2;
+					map[i][j] = 1;
+				}   
+				//console.log(TOWER_GROUP.getTotalUsed());
+				//console.log(TOWER_GROUP.getLength());
+			}
+			else
+				TOWER_GROUP.remove(this, true, true);		//tower is created before it's placed so removed if the place clicked on is  not avaialble
+		}
+
+		removeTower(pointer) {
+			var i = Math.floor(pointer.y/64);
+			var j = Math.floor(pointer.x/64);
+			if(map[i][j] !== 0) {
+				this.setActive(false);
+				this.setVisible(false);
+				map[i][j] = 0;								//remove from map
+				TOWER_GROUP.remove(this, true, true);			//removes from group, if want to keep it as inactive then remove this line
+			}
+				
+		}
+		
+		upgradeTower(pointer) {
+			var i = Math.floor(pointer.y/64);
+			var j = Math.floor(pointer.x/64);
+			if(map[i][j] === 1) {
+				//console.log(tower);
+				var x = this.x;
+				var y = this.y;
+				this.removeTower(pointer);
+				//var group = TOWER_GROUP.add.group({ classType: Soldier, runChildUpdate: true });
+				
+				/* this.setActive(true);
+				this.setVisible(true);
+				this.y = i * 64 + 64/2;
+				this.x = j * 64 + 64/2;
+				map[i][j] = 1; */ 
+				//console.log(TOWER_GROUP.getTotalUsed());
+				//console.log(TOWER_GROUP.getLength());
+			}
+		}
+		
+        fire() {
             var enemy = getEnemy(this.x, this.y, 200);
             if(enemy) {
                 var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-                addBullet(this.x, this.y, angle);
-                //this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make turrets rotate to face enemy
+                addAttack(this.x, this.y, angle);
+                //this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make towers rotate to face enemy
             }
-        },
-        update: function (time, delta)
+        }
+		
+        update(time, delta, pointer)
         {
             if(time > this.nextTic) {
                 this.fire();
-                this.nextTic = time + TURRET_FIRE_RATE;
+                this.nextTic = time + TOWER_FIRE_RATE;
             }
         }
-});
+};
+
+class Peasant extends Tower {
+	constructor(scene, obj) {
+		// Note: In derived classes, super() must be called before you
+		// can use 'this'. Leaving this out will cause a reference error.
+		super(scene, obj.towerId, obj.towerName, obj.upgrade, obj.str, obj.atkRange, obj.atkType, obj.atkRate, obj.hitFly);
+		
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'peasant', 'sprite35');
+
+	}
+}
+
+class Soldier extends Tower {
+	constructor(scene, obj) {
+		super(scene, obj.towerId, obj.towerName, obj.upgrade, obj.str, obj.atkRange, obj.atkType, obj.atkRate, obj.hitFly);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'goldenarmor', 'sprite25');
+		
+	}
+}
 
 //the yellow thing the towers shoots at enemy, can be any form of projectile
-var Bullet = new Phaser.Class({
+class Attack extends Phaser.GameObjects.Image {
 
-        Extends: Phaser.GameObjects.Image,
-
-        initialize:
-
-        function Bullet (scene)
+        constructor(scene)
         {
-            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bullet');
+			super(scene);
+            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'attack');
 
             this.incX = 0;
             this.incY = 0;
             this.lifespan = 0;
 
             this.speed = Phaser.Math.GetSpeed(600, 1);
-        },
+        }
 
-        fire: function (x, y, angle)
+        fire(x, y, angle)
         {
             this.setActive(true);
             this.setVisible(true);
-            //  Bullets fire from the middle of the screen to the given x/y
+            //  Attacks fire from the middle of the screen to the given x/y
             this.setPosition(x, y);
             
-        //  we don't need to rotate the bullets as they are round
+        //  we don't need to rotate the attacks as they are round
         //    this.setRotation(angle);
 
             this.dx = Math.cos(angle);
             this.dy = Math.sin(angle);
 
             this.lifespan = 1000;
-        },
+        }
 
-        update: function (time, delta)
+        update (time, delta)
         {
             this.lifespan -= delta;
 
@@ -194,7 +292,19 @@ var Bullet = new Phaser.Class({
             }
         }
 
-    });
+    };
+
+//----------------------------------------------------GAME-------------------------------------------	
+	
+//Preload function loads assets before game starts
+function preload() {    
+    this.load.atlas('deathknight', 'assets/deathknight.png', 'assets/deathknight.json');
+    this.load.atlas('goldenarmor', 'assets/goldenarmor.png', 'assets/goldenarmor.json');
+    this.load.atlas('peasant', 'assets/peasant.png', 'assets/peasant.json');
+	this.load.spritesheet('bard', 'assets/bard.png', { frameWidth: 52, frameHeight: 75});
+	this.load.image('attack', 'assets/coin.png');
+	this.load.image('map', 'assets/castle-gates.png', { frameWidth: 640, frameHeight: 512});
+}
  
 //create function initializes and adds assets to game
 function create() {
@@ -211,62 +321,56 @@ function create() {
     
 	this.add.image(320, 256, 'map');
 	
-    enemies = this.physics.add.group({ classType: Enemy, runChildUpdate: true });
-    
-    turrets = this.add.group({ classType: Turret, runChildUpdate: true });
-    
-    bullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
+	//creates a group for a tower type, that way we can use TOWER_GROUP.get(peasantObj) to instantiate new base level towers easily
+    //same goes for enemies and attacks and for any new classes created
+	TOWER_GROUP = this.add.group({ classType: Peasant, runChildUpdate: true });
+	
+    ENEMY_GROUP = this.physics.add.group({ classType: Enemy, runChildUpdate: true });
+	
+    attacks = this.physics.add.group({ classType: Attack, runChildUpdate: true });
     
     this.nextEnemy = 0;
     
-    this.physics.add.overlap(enemies, bullets, damageEnemy);
+    this.physics.add.overlap(ENEMY_GROUP, attacks, damageEnemy);
     
 	this.input.mouse.disableContextMenu();
 	
-    //this.input.on('pointerdown', placeTurret);
     this.input.on('pointerdown', function (pointer) {
 		if (pointer.leftButtonDown())
         {
-            placeTurret(pointer);
+			var tower = TOWER_GROUP.get(peasantObj);
+			tower.placeTower(pointer);
         }
         else if (pointer.rightButtonDown())
         {
-           removeTurret(pointer);
+			TOWER_GROUP.children.iterate(function (tower) {
+				var i = Math.floor(pointer.y/64);
+				var j = Math.floor(pointer.x/64);
+				var y = i * 64 + 64/2;
+				var x = j * 64 + 64/2;
+				if (tower && tower.x == x && tower.y == y)
+				{
+					//tower.removeTower(pointer);
+					tower.upgradeTower(pointer);
+				}
+			});
         }
 	});
+	
+/* 	this.arrow = this.input.keyboard.createCursorKeys();
+	if (this.arrow.down.isDown) {
+	   this.scene.pause();
+	}  */
 }
 
-function damageEnemy(enemy, bullet) {  
-    // only if both enemy and bullet are alive
-    if (enemy.active === true && bullet.active === true) {
-        // we remove the bullet right away
-        bullet.setActive(false);
-        bullet.setVisible(false);    
-        
-        // decrease the enemy hp with BULLET_DAMAGE
-        enemy.receiveDamage(BULLET_DAMAGE);
-    }
-}
 
-function drawLines(graphics) {
-    graphics.lineStyle(1, 0x0000ff, 0.8);
-    for(var i = 0; i < 8; i++) {
-        graphics.moveTo(0, i * 64);
-        graphics.lineTo(640, i * 64);
-    }
-    for(var j = 0; j < 10; j++) {
-        graphics.moveTo(j * 64, 0);
-        graphics.lineTo(j * 64, 512);
-    }
-    graphics.strokePath();
-}
 
 //update function constantly refreshes so to progress game
 function update(time, delta) {  
 
     if (time > this.nextEnemy)
     {
-        var enemy = enemies.get();
+        var enemy = ENEMY_GROUP.get();
         if (enemy)
         {
             enemy.setActive(true);
@@ -279,50 +383,3 @@ function update(time, delta) {
 	
 }
 
-function canPlaceTurret(i, j) {
-    return map[i][j] === 0;
-}
-
-function placeTurret(pointer) {
-    var i = Math.floor(pointer.y/64);
-    var j = Math.floor(pointer.x/64);
-    if(canPlaceTurret(i, j)) {
-        var turret = turrets.get();
-        if (turret)
-        {
-            turret.setActive(true);
-            turret.setVisible(true);
-            turret.place(i, j);
-        }   
-		//console.log(turrets.getTotalUsed());
-		//console.log(turrets.getLength());
-    }
-}
-
-function removeTurret(pointer) {
-    var i = Math.floor(pointer.y/64);
-    var j = Math.floor(pointer.x/64);
-	var y = i * 64 + 64/2;
-    var x = j * 64 + 64/2;
-    if(!canPlaceTurret(i, j)) {
-        var allTurrets = turrets.getChildren();
-		allTurrets.forEach(function (turret) {
-			if (turret.x == x && turret.y == y)
-			{
-				turret.setActive(false);
-				turret.setVisible(false);
-				turret.remove(i, j);
-				turrets.remove(turret, true, true);			//removes from group, if want to keep it as inactive then remove this line
-			}   
-		});
-		
-    }
-}
-
-function addBullet(x, y, angle) {
-    var bullet = bullets.get();
-    if (bullet)
-    {
-        bullet.fire(x, y, angle);
-    }
-}

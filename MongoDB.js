@@ -1,7 +1,12 @@
 // JavaScript source code
-var MongoClient = require('mongodb').MongoClient;
-test = require('assert');
-var uri = "mongodb://<username>:<password>@html-td-shard-00-00-lp7zx.gcp.mongodb.net:27017,html-td-shard-00-01-lp7zx.gcp.mongodb.net:27017,html-td-shard-00-02-lp7zx.gcp.mongodb.net:27017/fantasyTD?ssl=true&replicaSet=HTML-TD-shard-0&authSource=admin&retryWrites=true";
+//var MongoClient = require('mongodb').MongoClient;
+//test = require('assert');
+
+const mongodb = require('mongodb'); 
+const http = require('http'); 
+const nconf = require('nconf'); 
+let uri = "mongodb://<username>:<password>@html-td-shard-00-00-lp7zx.gcp.mongodb.net:27017,html-td-shard-00-01-lp7zx.gcp.mongodb.net:27017,html-td-shard-00-02-lp7zx.gcp.mongodb.net:27017/fantasyTD?ssl=true&replicaSet=HTML-TD-shard-0&authSource=admin&retryWrites=true";
+if (nconf.get('mongoDatabase')) { uri = ${uri}/${nconf.get('mongoDatabase')}; } console.log(uri);
 MongoClient.connect(uri, { useNewUrlParser: true }, function (err, client) {
     test.equal(null, err);
     var collection = client.db("fantasyTD").collection("credentials");
