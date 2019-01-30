@@ -33,8 +33,8 @@ var ATTACK_DAMAGE = 50;
 var TOWER_FIRE_RATE = 300;
 
 //stats for each tower type loaded from file rather than defined here, but for now do this
-var peasantObj = {towerId:0, towerName:"peasant", upgrade:true, str:10, atkRange:"short", atkType:"physical", atkRate:"medium", hitfly:false};
-var soldierObj = {towerId:1, towerName:"soldier", upgrade:true, str:10, atkRange:"short", atkType:"physical", atkRate:"medium", hitfly:false};
+var peasantStats = {towerId:0, towerName:"peasant", upgrade:true, str:10, atkRange:"short", atkType:"physical", atkRate:"medium", hitfly:false};
+var soldierStats = {towerId:1, towerName:"soldier", upgrade:true, str:10, atkRange:"short", atkType:"physical", atkRate:"medium", hitfly:false};
 
 //map for tower placement, 0=can place, -1=cannot place, 1=can place with turrent already occupying space
 var map =  [[ 0,-1, 0,-1,-1,-1,-1,-1,-1,-1],
@@ -160,19 +160,19 @@ class Enemy extends Phaser.GameObjects.Sprite {
 //towers class
 class Tower extends Phaser.GameObjects.Image {
 
-        constructor (scene, towerId, towerName, upgrade, str, atkRange, atkType, atkRate, hitFly)
+         constructor (scene, stats)
         {
 			super(scene);
             //Phaser.GameObjects.Image.call(this, scene, 0, 0, 'goldenarmor', 'sprite25');
             this.nextTic = 0;
-			this.towerId = towerId; //each tower has unique id
-			this.towerName = towerName;
-			this.upgrade = upgrade; //true = can upgrade, false = can't upgrade
-			this.str = str; //value tha determines attack strength
-			this.atkRange = atkRange;
-			this.atkType = atkType;
-			this.atkRate = atkRate; 
-			this.hitFly = hitFly; //true = can hit flying enemeies, false = cannot hit flying enemies
+			this.towerId =  stats.towerId; //each tower has unique id
+			this.towerName = stats.towerName;
+			this.upgrade = stats.upgrade; //true = can upgrade, false = can't upgrade
+			this.str = stats.str; //value tha determines attack strength
+			this.atkRange = stats.atkRange;
+			this.atkType = stats.atkType;
+			this.atkRate = stats.atkRate; 
+			this.hitFly = stats.hitFly; //true = can hit flying enemeies, false = cannot hit flying enemies
 			//this.aoeRange = aoeRange; //area of effect range
 			//this.spc = spc; //has special attack, each value represents special type, 0 = none, 1 = chance to stun, etc.
         }
@@ -248,10 +248,10 @@ class Tower extends Phaser.GameObjects.Image {
 };
 
 class Peasant extends Tower {
-	constructor(scene, obj) {
+	constructor(scene, stats) {
 		// Note: In derived classes, super() must be called before you
 		// can use 'this'. Leaving this out will cause a reference error.
-		super(scene, obj.towerId, obj.towerName, obj.upgrade, obj.str, obj.atkRange, obj.atkType, obj.atkRate, obj.hitFly);
+		super(scene, stats);
 		
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'peasant', 'sprite35');
 
@@ -259,8 +259,8 @@ class Peasant extends Tower {
 }
 
 class Soldier extends Tower {
-	constructor(scene, obj) {
-		super(scene, obj.towerId, obj.towerName, obj.upgrade, obj.str, obj.atkRange, obj.atkType, obj.atkRate, obj.hitFly);
+	constructor(scene, stats) {
+		super(scene, stats);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'goldenarmor', 'sprite25');
 		
 	}
@@ -353,7 +353,7 @@ function create() {
     });
 
 	
-	//creates a group for a tower type, that way we can use TOWER_GROUP.get(peasantObj) to instantiate new base level towers easily
+	//creates a group for a tower type, that way we can use TOWER_GROUP.get(peasantStats) to instantiate new base level towers easily
     //same goes for enemies and attacks and for any new classes created
 	TOWER_GROUP = this.add.group({ classType: Peasant, runChildUpdate: true });
 	
@@ -372,7 +372,7 @@ function create() {
     this.input.on('pointerdown', function (pointer) {
 		if (pointer.leftButtonDown())
         {
-			var tower = TOWER_GROUP.get(peasantObj);
+			var tower = TOWER_GROUP.get(peasantStats);
 			tower.placeTower(pointer);
         }
         else if (pointer.rightButtonDown())
