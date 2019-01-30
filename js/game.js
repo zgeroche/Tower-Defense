@@ -14,6 +14,7 @@ var config = {
         create: create,
         update: update
     }
+    
 };
 
 //begin game
@@ -65,6 +66,7 @@ function damageEnemy(enemy, attack) {
         
         // decrease the enemy hp with ATTACK_DAMAGE
         enemy.receiveDamage(ATTACK_DAMAGE);
+        damage.play();
     }
 }
 
@@ -102,6 +104,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
         
         var enem = Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'deathknight');
         this.anims.play('dkdown');
+        walk.play();
         //this.dknight.anims.play('walk_down_', 1)
         //this.sprite.anims.add({ key: 'walk_down', frames: this.anims.generateFrameNames('walk_down_', 1, 4), frameRate: 5, repeat: -1 });
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
@@ -123,9 +126,12 @@ class Enemy extends Phaser.GameObjects.Sprite {
             this.hp -= damage;           
             
             // if hp drops below 0 we deactivate this enemy
-            if(this.hp <= 0) {
+            if (this.hp <= 0) {
                 this.setActive(false);
                 this.setVisible(false);
+                dkdeath.play();
+                //Need to set this to stop when all enemies are dead
+                //walk.stop();
                 this.destroy();
             }
         }
@@ -322,7 +328,11 @@ function preload() {
     this.load.atlas('peasant', 'assets/peasant.png', 'assets/peasant.json');
 	this.load.spritesheet('bard', 'assets/bard.png', { frameWidth: 52, frameHeight: 75});
 	this.load.image('attack', 'assets/coin.png');
-	this.load.image('map', 'assets/castle-gates.png', { frameWidth: 640, frameHeight: 512});
+	this.load.image('map', 'assets/castle-gates.png', { frameWidth: 640, frameHeight: 512 });
+	this.load.audio('dkDeath', 'assets/Sounds/Death Screams/Human/sfx_deathscream_human5.wav');
+	this.load.audio('hit', 'assets/Sounds/General Sounds/Simple Damage Sounds/sfx_damage_hit2.wav');
+	this.load.audio('walk', 'assets/Sounds/Movement/Footsteps/sfx_movement_footstepsloop4_slow.wav');
+	this.load.audio('background', 'assets/Sounds/random silly chip song.ogg');
 }
  
 //create function initializes and adds assets to game
@@ -352,6 +362,16 @@ function create() {
         repeat: -1
     });
 
+    dkdeath = this.sound.add('dkDeath');
+    damage = this.sound.add('hit');
+    damage.volume = 0.3;
+    walk = this.sound.add('walk');
+    walk.volume = 0.3;
+    walk.loop = true;
+    background = this.sound.add('background');
+    background.volume = 0.2;
+    background.loop = true;
+    background.play();
 	
 	//creates a group for a tower type, that way we can use TOWER_GROUP.get(peasantObj) to instantiate new base level towers easily
     //same goes for enemies and attacks and for any new classes created
