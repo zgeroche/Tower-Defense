@@ -91,15 +91,23 @@ function addAttack(x, y, angle) {
 }
 
 //---------------------------------------------------------CLASSES--------------------------------------------
-class Enemy extends Phaser.GameObjects.Image {
+class Enemy extends Phaser.GameObjects.Sprite {
 
-        constructor (scene)
-        {
-			super(scene);
-            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'deathknight', 'walk_down_1');
-            this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
-            this.hp = 0;
-        }
+    constructor (scene)
+    {
+        super(scene);
+        
+        //dknight.animations.add('walk_down', 1, 4);
+        //this.anims.create({ key: 'down', frames: this.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }), frameRate: 5, repeat: -1 })
+        
+        var enem = Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'deathknight');
+        this.anims.play('dkdown');
+        //this.dknight.anims.play('walk_down_', 1)
+        //this.sprite.anims.add({ key: 'walk_down', frames: this.anims.generateFrameNames('walk_down_', 1, 4), frameRate: 5, repeat: -1 });
+        this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
+        this.hp = 0;
+        this.turned = 0;
+    }
 
         startOnPath ()
         {
@@ -128,11 +136,21 @@ class Enemy extends Phaser.GameObjects.Image {
             path.getPoint(this.follower.t, this.follower.vec);
             
             this.setPosition(this.follower.vec.x, this.follower.vec.y);
+            if (this.follower.vec.y == 164 && this.turned == 0) {
+                this.anims.play('dkright');
+                this.turned = 1;
+            }
+            else if (this.follower.vec.y != 164 && this.turned == 1)
+            {
+                this.anims.play('dkdown');
+                this.turned = 2;
+            }
 
             if (this.follower.t >= 1)
             {
                 this.setActive(false);
                 this.setVisible(false);
+                this.destroy();
             }
         }
 
@@ -319,14 +337,29 @@ function create() {
     graphics.lineStyle(0, 0xffffff, 1);
     path.draw(graphics);
     
-	this.add.image(320, 256, 'map');
+    this.add.image(320, 256, 'map');
+    this.anims.create({
+        key: 'dkdown',
+        frames: this.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }),
+        frameRate: 3,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'dkright',
+        frames: this.anims.generateFrameNames('deathknight', { prefix: 'walk_right_', start: 1, end: 4 }),
+        frameRate: 5,
+        repeat: -1
+    });
+
 	
 	//creates a group for a tower type, that way we can use TOWER_GROUP.get(peasantObj) to instantiate new base level towers easily
     //same goes for enemies and attacks and for any new classes created
 	TOWER_GROUP = this.add.group({ classType: Peasant, runChildUpdate: true });
 	
-    ENEMY_GROUP = this.physics.add.group({ classType: Enemy, runChildUpdate: true });
-	
+	ENEMY_GROUP = this.physics.add.group({ classType: Enemy, runChildUpdate: true }); //key: 'walk_down_', frame: [1, 2, 3, 4], repeat: 5, active: true });
+    
+    //ENEMY_GROUP.callAll('play', null, 'down',);
+
     attacks = this.physics.add.group({ classType: Attack, runChildUpdate: true });
     
     this.nextEnemy = 0;
