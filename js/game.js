@@ -125,7 +125,8 @@ class Enemy extends Phaser.GameObjects.Sprite {
             // if hp drops below 0 we deactivate this enemy
             if(this.hp <= 0) {
                 this.setActive(false);
-                this.setVisible(false);      
+                this.setVisible(false);
+                this.destroy();
             }
         }
 		
