@@ -22,8 +22,9 @@ var game = new Phaser.Game(config);
 
 //--------------------------------------------------GLOBAL VARIABLES-------------------------------------------
 var path;
-var TOWER_GROUP;
+var TOWER_GROUP = [];
 var ENEMY_GROUP;
+var mainGame;
 
 var ENEMY_SPEED = 1/10000;
 //var ENEMY_SPEED = 1/Math.floor((Math.random() * 10000) + 10000);
@@ -67,6 +68,7 @@ var map =  [[ 0,-1, 0,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1, 0,-1, 0,-1],
             [-1,-1,-1,-1,-1,-1, 0,-1, 0,-1],
             [-1,-1,-1,-1,-1,-1, 0,-1, 0,-1]];
+			
 
 //------------------------------------------FUNCTIONS---------------------------------------------------			
 function getEnemy(x, y, distance) {
@@ -104,7 +106,6 @@ function drawLines(graphics) {
     graphics.strokePath();
 }	
 
-
 function addAttack(x, y, angle) {
     var attack = attacks.get();
     if (attack)
@@ -123,7 +124,21 @@ class Enemy extends Phaser.GameObjects.Sprite {
         //dknight.animations.add('walk_down', 1, 4);
         //this.anims.create({ key: 'down', frames: this.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }), frameRate: 5, repeat: -1 })
         
-        var enemy = Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'deathknight');
+		var enemy = Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'deathknight');
+		
+		mainGame.anims.create({
+			key: 'dkdown',
+			frames: mainGame.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }),
+			frameRate: 3,
+			repeat: -1
+		});
+		mainGame.anims.create({
+			key: 'dkright',
+			frames: mainGame.anims.generateFrameNames('deathknight', { prefix: 'walk_right_', start: 1, end: 4 }),
+			frameRate: 5,
+			repeat: -1
+		});
+        
         this.anims.play('dkdown');
         //walk.play();
         //this.dknight.anims.play('walk_down_', 1)
@@ -214,13 +229,14 @@ class Tower extends Phaser.GameObjects.Image {
 				this.setVisible(true);
 				this.y = i * 64 + 64/2;
 				this.x = j * 64 + 64/2;
-				map[i][j] = 1;
+				//map[i][j] = 1;
+				map[i][j] = this;
 			}   
 			//console.log(TOWER_GROUP.getTotalUsed());
 			//console.log(TOWER_GROUP.getLength());
 		}
 		else
-			TOWER_GROUP.remove(this, true, true);		//tower is created before it's placed so removed if the place clicked on is  not avaialble
+			TOWER_GROUP[this.towerId].remove(this, true, true);		//tower is created before it's placed so removed if the place clicked on is  not avaialble
 	}
 
 	removeTower(pointer) {
@@ -230,29 +246,20 @@ class Tower extends Phaser.GameObjects.Image {
 			this.setActive(false);
 			this.setVisible(false);
 			map[i][j] = 0;								//remove from map
-			TOWER_GROUP.remove(this, true, true);			//removes from group, if want to keep it as inactive then remove this line
+			TOWER_GROUP[this.towerId].remove(this, true, true);			//removes from group, if want to keep it as inactive then remove this line
 		}
 			
 	}
 	
-	upgradeTower(pointer) {
+	upgradeTower(pointer, newTower) {
 		var i = Math.floor(pointer.y/64);
 		var j = Math.floor(pointer.x/64);
-		if(map[i][j] === 1) {
-			//console.log(tower);
-			var x = this.x;
-			var y = this.y;
-			this.removeTower(pointer);
-			//var group = TOWER_GROUP.add.group({ classType: Soldier, runChildUpdate: true });
-			
-			/* this.setActive(true);
-			this.setVisible(true);
-			this.y = i * 64 + 64/2;
-			this.x = j * 64 + 64/2;
-			map[i][j] = 1; */ 
-			//console.log(TOWER_GROUP.getTotalUsed());
-			//console.log(TOWER_GROUP.getLength());
-		}
+		this.removeTower(pointer);
+		newTower.placeTower(pointer)
+		
+		//console.log(TOWER_GROUP.getTotalUsed());
+		//console.log(TOWER_GROUP.getLength());
+	
 	}
 	
 	fire() {
@@ -381,18 +388,8 @@ function create() {
     path.draw(graphics);
     
     this.add.image(320, 256, 'map');
-    this.anims.create({
-        key: 'dkdown',
-        frames: this.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }),
-        frameRate: 3,
-        repeat: -1
-    });
-    this.anims.create({
-        key: 'dkright',
-        frames: this.anims.generateFrameNames('deathknight', { prefix: 'walk_right_', start: 1, end: 4 }),
-        frameRate: 5,
-        repeat: -1
-    });
+
+	mainGame = this;
 
 /*     dkdeath = this.sound.add('dkDeath');
     damage = this.sound.add('hit');
@@ -405,9 +402,10 @@ function create() {
     background.loop = true;
     background.play(); */
 	
-	//creates a group for a tower type, that way we can use TOWER_GROUP.get(peasantStats) to instantiate new base level towers easily
+	//creates a group for a tower type, that way we can use TOWER_GROUP.get(peasantStats) to instantiate new towers easily
     //same goes for enemies and attacks and for any new classes created
-	TOWER_GROUP = this.add.group({ classType: Peasant, runChildUpdate: true });
+	TOWER_GROUP[peasantStats.towerId] = this.add.group({ classType: Peasant, runChildUpdate: true });
+	TOWER_GROUP[soldierStats.towerId] = this.add.group({ classType: Soldier, runChildUpdate: true });
 	
 	ENEMY_GROUP = this.physics.add.group({ classType: Enemy, runChildUpdate: true }); //key: 'walk_down_', frame: [1, 2, 3, 4], repeat: 5, active: true });
     
@@ -415,13 +413,6 @@ function create() {
 
     attacks = this.physics.add.group({ classType: Attack, runChildUpdate: true });
     
-	//TOWER_GROUP.add(new Soldier(this, soldierStats));
-	
-	//console.log(TOWER_GROUP)
-	
-	//TOWER_GROUP.children.entries[0].sFn();
-	
-	
     this.nextEnemy = 0;
     
     this.physics.add.overlap(ENEMY_GROUP, attacks, damageEnemy);
@@ -431,22 +422,42 @@ function create() {
     this.input.on('pointerdown', function (pointer) {
 		if (pointer.leftButtonDown())
         {
-			var tower = TOWER_GROUP.get(peasantStats);
-			tower.placeTower(pointer);
+			var i = Math.floor(pointer.y/64);
+			var j = Math.floor(pointer.x/64);
+			if(map[i][j] == 0)
+			{
+				var tower = TOWER_GROUP[peasantStats.towerId].get(peasantStats);
+				tower.placeTower(pointer);
+			}
+			else if(typeof map[i][j] === "object")
+			{
+				var tower = map[i][j];
+				//var newTG = mainGame.add.group({ classType: Soldier, runChildUpdate: true });
+				var newTower = TOWER_GROUP[soldierStats.towerId].get(peasantStats);
+				tower.upgradeTower(pointer, newTower);
+			}
         }
         else if (pointer.rightButtonDown())
         {
-			TOWER_GROUP.children.iterate(function (tower) {
+			var i = Math.floor(pointer.y/64);
+			var j = Math.floor(pointer.x/64);
+			var tower = map[i][j];
+			if(typeof tower === "object")
+			{
+				tower.removeTower(pointer);
+			}
+			
+			/* TOWER_GROUP.children.iterate(function (tower) {
 				var i = Math.floor(pointer.y/64);
 				var j = Math.floor(pointer.x/64);
 				var y = i * 64 + 64/2;
 				var x = j * 64 + 64/2;
 				if (tower && tower.x == x && tower.y == y)
 				{
-					//tower.removeTower(pointer);
-					tower.upgradeTower(pointer);
+					tower.removeTower(pointer);
+					//tower.upgradeTower(pointer);
 				}
-			});
+			}); */
         }
 	});
 	
@@ -455,8 +466,6 @@ function create() {
 	   this.scene.pause();
 	}  */
 }
-
-
 
 //update function constantly refreshes so to progress game
 function update(time, delta) {  
