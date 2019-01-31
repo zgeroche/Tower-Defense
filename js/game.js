@@ -115,6 +115,72 @@ function addAttack(x, y, angle) {
 }
 
 //---------------------------------------------------------CLASSES--------------------------------------------
+class HealthBar {
+
+    constructor(scene, x, y) {
+        this.bar = new Phaser.GameObjects.Graphics(scene);
+
+        this.x = x;
+        this.y = y;
+        this.value = ENEMY_HP;
+        this.p = .076;
+
+        this.draw();
+
+        mainGame.add.existing(this.bar);
+    }
+
+    setPosition(x, y) {
+        this.x = x;
+        this.y = y;
+        this.draw();
+    }
+
+    decrease(amount) {
+        this.value -= amount;
+
+        if (this.value < 0) {
+            this.value = 0;
+        }
+
+        this.draw();
+
+        return (this.value === 0);
+    }
+
+    draw() {
+        this.bar.clear();
+
+        //  BG
+        this.bar.fillStyle(0x000000);
+        this.bar.fillRect(this.x, this.y, 80, 16);
+
+        //  Health
+
+        this.bar.fillStyle(0xffffff);
+        this.bar.fillRect(this.x + 2, this.y + 2, 76, 12);
+
+        if (this.value < 0.6 * ENEMY_HP) {
+            this.bar.fillStyle(0xff0000);
+        }
+        else if (this.value < 0.3 * ENEMY_HP)
+            this.bar.fillStyle(0x00ffff);
+        else {
+            this.bar.fillStyle(0x00ff00);
+        }
+
+        var d = Math.floor(this.p * this.value);
+
+        this.bar.fillRect(this.x + 2, this.y + 2, d, 12);
+    }
+
+    destroy() {
+        this.bar.destroy();
+    }
+
+}
+
+
 class Enemy extends Phaser.GameObjects.Sprite {
 
     constructor (scene)
@@ -140,15 +206,14 @@ class Enemy extends Phaser.GameObjects.Sprite {
         
         this.anims.play('dkdown');
         //walk.play();
-        //this.dknight.anims.play('walk_down_', 1)
-        //this.sprite.anims.add({ key: 'walk_down', frames: this.anims.generateFrameNames('walk_down_', 1, 4), frameRate: 5, repeat: -1 });
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
         this.hp = 0;
         this.turned = 0;
 		
 		this.text = mainGame.add.text(0, 0, "HP: "+ ENEMY_HP, {font: "16px Arial", fill: "#ffffff"});
-		this.text.setPadding(0, 0, 0, 60)
-		this.text.setOrigin(0.5)
+		this.text.setPadding(0, 0, 0, 60);
+		this.text.setOrigin(0.5);
+		this.healthbar = new HealthBar(scene, 0, 0);
 		
     }
 
@@ -160,19 +225,21 @@ class Enemy extends Phaser.GameObjects.Sprite {
 		path.getPoint(this.follower.t, this.follower.vec);
 		
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);     
-		this.text.setPosition(this.follower.vec.x, this.follower.vec.y);     
-
-	}
+		this.text.setPosition(this.follower.vec.x, this.follower.vec.y);
+		this.healthbar.setPosition(this.follower.vec.x - this.width, this.follower.vec.y - this.height);
+	 }
 	
 	receiveDamage(damage) {
 		this.hp -= damage;           
-		this.text.setText("HP: "+ this.hp);
+		this.text.setText("HP: " + this.hp);
+		this.healthbar.decrease(damage);
 		// if hp drops below 0 we deactivate this enemy
 		if (this.hp <= 0) {
 			this.setActive(false);
 			this.setVisible(false);
 			this.text.setActive(false);
 			this.text.setVisible(false);
+			this.healthbar.destroy();
 			//dkdeath.play();
 			//Need to set this to stop when all enemies are dead
 			//walk.stop();
@@ -188,7 +255,8 @@ class Enemy extends Phaser.GameObjects.Sprite {
 		path.getPoint(this.follower.t, this.follower.vec);
 		
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
-		this.text.setPosition(this.follower.vec.x, this.follower.vec.y);   
+		this.text.setPosition(this.follower.vec.x, this.follower.vec.y);
+		this.healthbar.setPosition(this.follower.vec.x - this.width, this.follower.vec.y - this.height);
 		if (this.follower.vec.y == 164 && this.turned == 0) {
 			this.anims.play('dkright');
 			this.turned = 1;
@@ -226,7 +294,7 @@ class Tower extends Phaser.GameObjects.Image {
 		this.hitFly = stats.hitFly; //true = can hit flying enemeies, false = cannot hit flying enemies
 		//this.aoeRange = aoeRange; //area of effect range
 		//this.spc = spc; //has special attack, each value represents special type, 0 = none, 1 = chance to stun, etc.
-		this.text = mainGame.add.text(0, 0, "Tower Name", {font: "16px Arial", fill: "#ffffff"});
+		this.text = mainGame.add.text(0, 0, this.towerName, {font: "16px Arial", fill: "#ffffff"});
 	}
 	
 	placeTower(pointer) {
@@ -272,8 +340,7 @@ class Tower extends Phaser.GameObjects.Image {
 		var i = Math.floor(pointer.y/64);
 		var j = Math.floor(pointer.x/64);
 		this.removeTower(pointer);
-		newTower.placeTower(pointer)
-		
+		newTower.placeTower(pointer);
 		//console.log(TOWER_GROUP.getTotalUsed());
 		//console.log(TOWER_GROUP.getLength());
 	
@@ -451,8 +518,9 @@ function create() {
 			{
 				var tower = map[i][j];
 				//var newTG = mainGame.add.group({ classType: Soldier, runChildUpdate: true });
-				var newTower = TOWER_GROUP[soldierStats.towerId].get(peasantStats);
+				var newTower = TOWER_GROUP[soldierStats.towerId].get(soldierStats);
 				tower.upgradeTower(pointer, newTower);
+				tower.setText = newTower.towerName;
 			}
         }
         else if (pointer.rightButtonDown())
