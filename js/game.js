@@ -120,7 +120,6 @@ class Enemy extends Phaser.GameObjects.Sprite {
     constructor (scene)
     {
         super(scene);
-        
         //dknight.animations.add('walk_down', 1, 4);
         //this.anims.create({ key: 'down', frames: this.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }), frameRate: 5, repeat: -1 })
         
@@ -146,6 +145,11 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
         this.hp = 0;
         this.turned = 0;
+		
+		this.text = mainGame.add.text(0, 0, "HP: "+ ENEMY_HP, {font: "16px Arial", fill: "#ffffff"});
+		this.text.setPadding(0, 0, 0, 60)
+		this.text.setOrigin(0.5)
+		
     }
 
 	startOnPath ()
@@ -155,16 +159,20 @@ class Enemy extends Phaser.GameObjects.Sprite {
 		
 		path.getPoint(this.follower.t, this.follower.vec);
 		
-		this.setPosition(this.follower.vec.x, this.follower.vec.y);            
+		this.setPosition(this.follower.vec.x, this.follower.vec.y);     
+		this.text.setPosition(this.follower.vec.x, this.follower.vec.y);     
+
 	}
 	
 	receiveDamage(damage) {
 		this.hp -= damage;           
-		
+		this.text.setText("HP: "+ this.hp);
 		// if hp drops below 0 we deactivate this enemy
 		if (this.hp <= 0) {
 			this.setActive(false);
 			this.setVisible(false);
+			this.text.setActive(false);
+			this.text.setVisible(false);
 			//dkdeath.play();
 			//Need to set this to stop when all enemies are dead
 			//walk.stop();
@@ -176,9 +184,11 @@ class Enemy extends Phaser.GameObjects.Sprite {
 	{
 		//ENEMY_SPEED = 1/Math.floor((Math.random() * (10000 - 5000)) + 5000);
 		this.follower.t += ENEMY_SPEED * delta;
+		
 		path.getPoint(this.follower.t, this.follower.vec);
 		
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
+		this.text.setPosition(this.follower.vec.x, this.follower.vec.y);   
 		if (this.follower.vec.y == 164 && this.turned == 0) {
 			this.anims.play('dkright');
 			this.turned = 1;
@@ -216,6 +226,7 @@ class Tower extends Phaser.GameObjects.Image {
 		this.hitFly = stats.hitFly; //true = can hit flying enemeies, false = cannot hit flying enemies
 		//this.aoeRange = aoeRange; //area of effect range
 		//this.spc = spc; //has special attack, each value represents special type, 0 = none, 1 = chance to stun, etc.
+		this.text = mainGame.add.text(0, 0, "Tower Name", {font: "16px Arial", fill: "#ffffff"});
 	}
 	
 	placeTower(pointer) {
@@ -225,6 +236,10 @@ class Tower extends Phaser.GameObjects.Image {
 			//console.log(tower);
 			if (this)
 			{
+				this.text.y = (i+.50) * 64 + 64/2;
+				this.text.x = j * 64 + 64/2;
+				this.text.setOrigin(0.5);
+				//mainGame.add.container([this.text, this]);
 				this.setActive(true);
 				this.setVisible(true);
 				this.y = i * 64 + 64/2;
@@ -245,6 +260,8 @@ class Tower extends Phaser.GameObjects.Image {
 		if(map[i][j] !== 0) {
 			this.setActive(false);
 			this.setVisible(false);
+			this.text.setActive(false);
+			this.text.setVisible(false);
 			map[i][j] = 0;								//remove from map
 			TOWER_GROUP[this.towerId].remove(this, true, true);			//removes from group, if want to keep it as inactive then remove this line
 		}
@@ -408,7 +425,8 @@ function create() {
 	TOWER_GROUP[soldierStats.towerId] = this.add.group({ classType: Soldier, runChildUpdate: true });
 	
 	ENEMY_GROUP = this.physics.add.group({ classType: Enemy, runChildUpdate: true }); //key: 'walk_down_', frame: [1, 2, 3, 4], repeat: 5, active: true });
-    
+   
+	
     //ENEMY_GROUP.callAll('play', null, 'down',);
 
     attacks = this.physics.add.group({ classType: Attack, runChildUpdate: true });
