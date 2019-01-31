@@ -271,6 +271,9 @@ class Enemy extends Phaser.GameObjects.Sprite {
 		{
 			this.setActive(false);
 			this.setVisible(false);
+			this.text.setActive(false);
+			this.text.setVisible(false);
+			this.healthbar.destroy();
 			this.destroy();
 		}
 	}
