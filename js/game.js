@@ -87,7 +87,7 @@ function damageEnemy(enemy, attack) {
         
         // decrease the enemy hp with ATTACK_DAMAGE
         enemy.receiveDamage(ATTACK_DAMAGE);
-        damage.play();
+        //damage.play();
     }
 }
 
@@ -123,9 +123,9 @@ class Enemy extends Phaser.GameObjects.Sprite {
         //dknight.animations.add('walk_down', 1, 4);
         //this.anims.create({ key: 'down', frames: this.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }), frameRate: 5, repeat: -1 })
         
-        var enem = Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'deathknight');
+        var enemy = Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'deathknight');
         this.anims.play('dkdown');
-        walk.play();
+        //walk.play();
         //this.dknight.anims.play('walk_down_', 1)
         //this.sprite.anims.add({ key: 'walk_down', frames: this.anims.generateFrameNames('walk_down_', 1, 4), frameRate: 5, repeat: -1 });
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
@@ -133,145 +133,149 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.turned = 0;
     }
 
-        startOnPath ()
-        {
-            this.follower.t = 0;
-            this.hp = ENEMY_HP;
-            
-            path.getPoint(this.follower.t, this.follower.vec);
-            
-            this.setPosition(this.follower.vec.x, this.follower.vec.y);            
-        }
+	startOnPath ()
+	{
+		this.follower.t = 0;
+		this.hp = ENEMY_HP;
 		
-        receiveDamage(damage) {
-            this.hp -= damage;           
-            
-            // if hp drops below 0 we deactivate this enemy
-            if (this.hp <= 0) {
-                this.setActive(false);
-                this.setVisible(false);
-                dkdeath.play();
-                //Need to set this to stop when all enemies are dead
-                //walk.stop();
-                this.destroy();
-            }
-        }
+		path.getPoint(this.follower.t, this.follower.vec);
 		
-        update (time, delta)
-        {
-			//ENEMY_SPEED = 1/Math.floor((Math.random() * (10000 - 5000)) + 5000);
-            this.follower.t += ENEMY_SPEED * delta;
-            path.getPoint(this.follower.t, this.follower.vec);
-            
-            this.setPosition(this.follower.vec.x, this.follower.vec.y);
-            if (this.follower.vec.y == 164 && this.turned == 0) {
-                this.anims.play('dkright');
-                this.turned = 1;
-            }
-            else if (this.follower.vec.y != 164 && this.turned == 1)
-            {
-                this.anims.play('dkdown');
-                this.turned = 2;
-            }
+		this.setPosition(this.follower.vec.x, this.follower.vec.y);            
+	}
+	
+	receiveDamage(damage) {
+		this.hp -= damage;           
+		
+		// if hp drops below 0 we deactivate this enemy
+		if (this.hp <= 0) {
+			this.setActive(false);
+			this.setVisible(false);
+			//dkdeath.play();
+			//Need to set this to stop when all enemies are dead
+			//walk.stop();
+			this.destroy();
+		}
+	}
+	
+	update (time, delta)
+	{
+		//ENEMY_SPEED = 1/Math.floor((Math.random() * (10000 - 5000)) + 5000);
+		this.follower.t += ENEMY_SPEED * delta;
+		path.getPoint(this.follower.t, this.follower.vec);
+		
+		this.setPosition(this.follower.vec.x, this.follower.vec.y);
+		if (this.follower.vec.y == 164 && this.turned == 0) {
+			this.anims.play('dkright');
+			this.turned = 1;
+		}
+		else if (this.follower.vec.y != 164 && this.turned == 1)
+		{
+			this.anims.play('dkdown');
+			this.turned = 2;
+		}
 
-            if (this.follower.t >= 1)
-            {
-                this.setActive(false);
-                this.setVisible(false);
-                this.destroy();
-            }
-        }
-
+		if (this.follower.t >= 1)
+		{
+			this.setActive(false);
+			this.setVisible(false);
+			this.destroy();
+		}
+	}
 };
 
 //towers class
 class Tower extends Phaser.GameObjects.Image {
 
-         constructor (scene, stats)
-        {
-			super(scene);
-            //Phaser.GameObjects.Image.call(this, scene, 0, 0, 'goldenarmor', 'sprite25');
-            this.nextTic = 0;
-			this.towerId =  stats.towerId; //each tower has unique id
-			this.towerName = stats.towerName;
-			this.upgrade = stats.upgrade; //true = can upgrade, false = can't upgrade
-			this.str = stats.str; //value tha determines attack strength
-			this.atkRange = stats.atkRange;
-			this.atkType = stats.atkType;
-			this.atkRate = stats.atkRate; 
-			this.hitFly = stats.hitFly; //true = can hit flying enemeies, false = cannot hit flying enemies
-			//this.aoeRange = aoeRange; //area of effect range
-			//this.spc = spc; //has special attack, each value represents special type, 0 = none, 1 = chance to stun, etc.
-        }
-		
-		placeTower(pointer) {
-			var i = Math.floor(pointer.y/64);
-			var j = Math.floor(pointer.x/64);
-			if(map[i][j] === 0) {
-				//console.log(tower);
-				if (this)
-				{
-					this.setActive(true);
-					this.setVisible(true);
-					this.y = i * 64 + 64/2;
-					this.x = j * 64 + 64/2;
-					map[i][j] = 1;
-				}   
-				//console.log(TOWER_GROUP.getTotalUsed());
-				//console.log(TOWER_GROUP.getLength());
-			}
-			else
-				TOWER_GROUP.remove(this, true, true);		//tower is created before it's placed so removed if the place clicked on is  not avaialble
-		}
-
-		removeTower(pointer) {
-			var i = Math.floor(pointer.y/64);
-			var j = Math.floor(pointer.x/64);
-			if(map[i][j] !== 0) {
-				this.setActive(false);
-				this.setVisible(false);
-				map[i][j] = 0;								//remove from map
-				TOWER_GROUP.remove(this, true, true);			//removes from group, if want to keep it as inactive then remove this line
-			}
-				
-		}
-		
-		upgradeTower(pointer) {
-			var i = Math.floor(pointer.y/64);
-			var j = Math.floor(pointer.x/64);
-			if(map[i][j] === 1) {
-				//console.log(tower);
-				var x = this.x;
-				var y = this.y;
-				this.removeTower(pointer);
-				//var group = TOWER_GROUP.add.group({ classType: Soldier, runChildUpdate: true });
-				
-				/* this.setActive(true);
+	constructor (scene, stats)
+	{
+		super(scene);
+		//Phaser.GameObjects.Image.call(this, scene, 0, 0, 'goldenarmor', 'sprite25');
+		this.nextTic = 0;
+		this.towerId =  stats.towerId; //each tower has unique id
+		this.towerName = stats.towerName;
+		this.upgrade = stats.upgrade; //true = can upgrade, false = can't upgrade
+		this.str = stats.str; //value tha determines attack strength
+		this.atkRange = stats.atkRange;
+		this.atkType = stats.atkType;
+		this.atkRate = stats.atkRate; 
+		this.hitFly = stats.hitFly; //true = can hit flying enemeies, false = cannot hit flying enemies
+		//this.aoeRange = aoeRange; //area of effect range
+		//this.spc = spc; //has special attack, each value represents special type, 0 = none, 1 = chance to stun, etc.
+	}
+	
+	placeTower(pointer) {
+		var i = Math.floor(pointer.y/64);
+		var j = Math.floor(pointer.x/64);
+		if(map[i][j] === 0) {
+			//console.log(tower);
+			if (this)
+			{
+				this.setActive(true);
 				this.setVisible(true);
 				this.y = i * 64 + 64/2;
 				this.x = j * 64 + 64/2;
-				map[i][j] = 1; */ 
-				//console.log(TOWER_GROUP.getTotalUsed());
-				//console.log(TOWER_GROUP.getLength());
-			}
+				map[i][j] = 1;
+			}   
+			//console.log(TOWER_GROUP.getTotalUsed());
+			//console.log(TOWER_GROUP.getLength());
 		}
-		
-        fire() {
-            var enemy = getEnemy(this.x, this.y, 200);
-            if(enemy) {
-                var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-                addAttack(this.x, this.y, angle);
-                //this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make towers rotate to face enemy
-            }
-        }
-		
-        update(time, delta, pointer)
-        {
-            if(time > this.nextTic) {
-                this.fire();
-                this.nextTic = time + TOWER_FIRE_RATE;
-            }
-        }
+		else
+			TOWER_GROUP.remove(this, true, true);		//tower is created before it's placed so removed if the place clicked on is  not avaialble
+	}
+
+	removeTower(pointer) {
+		var i = Math.floor(pointer.y/64);
+		var j = Math.floor(pointer.x/64);
+		if(map[i][j] !== 0) {
+			this.setActive(false);
+			this.setVisible(false);
+			map[i][j] = 0;								//remove from map
+			TOWER_GROUP.remove(this, true, true);			//removes from group, if want to keep it as inactive then remove this line
+		}
+			
+	}
+	
+	upgradeTower(pointer) {
+		var i = Math.floor(pointer.y/64);
+		var j = Math.floor(pointer.x/64);
+		if(map[i][j] === 1) {
+			//console.log(tower);
+			var x = this.x;
+			var y = this.y;
+			this.removeTower(pointer);
+			//var group = TOWER_GROUP.add.group({ classType: Soldier, runChildUpdate: true });
+			
+			/* this.setActive(true);
+			this.setVisible(true);
+			this.y = i * 64 + 64/2;
+			this.x = j * 64 + 64/2;
+			map[i][j] = 1; */ 
+			//console.log(TOWER_GROUP.getTotalUsed());
+			//console.log(TOWER_GROUP.getLength());
+		}
+	}
+	
+	fire() {
+		var enemy = getEnemy(this.x, this.y, 200);
+		if(enemy) {
+			var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+			addAttack(this.x, this.y, angle);
+			//this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make towers rotate to face enemy
+		}
+	}
+	
+	update(time, delta, pointer)
+	{
+		if(time > this.nextTic) {
+			this.fire();
+			this.nextTic = time + TOWER_FIRE_RATE;
+		}
+	}
+	sayName()
+	{
+		console.log(this.towerName);
+	}
+
 };
 
 class Peasant extends Tower {
@@ -279,10 +283,13 @@ class Peasant extends Tower {
 		// Note: In derived classes, super() must be called before you
 		// can use 'this'. Leaving this out will cause a reference error.
 		super(scene, stats);
-		
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'peasant', 'sprite35');
-
 	}
+	pFn()
+	{
+		console.log(this.towerName);
+	}
+
 }
 
 class Soldier extends Tower {
@@ -291,54 +298,58 @@ class Soldier extends Tower {
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'goldenarmor', 'sprite25');
 		
 	}
+	sFn()
+	{
+		console.log(this.towerName);
+	}
+
 }
 
 //the yellow thing the towers shoots at enemy, can be any form of projectile
 class Attack extends Phaser.GameObjects.Image {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'attack');
 
-        constructor(scene)
-        {
-			super(scene);
-            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'attack');
+		this.incX = 0;
+		this.incY = 0;
+		this.lifespan = 0;
 
-            this.incX = 0;
-            this.incY = 0;
-            this.lifespan = 0;
+		this.speed = Phaser.Math.GetSpeed(600, 1);
+	}
 
-            this.speed = Phaser.Math.GetSpeed(600, 1);
-        }
+	fire(x, y, angle)
+	{
+		this.setActive(true);
+		this.setVisible(true);
+		//  Attacks fire from the middle of the screen to the given x/y
+		this.setPosition(x, y);
+		
+	//  we don't need to rotate the attacks as they are round
+	//    this.setRotation(angle);
 
-        fire(x, y, angle)
-        {
-            this.setActive(true);
-            this.setVisible(true);
-            //  Attacks fire from the middle of the screen to the given x/y
-            this.setPosition(x, y);
-            
-        //  we don't need to rotate the attacks as they are round
-        //    this.setRotation(angle);
+		this.dx = Math.cos(angle);
+		this.dy = Math.sin(angle);
 
-            this.dx = Math.cos(angle);
-            this.dy = Math.sin(angle);
+		this.lifespan = 1000;
+	}
 
-            this.lifespan = 1000;
-        }
+	update (time, delta)
+	{
+		this.lifespan -= delta;
 
-        update (time, delta)
-        {
-            this.lifespan -= delta;
+		this.x += this.dx * (this.speed * delta);
+		this.y += this.dy * (this.speed * delta);
 
-            this.x += this.dx * (this.speed * delta);
-            this.y += this.dy * (this.speed * delta);
+		if (this.lifespan <= 0)
+		{
+			this.setActive(false);
+			this.setVisible(false);
+		}
+	}
 
-            if (this.lifespan <= 0)
-            {
-                this.setActive(false);
-                this.setVisible(false);
-            }
-        }
-
-    };
+};
 
 //----------------------------------------------------GAME-------------------------------------------	
 	
@@ -383,7 +394,7 @@ function create() {
         repeat: -1
     });
 
-    dkdeath = this.sound.add('dkDeath');
+/*     dkdeath = this.sound.add('dkDeath');
     damage = this.sound.add('hit');
     damage.volume = 0.3;
     walk = this.sound.add('walk');
@@ -392,7 +403,7 @@ function create() {
     background = this.sound.add('background');
     background.volume = 0.2;
     background.loop = true;
-    background.play();
+    background.play(); */
 	
 	//creates a group for a tower type, that way we can use TOWER_GROUP.get(peasantStats) to instantiate new base level towers easily
     //same goes for enemies and attacks and for any new classes created
@@ -404,6 +415,13 @@ function create() {
 
     attacks = this.physics.add.group({ classType: Attack, runChildUpdate: true });
     
+	//TOWER_GROUP.add(new Soldier(this, soldierStats));
+	
+	//console.log(TOWER_GROUP)
+	
+	//TOWER_GROUP.children.entries[0].sFn();
+	
+	
     this.nextEnemy = 0;
     
     this.physics.add.overlap(ENEMY_GROUP, attacks, damageEnemy);
