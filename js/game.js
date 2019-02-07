@@ -116,6 +116,41 @@ function buildMap(){
 	background.volume = 0.04;
 	background.loop = true;
 	//background.play();																//sounds
+	
+	THIS_SCENE.nextEnemy = 0;
+	THIS_SCENE.physics.add.overlap(ENEMY_GROUP, attacks, damageEnemy);
+    THIS_SCENE.input.mouse.disableContextMenu();
+}
+
+//user input related actions 
+function userAction(pointer){
+	var i = Math.floor(pointer.y/64);
+	var j = Math.floor(pointer.x/64);
+	if (pointer.leftButtonDown())
+        {
+			//if new tower
+			if(map[i][j] == 0)
+			{
+				var newTower = TOWER_GROUP[peasantStats.towerId].get(peasantStats);
+				newTower.placeTower(pointer);
+			}
+			//if upgrade tower
+			else if(typeof map[i][j] === "object")
+			{
+				var currTower = map[i][j];
+				var newTower = TOWER_GROUP[soldierStats.towerId].get(soldierStats);
+				currTower.upgradeTower(pointer, newTower);
+			}
+        }
+        else if (pointer.rightButtonDown())
+        {
+			var tower = map[i][j];
+			if(typeof tower === "object")
+			{
+				tower.removeTower(pointer);
+			}
+
+        }
 }
 
 function getEnemy(x, y, distance) {
@@ -187,6 +222,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
 	{
 		this.follower.t = 0;
 		this.hp = ENEMY_HP;
+		
 		//this.walk.play();																//sounds
 		
 		path.getPoint(this.follower.t, this.follower.vec);
@@ -246,8 +282,8 @@ class Enemy extends Phaser.GameObjects.Sprite {
 			//this.text.setActive(false);
 			//this.text.setVisible(false);
 			this.healthbar.destroy();
-			this.destroy();
 			//this.walk.stop();												//sounds
+			this.destroy();
 		}
 	}
 };
@@ -298,7 +334,7 @@ class Tower extends Phaser.GameObjects.Sprite{
 	constructor (scene, stats)
 	{
 		super(scene);
-		//Phaser.GameObjects.Image.call(this, scene, 0, 0, 'goldenarmor', 'sprite25');
+
 		this.nextTic = 0;
 		this.towerId =  stats.towerId; //each tower has unique id
 		this.towerName = stats.towerName;
@@ -310,6 +346,7 @@ class Tower extends Phaser.GameObjects.Sprite{
 		this.hitFly = stats.hitFly; //true = can hit flying enemeies, false = cannot hit flying enemies
 		//this.aoeRange = aoeRange; //area of effect range
 		//this.spc = spc; //has special attack, each value represents special type, 0 = none, 1 = chance to stun, etc.
+		
 		this.text = THIS_SCENE.add.text(0, 0, this.towerName, {font: "16px Arial", fill: "#ffffff"});
 		
 		this.upgradeSound = THIS_SCENE.sound.add('upgradeSound');
@@ -352,7 +389,7 @@ class Tower extends Phaser.GameObjects.Sprite{
 			this.setActive(false);
 			this.setVisible(false);
 			this.text.destroy();
-			map[i][j] = 0;								//remove from map
+			map[i][j] = 0;												//remove from map
 			TOWER_GROUP[this.towerId].remove(this, true, true);			//removes from group, if want to keep it as inactive then remove this line
 		}
 			
@@ -546,12 +583,12 @@ class Attack extends Phaser.GameObjects.Image {
 	
 //Preload function loads assets before game starts
 function preload() {    
-	//load towers, set to 2 since we only have 2 developed classes at the moment
+	//load tower sprites, set to 2 since we only have 2 developed classes at the moment
 	for(var i = 0; i < 2; i++) {
 		let name = towerArr[i].towerName.toLowerCase();
 		this.load.atlas(name, 'assets/'+name+'.png', 'assets/'+name+'.json');
 	}
-	//load enemies will be a loop like load towers
+	//load enemy sprites, will be a loop like load tower sprites
     this.load.atlas('deathknight', 'assets/deathknight.png', 'assets/deathknight.json');
 	
 	//load map
@@ -571,64 +608,29 @@ function preload() {
  
 //create function initializes and adds assets to game
 function create() {
-	//remove some ambiguity of what 'this' is, can be used in classes without have to send as a parameter since it's now globabl
+	//remove some ambiguity of what 'this' is. Can be used in classes without having to send as a parameter since it's now globabl
 	THIS_SCENE = this;
 	
-	//build the game map, this includes pathing, map image, background sounds
-	buildMap();
-	
 	/*creates a group for a tower type, that way we can use TOWER_GROUP.get(towerStats) to instantiate new towers easily
-    same goes for enemies and attacks and for any new classes created
 	loop through towerArr to get each tower object
 	then add each object to TOWER_GROUP arr
-	we do this becuase TOWER_GROUP can now be easily used to manipulate tower objects with Phaser function.*/
-	for(var i = 0; i < 2; i++) {//loop set to 2 since we only have 2 developed classes at the moment
+	we do this becuase TOWER_GROUP can now be easily used to manipulate tower objects with Phaser functions.*/
+	//loop set to 2 since we only have 2 developed classes at the moment
+	for(var i = 0; i < 2; i++) {
 		TOWER_GROUP[towerArr[i].towerId] = this.add.group({ classType: eval(towerArr[i].towerName), runChildUpdate: true });
 	}
 	
 	//enemy group will be a loop similar to tower group
-	//ENEMY_GROUP = this.physics.add.group({ classType: Enemy, runChildUpdate: true }); //key: 'walk_down_', frame: [1, 2, 3, 4], repeat: 5, active: true });
 	ENEMY_GROUP = this.physics.add.group({ classType: Deathknight, runChildUpdate: true }); //key: 'walk_down_', frame: [1, 2, 3, 4], repeat: 5, active: true });
-
+	
+	//turned into attack group soon for different attack types
     attacks = this.physics.add.group({ classType: Attack, runChildUpdate: true });
     
-    this.nextEnemy = 0;
+	//build the game map, this includes pathing, map image, background sounds, and general game assets
+	buildMap();
     
-    this.physics.add.overlap(ENEMY_GROUP, attacks, damageEnemy);
-    
-	this.input.mouse.disableContextMenu();
-	
-    this.input.on('pointerdown', function (pointer) {
-		if (pointer.leftButtonDown())
-        {
-			var i = Math.floor(pointer.y/64);
-			var j = Math.floor(pointer.x/64);
-			//new tower
-			if(map[i][j] == 0)
-			{
-				var tower = TOWER_GROUP[peasantStats.towerId].get(peasantStats);
-				tower.placeTower(pointer);
-			}
-			//if upgrade tower
-			else if(typeof map[i][j] === "object")
-			{
-				var tower = map[i][j];
-				var newTower = TOWER_GROUP[soldierStats.towerId].get(soldierStats);
-				tower.upgradeTower(pointer, newTower);
-			}
-        }
-        else if (pointer.rightButtonDown())
-        {
-			var i = Math.floor(pointer.y/64);
-			var j = Math.floor(pointer.x/64);
-			var tower = map[i][j];
-			if(typeof tower === "object")
-			{
-				tower.removeTower(pointer);
-			}
-
-        }
-	});
+	//input related actions in userAction function
+    this.input.on('pointerdown', function (pointer){userAction(pointer)});
 }
 
 //update function constantly refreshes so to progress game
