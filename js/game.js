@@ -191,18 +191,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
         
 		var enemy = Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'deathknight');
 		
-		mainGame.anims.create({
-			key: 'dkdown',
-			frames: mainGame.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }),
-			frameRate: 3,
-			repeat: -1
-		});
-		mainGame.anims.create({
-			key: 'dkright',
-			frames: mainGame.anims.generateFrameNames('deathknight', { prefix: 'walk_right_', start: 1, end: 4 }),
-			frameRate: 5,
-			repeat: -1
-		});
+		
         
         this.anims.play('dkdown');
         //walk.play();
@@ -459,6 +448,8 @@ function preload() {
 	this.load.audio('hit', 'assets/Sounds/General Sounds/Simple Damage Sounds/sfx_damage_hit2.wav');
 	this.load.audio('walk', 'assets/Sounds/Movement/Footsteps/sfx_movement_footstepsloop4_slow.wav');
 	this.load.audio('background', 'assets/Sounds/random silly chip song.ogg');
+
+	
 }
  
 //create function initializes and adds assets to game
@@ -476,7 +467,20 @@ function create() {
     
     this.add.image(320, 256, 'map');
 
-	mainGame = this;
+    mainGame = this;
+
+    mainGame.anims.create({
+        key: 'dkdown',
+        frames: mainGame.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }),
+        frameRate: 3,
+        repeat: -1
+    });
+    mainGame.anims.create({
+        key: 'dkright',
+        frames: mainGame.anims.generateFrameNames('deathknight', { prefix: 'walk_right_', start: 1, end: 4 }),
+        frameRate: 5,
+        repeat: -1
+    });
 
 /*     dkdeath = this.sound.add('dkDeath');
     damage = this.sound.add('hit');
