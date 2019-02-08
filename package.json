@@ -17,6 +17,7 @@
     "mongodb": "^3.1.13",
     "mongodb-stitch-browser-sdk": "^4.2.0",
     "mysql": "^2.8.0",
-    "nconf": "^0.10.0"
+    "nconf": "^0.10.0",
+    "parcel": "^1.11.0"
   }
 }
