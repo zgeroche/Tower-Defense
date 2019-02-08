@@ -8,7 +8,6 @@ const client = Stitch.initializeDefaultAppClient('html-game-onuim');
 const db = client.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas');
 const collection = db.db('fantasyTD').collection('credentials');
 
-
 //Login button with verification
 loginButton = document.getElementById('Login');
 loginButton.addEventListener('click', function(event){
