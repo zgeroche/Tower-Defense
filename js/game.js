@@ -631,6 +631,9 @@ function create() {
     
 	//input related actions in userAction function
     this.input.on('pointerdown', function (pointer){userAction(pointer)});
+    this.input.on('gameobjectdown', function (pointer,gameObject){
+		console.log(gameObject);
+	});
 }
 
 //update function constantly refreshes so to progress game
