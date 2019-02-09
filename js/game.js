@@ -24,6 +24,7 @@ var game = new Phaser.Game(config);
 var path;
 var TOWER_GROUP = [];
 var ENEMY_GROUP;
+var ATTACKS_GROUP;
 var THIS_SCENE;
 
 var ENEMY_SPEED = 1/10000;
@@ -60,7 +61,7 @@ var lightningmageStats = {towerId:20, towerName:"LightningMage", upgrade:false, 
 var warlockStats = 		 {towerId:21, towerName:"Warlock", 		 upgrade:false, str:15, atkRange:"long",      atkType:"magical",  atkRate:"slow", 	  hitfly:true};
 var priestessStats =     {towerId:22, towerName:"Priestess", 	 upgrade:false, str:13, atkRange:"medium",    atkType:"magical",  atkRate:"medium",   hitfly:true};
 
-towerArr = [peasantStats, 
+var towerArr = [peasantStats, 
 			soldierStats, 
 			archerStats, 
 			apprenticeStats, 
@@ -118,7 +119,7 @@ function buildMap(){
 	//background.play();																//sounds
 	
 	THIS_SCENE.nextEnemy = 0;
-	THIS_SCENE.physics.add.overlap(ENEMY_GROUP, attacks, damageEnemy);
+	THIS_SCENE.physics.add.overlap(ENEMY_GROUP, ATTACKS_GROUP, damageEnemy);
     THIS_SCENE.input.mouse.disableContextMenu();
 }
 
@@ -189,7 +190,7 @@ function drawLines(graphics) {
 }	
 
 function addAttack(x, y, angle) {
-    var attack = attacks.get();
+    var attack = ATTACKS_GROUP.get();
     if (attack)
     {
         attack.fire(x, y, angle);
@@ -624,7 +625,7 @@ function create() {
 	ENEMY_GROUP = this.physics.add.group({ classType: Deathknight, runChildUpdate: true }); //key: 'walk_down_', frame: [1, 2, 3, 4], repeat: 5, active: true });
 	
 	//turned into attack group soon for different attack types
-    attacks = this.physics.add.group({ classType: Attack, runChildUpdate: true });
+    ATTACKS_GROUP = this.physics.add.group({ classType: Attack, runChildUpdate: true });
     
 	//build the game map, this includes pathing, map image, background sounds, and general game assets
 	buildMap();
