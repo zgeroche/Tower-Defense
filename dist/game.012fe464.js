@@ -1142,7 +1142,7 @@ function (_Phaser$Scene) {
     key: "preload",
     value: function preload() {
       this.load.atlas('deathknight', './dist/assets/deathknight.png', './dist/assets/deathknight.json');
-      this.load.atlas('solider', './assets/solider.png', './dist/assets/solider.json');
+      this.load.atlas('solider', './dist/assets/solider.png', './dist/assets/solider.json');
       this.load.atlas('peasant', './dist/assets/peasant.png', './dist/assets/peasant.json');
       this.load.spritesheet('bard', './dist/assets/bard.png', {
         frameWidth: 52,
@@ -1157,7 +1157,7 @@ function (_Phaser$Scene) {
       this.load.audio('hit', './dist/assets/Sounds/General Sounds/Simple Damage Sounds/sfx_damage_hit2.wav');
       this.load.audio('walk', './dist/assets/Sounds/Movement/Footsteps/sfx_movement_footstepsloop4_slow.wav');
       this.load.audio('background', './dist/assets/Sounds/random silly chip song.ogg');
-      this.load.audio('upgradeSound', './dist/dist/assets/Sounds/General Sounds/Positive Sounds/sfx_sounds_powerup6.wav');
+      this.load.audio('upgradeSound', './dist/assets/Sounds/General Sounds/Positive Sounds/sfx_sounds_powerup6.wav');
       this.load.image('menuscreen', './dist/assets/bg.png', {
         frameWidth: 640,
         frameHeight: 512
@@ -2076,7 +2076,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61600" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63071" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
