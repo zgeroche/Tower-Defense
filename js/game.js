@@ -1,5 +1,10 @@
+import {MenuScene} from "./scenes/MenuScene";
+import {GameScene} from "./scenes/GameScene";
+import {LoadScene} from "./scenes/LoadScene";
+
 //-------------------------------------------------------SETUP-----------------------------------------------------
 //master config for game
+
 var config = {
     type: Phaser.AUTO,
     parent: 'content',
@@ -8,12 +13,13 @@ var config = {
     physics: {
         default: 'arcade'
     },
-    scene: {
-        key: 'main',
-        preload: preload,
-        create: create,
-        update: update
-    }
+    render:{
+        pixelArt: true
+    },
+    scene: [
+        LoadScene,
+        MenuScene,
+        GameScene]
     
 };
 
@@ -466,7 +472,6 @@ function preload() {
 	this.load.audio('walk', 'assets/Sounds/Movement/Footsteps/sfx_movement_footstepsloop4_slow.wav');
 	this.load.audio('background', 'assets/Sounds/random silly chip song.ogg');
 
-	
 }
  
 //create function initializes and adds assets to game
@@ -497,17 +502,7 @@ function create() {
         frames: mainGame.anims.generateFrameNames('deathknight', { prefix: 'walk_right_', start: 1, end: 4 }),
         frameRate: 5,
         repeat: -1
-    });
-	
-	var bard = this.add.image(144, 144, 'bard').setInteractive();
-	bard.on('pointerover', function (pointer) {
-		this.setTint(0xff0000);
-	});
-	
-	bard.on('pointerout', function (pointer) {
-		this.clearTint();
-	});
-	
+    });	
 
 /*     dkdeath = this.sound.add('dkDeath');
     damage = this.sound.add('hit');
@@ -590,21 +585,4 @@ function create() {
 	}  */
 }
 
-//update function constantly refreshes so to progress game
-function update(time, delta) {  
-
-    if (time > this.nextEnemy)
-    {
-        var enemy = ENEMY_GROUP.get();
-        if (enemy)
-        {
-            enemy.setActive(true);
-            enemy.setVisible(true);
-            enemy.startOnPath();
-			//ENEMY_SPEED = 1/Math.floor((Math.random() * (2000 - 500)) + 500);
-            this.nextEnemy = time + ENEMY_SPAWN_RATE;
-        }       
-    }
-	
-}
 
