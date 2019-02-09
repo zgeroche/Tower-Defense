@@ -289,7 +289,7 @@ class Deathknight extends Enemy {
 			frameRate: 5,
 			repeat: -1
 		});
-        this.anims.group.play('dkdown');
+        this.anims.play('dkdown');
 		
 		//create sounds
 		this.death = THIS_SCENE.sound.add('dkDeath');
