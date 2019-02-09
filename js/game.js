@@ -35,9 +35,9 @@ var ATTACK_DAMAGE = 50;
 var TOWER_FIRE_RATE = 300;
 
 //stats for each tower type loaded from file rather than defined here, but for now do this
-var peasantStats = 		 {towerId:0,  towerName:"Peasant", 		 upgrade:true,  str:5,  atkRange:"short",     atkType:"physical", atkRate:"slow", 	  hitfly:false};
-var soldierStats = 		 {towerId:1,  towerName:"Soldier", 		 upgrade:true,  str:10, atkRange:"short",     atkType:"physical", atkRate:"medium",   hitfly:false};
-var archerStats = 		 {towerId:2,  towerName:"Archer", 		 upgrade:true,  str:8,  atkRange:"medium",    atkType:"physical", atkRate:"slow", 	  hitfly:true};
+var peasantStats = 		 {towerId:0,  towerName:"Peasant", 		 upgrade:true,  str:50,  atkRange:150,     atkType:"physical", atkRate:500, 	  hitfly:false};
+var soldierStats = 		 {towerId:1,  towerName:"Soldier", 		 upgrade:true,  str:100, atkRange:200,     atkType:"physical", atkRate:400,   hitfly:false};
+var archerStats = 		 {towerId:2,  towerName:"Archer", 		 upgrade:true,  str:120, atkRange:250,    atkType:"physical", atkRate:350, 	  hitfly:true};
 var apprenticeStats = 	 {towerId:3,  towerName:"Apprentice", 	 upgrade:true,  str:7,  atkRange:"medium",    atkType:"magical",  atkRate:"medium",   hitfly:false};
 var knightStats = 		 {towerId:4,  towerName:"Knight", 		 upgrade:true,  str:15, atkRange:"short",     atkType:"physical", atkRate:"medium",   hitfly:false};
 var duelistStats = 		 {towerId:5,  towerName:"Duelist", 		 upgrade:true,  str:12, atkRange:"short",     atkType:"physical", atkRate:"fast", 	  hitfly:false};
@@ -88,7 +88,7 @@ function damageEnemy(enemy, attack) {
         attack.setVisible(false);    
         
         // decrease the enemy hp with ATTACK_DAMAGE
-        enemy.receiveDamage(ATTACK_DAMAGE);
+        enemy.receiveDamage(attack.damage);
         //damage.play();
     }
 }
@@ -106,11 +106,11 @@ function drawLines(graphics) {
     graphics.strokePath();
 }	
 
-function addAttack(x, y, angle) {
-    var attack = attacks.get();
+function addAttack(x, y, angle, damage) {
+    var attack = ATTACK_GROUP.get();
     if (attack)
     {
-        attack.fire(x, y, angle);
+        attack.fire(x, y, angle, damage);
     }
 }
 
@@ -274,12 +274,11 @@ class Tower extends Phaser.GameObjects.Image {
 	constructor (scene, stats)
 	{
 		super(scene);
-		//Phaser.GameObjects.Image.call(this, scene, 0, 0, 'goldenarmor', 'sprite25');
 		this.nextTic = 0;
 		this.towerId =  stats.towerId; //each tower has unique id
 		this.towerName = stats.towerName;
 		this.upgrade = stats.upgrade; //true = can upgrade, false = can't upgrade
-		this.str = stats.str; //value tha determines attack strength
+		this.str = stats.str; //value that determines attack strength
 		this.atkRange = stats.atkRange;
 		this.atkType = stats.atkType;
 		this.atkRate = stats.atkRate; 
@@ -339,10 +338,10 @@ class Tower extends Phaser.GameObjects.Image {
 	}
 	
 	fire() {
-		var enemy = getEnemy(this.x, this.y, 200);
+		var enemy = getEnemy(this.x, this.y, this.atkRange);
 		if(enemy) {
 			var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-			addAttack(this.x, this.y, angle);
+			addAttack(this.x, this.y, angle, this.str);
 			//this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make towers rotate to face enemy
 		}
 	}
@@ -351,9 +350,10 @@ class Tower extends Phaser.GameObjects.Image {
 	{
 		if(time > this.nextTic) {
 			this.fire();
-			this.nextTic = time + TOWER_FIRE_RATE;
+			this.nextTic = time + this.atkRate;
 		}
 	}
+	
 	sayName()
 	{
 		console.log(this.towerName);
@@ -388,6 +388,19 @@ class Soldier extends Tower {
 
 }
 
+class Archer extends Tower {
+	constructor(scene, stats) {
+		super(scene, stats);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'archer', 'tile051');
+		
+	}
+	aFn()
+	{
+		console.log(this.towerName);
+	}
+
+}
+
 //the yellow thing the towers shoots at enemy, can be any form of projectile
 class Attack extends Phaser.GameObjects.Image {
 	constructor(scene)
@@ -398,11 +411,12 @@ class Attack extends Phaser.GameObjects.Image {
 		this.incX = 0;
 		this.incY = 0;
 		this.lifespan = 0;
+		this.damage = 0;
 
 		this.speed = Phaser.Math.GetSpeed(600, 1);
 	}
 
-	fire(x, y, angle)
+	fire(x, y, angle, damage)
 	{
 		this.setActive(true);
 		this.setVisible(true);
@@ -416,6 +430,7 @@ class Attack extends Phaser.GameObjects.Image {
 		this.dy = Math.sin(angle);
 
 		this.lifespan = 1000;
+		this.damage = damage;
 	}
 
 	update (time, delta)
@@ -434,12 +449,14 @@ class Attack extends Phaser.GameObjects.Image {
 
 };
 
+
 //----------------------------------------------------GAME-------------------------------------------	
 	
 //Preload function loads assets before game starts
 function preload() {    
     this.load.atlas('deathknight', 'assets/deathknight.png', 'assets/deathknight.json');
     this.load.atlas('goldenarmor', 'assets/goldenarmor.png', 'assets/goldenarmor.json');
+	this.load.atlas('archer', 'assets/archer.png', 'assets/archer.json');
     this.load.atlas('peasant', 'assets/peasant.png', 'assets/peasant.json');
 	this.load.spritesheet('bard', 'assets/bard.png', { frameWidth: 52, frameHeight: 75});
 	this.load.image('attack', 'assets/coin.png');
@@ -481,6 +498,16 @@ function create() {
         frameRate: 5,
         repeat: -1
     });
+	
+	var bard = this.add.image(144, 144, 'bard').setInteractive();
+	bard.on('pointerover', function (pointer) {
+		this.setTint(0xff0000);
+	});
+	
+	bard.on('pointerout', function (pointer) {
+		this.clearTint();
+	});
+	
 
 /*     dkdeath = this.sound.add('dkDeath');
     damage = this.sound.add('hit');
@@ -497,17 +524,20 @@ function create() {
     //same goes for enemies and attacks and for any new classes created
 	TOWER_GROUP[peasantStats.towerId] = this.add.group({ classType: Peasant, runChildUpdate: true });
 	TOWER_GROUP[soldierStats.towerId] = this.add.group({ classType: Soldier, runChildUpdate: true });
+	TOWER_GROUP[archerStats.towerId] = this.add.group({ classType: Archer, runChildUpdate: true });
+	//TOWER_GROUP[apprenticeStats.towerId] = this.add.group({ classType: Apprentice, runChildUpdate: true });
+
 	
 	ENEMY_GROUP = this.physics.add.group({ classType: Enemy, runChildUpdate: true }); //key: 'walk_down_', frame: [1, 2, 3, 4], repeat: 5, active: true });
    
 	
     //ENEMY_GROUP.callAll('play', null, 'down',);
 
-    attacks = this.physics.add.group({ classType: Attack, runChildUpdate: true });
+    ATTACK_GROUP = this.physics.add.group({ classType: Attack, runChildUpdate: true });
     
     this.nextEnemy = 0;
     
-    this.physics.add.overlap(ENEMY_GROUP, attacks, damageEnemy);
+    this.physics.add.overlap(ENEMY_GROUP, ATTACK_GROUP, damageEnemy);
     
 	this.input.mouse.disableContextMenu();
 	
@@ -521,11 +551,19 @@ function create() {
 				var tower = TOWER_GROUP[peasantStats.towerId].get(peasantStats);
 				tower.placeTower(pointer);
 			}
-			else if(typeof map[i][j] === "object")
+			else if(map[i][j].towerId == 0)
 			{
 				var tower = map[i][j];
 				//var newTG = mainGame.add.group({ classType: Soldier, runChildUpdate: true });
 				var newTower = TOWER_GROUP[soldierStats.towerId].get(soldierStats);
+				tower.upgradeTower(pointer, newTower);
+				tower.setText = newTower.towerName;
+			}
+			else if(map[i][j].towerId == 1)
+			{
+				var tower = map[i][j];
+				//var newTG = mainGame.add.group({ classType: Soldier, runChildUpdate: true });
+				var newTower = TOWER_GROUP[archerStats.towerId].get(archerStats);
 				tower.upgradeTower(pointer, newTower);
 				tower.setText = newTower.towerName;
 			}
@@ -539,19 +577,11 @@ function create() {
 			{
 				tower.removeTower(pointer);
 			}
-			
-			/* TOWER_GROUP.children.iterate(function (tower) {
-				var i = Math.floor(pointer.y/64);
-				var j = Math.floor(pointer.x/64);
-				var y = i * 64 + 64/2;
-				var x = j * 64 + 64/2;
-				if (tower && tower.x == x && tower.y == y)
-				{
-					tower.removeTower(pointer);
-					//tower.upgradeTower(pointer);
-				}
-			}); */
         }
+		else if (pointer.middleButtonDown())
+		{
+			
+		}
 	});
 	
 /* 	this.arrow = this.input.keyboard.createCursorKeys();
