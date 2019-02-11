@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
     <!-- Required meta tags -->
@@ -23,7 +23,7 @@
                 <input type="button" value="New User" id="New User">
             </form>
         </div>
-        <div id="content" class="container-fluid"></div>
+        <div id="content" class="container-fluid" style="display:block"></div>
         <p>Left click to place tower, right click to remove tower along the yellow path.</p>
     </div>
     <!-- Optional JavaScript -->
@@ -34,5 +34,22 @@
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script>
     <script type="module" src="/game.012fe464.js"></script>
     <script src="/bundle.281cdbd8.js"></script>
+    <script src="https://s3.amazonaws.com/stitch-sdks/js/bundles/4.1.1/stitch.js"></script>
+    <script>var client = stitch.Stitch.initializeDefaultAppClient('html-game-onuim');
+var db = client.getServiceClient(stitch.RemoteMongoClient.factory, 'mongodb-atlas').db('fantasyTD');
+client.auth.loginWithCredential(new stitch.AnonymousCredential()).then(function (user) {
+  return db.collection('users').updateOne({
+    owner_id: client.auth.user.id
+  }, {
+    $set: {
+      number: 42
+    }
+  }, {
+    upsert: true
+  });
+}).catch(function (err) {
+  console.error(err);
+});</script>
+
 </body>
 </html>

@@ -2078,7 +2078,7 @@ function create() {
   	   this.scene.pause();
   	}  */
 }
-},{"./scenes/MenuScene":"js/scenes/MenuScene.js","./scenes/GameScene":"js/scenes/GameScene.js","./scenes/LoadScene":"js/scenes/LoadScene.js"}],"../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./scenes/MenuScene":"js/scenes/MenuScene.js","./scenes/GameScene":"js/scenes/GameScene.js","./scenes/LoadScene":"js/scenes/LoadScene.js"}],"../../../../usr/local/nvm/versions/node/v10.14.2/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -2105,7 +2105,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62215" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35679" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
@@ -2247,5 +2247,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},["../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/game.js"], null)
+},{}]},{},["../../../../usr/local/nvm/versions/node/v10.14.2/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/game.js"], null)
 //# sourceMappingURL=/game.012fe464.map
