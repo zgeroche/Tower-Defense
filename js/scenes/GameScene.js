@@ -92,8 +92,8 @@ function buildMap(){
     path.draw(graphics);
     
 	//add map image
-	THIS_SCENE.add.image(320, 256, 'map');
-	
+	THIS_SCENE.add.image(320, 256, 'maps');
+
 	//add background music
 	var background = THIS_SCENE.sound.add('background');
 	background.volume = 0.04;
@@ -178,7 +178,6 @@ function addAttack(x, y, angle) {
         attack.fire(x, y, angle);
     }
 }
-
 //---------------------------------------------------------CLASSES--------------------------------------------
 //enemy class
 class Enemy extends Phaser.GameObjects.Sprite {
@@ -272,7 +271,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
 };
 
 class Deathknight extends Enemy {
-	constructor(scene, stats) {
+	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'deathknight');
 		
@@ -390,6 +389,16 @@ class Tower extends Phaser.GameObjects.Sprite{
 			//console.log(TOWER_GROUP.getLength());
 			this.text = newTower.towerName;
 			this.upgradeSound.play();
+
+            THIS_SCENE.tweens.add({
+                targets: newTower, // on the player 
+                duration: 200, // for 200ms 
+                scaleX: 1.2, // that scale vertically by 20% 
+                scaleY: 1.2, // and scale horizontally by 20% 
+                alpha: 0.2,
+                yoyo: true, // at the end, go back to original scale 
+            });
+
 		}
 		else
 		{
@@ -440,7 +449,7 @@ class Soldier extends Tower {
 	constructor(scene, stats) {
 		super(scene, stats);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'soldier', 'sprite25');
-		
+
 	}
 	sFn()
 	{
@@ -528,6 +537,18 @@ class Attack extends Phaser.GameObjects.Image {
 		this.lifespan = 0;
 
 		this.speed = Phaser.Math.GetSpeed(600, 1);
+
+    	this.particles = THIS_SCENE.add.particles('attack');
+
+        this.emitter = this.particles.createEmitter({
+            speed: 75,
+            scale: { start: 0.2, end: 0 },
+            quantity: 1,
+            blendMode: 'SCREEN'
+        });
+
+	    this.emitter.startFollow(this);
+        
 	}
 
 	fire(x, y, angle)
@@ -549,14 +570,15 @@ class Attack extends Phaser.GameObjects.Image {
 	update (time, delta)
 	{
 		this.lifespan -= delta;
-
 		this.x += this.dx * (this.speed * delta);
 		this.y += this.dy * (this.speed * delta);
+        this.emitter.explode(5,this.x,this.y);
 
 		if (this.lifespan <= 0)
 		{
 			this.setActive(false);
 			this.setVisible(false);
+            
 		}
 	}
 
@@ -602,9 +624,13 @@ export class GameScene extends Phaser.Scene {
 		
 		//input related actions in userAction function
 		this.input.on('pointerdown', function (pointer){userAction(pointer)});
-		/* this.input.on('gameobjectdown', function (pointer,gameObject){
-			console.log(gameObject);
-		}); */
+
+        /*let nextScene = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2, 'nextScene').setDepth(1);
+        nextScene.setInteractive();
+        nextScene.on("pointerdown", ()=>{
+            this.scene.start(CST.SCENES.GAME2, "Armory Level");
+        })*/
+
     }
 
     //update function constantly refreshes so to progress game

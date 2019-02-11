@@ -8,12 +8,14 @@ export class LoadScene extends Phaser.Scene{
     }
 
     preload(){
+        this.add.text(230, 230, 'Loading', { font: '50px Arial', fill: '#fff' });
         this.load.atlas('deathknight', './dist/assets/deathknight.png', './dist/assets/deathknight.json');
-        this.load.atlas('solider', './dist/assets/solider.png', './dist/assets/solider.json');
+        this.load.atlas('soldier', './dist/assets/soldier.png', './dist/assets/soldier.json');
         this.load.atlas('peasant', './dist/assets/peasant.png', './dist/assets/peasant.json');
-        this.load.spritesheet('bard', './dist/assets/bard.png', { frameWidth: 52, frameHeight: 75});
+
         this.load.image('attack', './dist/assets/coin.png');
-        this.load.image('map', './dist/assets/castle-gates.png', { frameWidth: 640, frameHeight: 512 });
+        this.load.image('maps', './dist/assets/castle-gates.png', { frameWidth: 640, frameHeight: 512 });
+
         this.load.audio('dkDeath', './dist/assets/Sounds/Death Screams/Human/sfx_deathscream_human5.wav');
         this.load.audio('hit', './dist/assets/Sounds/General Sounds/Simple Damage Sounds/sfx_damage_hit2.wav');
         this.load.audio('walk', './dist/assets/Sounds/Movement/Footsteps/sfx_movement_footstepsloop4_slow.wav');

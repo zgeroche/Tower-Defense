@@ -481,7 +481,7 @@ function buildMap() {
   graphics.lineStyle(0, 0xffffff, 1);
   path.draw(graphics); //add map image
 
-  THIS_SCENE.add.image(320, 256, 'map'); //add background music
+  THIS_SCENE.add.image(320, 256, 'maps'); //add background music
 
   var background = THIS_SCENE.sound.add('background');
   background.volume = 0.04;
@@ -664,7 +664,7 @@ var Deathknight =
 function (_Enemy) {
   _inherits(Deathknight, _Enemy);
 
-  function Deathknight(scene, stats) {
+  function Deathknight(scene) {
     var _this2;
 
     _classCallCheck(this, Deathknight);
@@ -810,6 +810,19 @@ function (_Phaser$GameObjects$S2) {
 
         this.text = newTower.towerName;
         this.upgradeSound.play();
+        THIS_SCENE.tweens.add({
+          targets: newTower,
+          // on the player 
+          duration: 200,
+          // for 200ms 
+          scaleX: 1.2,
+          // that scale vertically by 20% 
+          scaleY: 1.2,
+          // and scale horizontally by 20% 
+          alpha: 0.2,
+          yoyo: true // at the end, go back to original scale 
+
+        });
       } else {
         TOWER_GROUP[newTower.towerId].remove(newTower, true, true); //tower is created before it's placed so removed if the place clicked on is  not avaialble
 
@@ -981,6 +994,19 @@ function (_Phaser$GameObjects$I) {
     _this6.incY = 0;
     _this6.lifespan = 0;
     _this6.speed = Phaser.Math.GetSpeed(600, 1);
+    _this6.particles = THIS_SCENE.add.particles('attack');
+    _this6.emitter = _this6.particles.createEmitter({
+      speed: 75,
+      scale: {
+        start: 0.2,
+        end: 0
+      },
+      quantity: 1,
+      blendMode: 'SCREEN'
+    });
+
+    _this6.emitter.startFollow(_assertThisInitialized(_assertThisInitialized(_this6)));
+
     return _this6;
   }
 
@@ -1003,6 +1029,7 @@ function (_Phaser$GameObjects$I) {
       this.lifespan -= delta;
       this.x += this.dx * (this.speed * delta);
       this.y += this.dy * (this.speed * delta);
+      this.emitter.explode(5, this.x, this.y);
 
       if (this.lifespan <= 0) {
         this.setActive(false);
@@ -1071,9 +1098,11 @@ function (_Phaser$Scene) {
       this.input.on('pointerdown', function (pointer) {
         userAction(pointer);
       });
-      /* this.input.on('gameobjectdown', function (pointer,gameObject){
-      	console.log(gameObject);
-      }); */
+      /*let nextScene = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2, 'nextScene').setDepth(1);
+      nextScene.setInteractive();
+      nextScene.on("pointerdown", ()=>{
+          this.scene.start(CST.SCENES.GAME2, "Armory Level");
+      })*/
     } //update function constantly refreshes so to progress game
 
   }, {
@@ -1141,15 +1170,15 @@ function (_Phaser$Scene) {
   _createClass(LoadScene, [{
     key: "preload",
     value: function preload() {
-      this.load.atlas('deathknight', './dist/assets/deathknight.png', './dist/assets/deathknight.json');
-      this.load.atlas('solider', './dist/assets/solider.png', './dist/assets/solider.json');
-      this.load.atlas('peasant', './dist/assets/peasant.png', './dist/assets/peasant.json');
-      this.load.spritesheet('bard', './dist/assets/bard.png', {
-        frameWidth: 52,
-        frameHeight: 75
+      this.add.text(230, 230, 'Loading', {
+        font: '50px Arial',
+        fill: '#fff'
       });
+      this.load.atlas('deathknight', './dist/assets/deathknight.png', './dist/assets/deathknight.json');
+      this.load.atlas('soldier', './dist/assets/soldier.png', './dist/assets/soldier.json');
+      this.load.atlas('peasant', './dist/assets/peasant.png', './dist/assets/peasant.json');
       this.load.image('attack', './dist/assets/coin.png');
-      this.load.image('map', './dist/assets/castle-gates.png', {
+      this.load.image('maps', './dist/assets/castle-gates.png', {
         frameWidth: 640,
         frameHeight: 512
       });
@@ -2049,7 +2078,7 @@ function create() {
   	   this.scene.pause();
   	}  */
 }
-},{"./scenes/MenuScene":"js/scenes/MenuScene.js","./scenes/GameScene":"js/scenes/GameScene.js","./scenes/LoadScene":"js/scenes/LoadScene.js"}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./scenes/MenuScene":"js/scenes/MenuScene.js","./scenes/GameScene":"js/scenes/GameScene.js","./scenes/LoadScene":"js/scenes/LoadScene.js"}],"../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -2076,7 +2105,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63071" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62215" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
@@ -2218,5 +2247,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},["../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/game.js"], null)
+},{}]},{},["../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/game.js"], null)
 //# sourceMappingURL=/game.012fe464.map
