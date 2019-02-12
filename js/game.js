@@ -20,12 +20,10 @@ var config = {
 //begin game
 var game = new Phaser.Game(config);
 
-//--------------------------------------------------GLOBAL VARIABLES-------------------------------------------
 var path;
 var TOWER_GROUP = [];
 var ENEMY_GROUP;
 var ATTACKS_GROUP;
-var THIS_SCENE;
 
 var ENEMY_SPEED = 1/10000;
 //var ENEMY_SPEED = 1/Math.floor((Math.random() * 10000) + 10000);
@@ -83,7 +81,7 @@ var towerArr = [peasantStats,
 			icemageStats,
 			lightningmageStats,
 			warlockStats,
-			priestessStats]
+			priestessStats];
 
 //map for tower placement, 0=can place, -1=cannot place, towerObj=tower already occupying space
 var map =  [[ 0,-1, 0,-1,-1,-1,-1,-1,-1,-1],
@@ -98,11 +96,11 @@ var map =  [[ 0,-1, 0,-1,-1,-1,-1,-1,-1,-1],
 
 //------------------------------------------FUNCTIONS---------------------------------------------------			
 //build the pathing and map for level
-function buildMap(){
+function buildMap(scene){
 	//path to which enemey follows
-    var graphics = THIS_SCENE.add.graphics();    
+    var graphics = scene.add.graphics();    
     drawLines(graphics);
-    path = THIS_SCENE.add.path(96, -32);
+    path = scene.add.path(96, -32);
     path.lineTo(96, 164);
     path.lineTo(480, 164);
     path.lineTo(480, 544);
@@ -110,21 +108,21 @@ function buildMap(){
     path.draw(graphics);
     
 	//add map image
-	THIS_SCENE.add.image(320, 256, 'map');
-	
+	scene.add.image(320, 256, 'map');
+
 	//add background music
-	var background = THIS_SCENE.sound.add('background');
+	var background = scene.sound.add('background');
 	background.volume = 0.04;
 	background.loop = true;
 	//background.play();																//sounds
 	
-	THIS_SCENE.nextEnemy = 0;
-	THIS_SCENE.physics.add.overlap(ENEMY_GROUP, ATTACKS_GROUP, damageEnemy);
-    THIS_SCENE.input.mouse.disableContextMenu();
+	scene.nextEnemy = 0;
+	scene.physics.add.overlap(ENEMY_GROUP, ATTACKS_GROUP, damageEnemy);
+    scene.input.mouse.disableContextMenu();
 }
 
 //user input related actions 
-function userAction(pointer){
+function userAction(pointer, scene){
 	var i = Math.floor(pointer.y/64);
 	var j = Math.floor(pointer.x/64);
 	if (pointer.leftButtonDown())
@@ -133,14 +131,14 @@ function userAction(pointer){
 			if(map[i][j] == 0)
 			{
 				var newTower = TOWER_GROUP[peasantStats.towerId].get(peasantStats);
-				newTower.placeTower(pointer);
+				newTower.placeTower(pointer,scene);
 			}
 			//if upgrade tower
 			else if(typeof map[i][j] === "object")
 			{
 				var currTower = map[i][j];
 				var newTower = TOWER_GROUP[soldierStats.towerId].get(soldierStats);
-				currTower.upgradeTower(pointer, newTower);
+				currTower.upgradeTower(pointer, newTower, scene);
 			}
         }
         else if (pointer.rightButtonDown())
@@ -196,7 +194,6 @@ function addAttack(x, y, angle) {
         attack.fire(x, y, angle);
     }
 }
-
 //---------------------------------------------------------CLASSES--------------------------------------------
 //enemy class
 class Enemy extends Phaser.GameObjects.Sprite {
@@ -212,7 +209,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.hp = 0;
         this.turned = 0;
 		
-		//this.text = THIS_SCENE.add.text(0, 0, "HP: "+ ENEMY_HP, {font: "16px Arial", fill: "#ffffff"});
+		//this.text = scene.add.text(0, 0, "HP: "+ ENEMY_HP, {font: "16px Arial", fill: "#ffffff"});
 		//this.text.setPadding(0, 0, 0, 60);
 		//this.text.setOrigin(0.5);
 		this.healthbar = new HealthBar(scene, 0, 0);
@@ -290,35 +287,35 @@ class Enemy extends Phaser.GameObjects.Sprite {
 };
 
 class Deathknight extends Enemy {
-	constructor(scene, stats) {
+	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'deathknight');
 		
 		//create animations
-		THIS_SCENE.anims.create({
+		scene.anims.create({
 			key: 'dkdown',
-			frames: THIS_SCENE.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }),
+			frames: scene.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }),
 			frameRate: 3,
 			repeat: -1
 		});
-		THIS_SCENE.anims.create({
+		scene.anims.create({
 			key: 'dkright',
-			frames: THIS_SCENE.anims.generateFrameNames('deathknight', { prefix: 'walk_right_', start: 1, end: 4 }),
+			frames: scene.anims.generateFrameNames('deathknight', { prefix: 'walk_right_', start: 1, end: 4 }),
 			frameRate: 5,
 			repeat: -1
 		});
         this.anims.play('dkdown');
 		
 		//create sounds
-		this.death = THIS_SCENE.sound.add('dkDeath');
+		this.death = scene.sound.add('dkDeath');
 		this.death.volume = 0.05;
 		this.death.loop = false;
 		
-		this.damage = THIS_SCENE.sound.add('hit');
+		this.damage = scene.sound.add('hit');
 		this.damage.volume = 0.03;
 		this.damage.loop = false;
 		
-		/* this.walk = THIS_SCENE.sound.add('walk');
+		/* this.walk = scene.sound.add('walk');
 		this.walk.volume = 0.01;
 		this.walk.loop = true; */
 	}
@@ -348,15 +345,15 @@ class Tower extends Phaser.GameObjects.Sprite{
 		//this.aoeRange = aoeRange; //area of effect range
 		//this.spc = spc; //has special attack, each value represents special type, 0 = none, 1 = chance to stun, etc.
 		
-		this.text = THIS_SCENE.add.text(0, 0, this.towerName, {font: "16px Arial", fill: "#ffffff"});
+		this.text = scene.add.text(0, 0, this.towerName, {font: "16px Arial", fill: "#ffffff"});
 		
-		this.upgradeSound = THIS_SCENE.sound.add('upgradeSound');
+		this.upgradeSound = scene.sound.add('upgradeSound');
 		this.upgradeSound.volume = 0.05;
 		this.upgradeSound.loop = false;
 		
 	}
 	
-	placeTower(pointer) {
+	placeTower(pointer,scene) {
 		var i = Math.floor(pointer.y/64);
 		var j = Math.floor(pointer.x/64);
 		if(map[i][j] === 0) {
@@ -366,7 +363,7 @@ class Tower extends Phaser.GameObjects.Sprite{
 				this.text.y = (i+.50) * 64 + 64/2;
 				this.text.x = j * 64 + 64/2;
 				this.text.setOrigin(0.5);
-				//THIS_SCENE.add.container([this.text, this]);
+				//scene.add.container([this.text, this]);
 				this.setActive(true);
 				this.setVisible(true);
 				this.y = i * 64 + 64/2;
@@ -396,18 +393,28 @@ class Tower extends Phaser.GameObjects.Sprite{
 			
 	}
 	
-	upgradeTower(pointer, newTower) {
+	upgradeTower(pointer, newTower, scene) {
 		//check if tower is already upgraded, if not the upgrade
 		if(this.towerName !== newTower.towerName)
 		{
 			var i = Math.floor(pointer.y/64);
 			var j = Math.floor(pointer.x/64);
 			this.removeTower(pointer);
-			newTower.placeTower(pointer);
+			newTower.placeTower(pointer, scene);
 			//console.log(TOWER_GROUP.getTotalUsed());
 			//console.log(TOWER_GROUP.getLength());
 			this.text = newTower.towerName;
 			this.upgradeSound.play();
+
+            /* scene.tweens.add({
+                targets: newTower, // on the player 
+                duration: 200, // for 200ms 
+                scaleX: 1.2, // that scale vertically by 20% 
+                scaleY: 1.2, // and scale horizontally by 20% 
+                alpha: 0.2,
+                yoyo: true, // at the end, go back to original scale 
+            }); */
+
 		}
 		else
 		{
@@ -458,7 +465,7 @@ class Soldier extends Tower {
 	constructor(scene, stats) {
 		super(scene, stats);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'soldier', 'sprite25');
-		
+
 	}
 	sFn()
 	{
@@ -481,7 +488,7 @@ class HealthBar {
 
         this.draw();
 
-        THIS_SCENE.add.existing(this.bar);
+        scene.add.existing(this.bar);
     }
 
     setPosition(x, y) {
@@ -546,6 +553,18 @@ class Attack extends Phaser.GameObjects.Image {
 		this.lifespan = 0;
 
 		this.speed = Phaser.Math.GetSpeed(600, 1);
+
+    	this.particles = scene.add.particles('attack');
+
+        this.emitter = this.particles.createEmitter({
+            speed: 75,
+            scale: { start: 0.2, end: 0 },
+            quantity: 1,
+            blendMode: 'SCREEN'
+        });
+
+	    this.emitter.startFollow(this);
+        
 	}
 
 	fire(x, y, angle)
@@ -567,14 +586,15 @@ class Attack extends Phaser.GameObjects.Image {
 	update (time, delta)
 	{
 		this.lifespan -= delta;
-
 		this.x += this.dx * (this.speed * delta);
 		this.y += this.dy * (this.speed * delta);
+        this.emitter.explode(5,this.x,this.y);
 
 		if (this.lifespan <= 0)
 		{
 			this.setActive(false);
 			this.setVisible(false);
+            
 		}
 	}
 
@@ -609,9 +629,6 @@ function preload() {
  
 //create function initializes and adds assets to game
 function create() {
-	//remove some ambiguity of what 'this' is. Can be used in classes without having to send as a parameter since it's now globabl
-	THIS_SCENE = this;
-	
 	/*creates a group for a tower type, that way we can use TOWER_GROUP.get(towerStats) to instantiate new towers easily
 	loop through towerArr to get each tower object
 	then add each object to TOWER_GROUP arr
@@ -625,33 +642,36 @@ function create() {
 	ENEMY_GROUP = this.physics.add.group({ classType: Deathknight, runChildUpdate: true }); //key: 'walk_down_', frame: [1, 2, 3, 4], repeat: 5, active: true });
 	
 	//turned into attack group soon for different attack types
-    ATTACKS_GROUP = this.physics.add.group({ classType: Attack, runChildUpdate: true });
-    
+	ATTACKS_GROUP = this.physics.add.group({ classType: Attack, runChildUpdate: true });
+	
 	//build the game map, this includes pathing, map image, background sounds, and general game assets
-	buildMap();
-    
+	buildMap(this);
+	
 	//input related actions in userAction function
-    this.input.on('pointerdown', function (pointer){userAction(pointer)});
-    this.input.on('gameobjectdown', function (pointer,gameObject){
-		console.log(gameObject);
-	});
+	this.input.on('pointerdown', function (pointer){userAction(pointer, this)});
+
+	/*let nextScene = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2, 'nextScene').setDepth(1);
+	nextScene.setInteractive();
+	nextScene.on("pointerdown", ()=>{
+		this.scene.start(CST.SCENES.GAME2, "Armory Level");
+	})*/
 }
 
 //update function constantly refreshes so to progress game
 function update(time, delta) {  
 
-    if (time > this.nextEnemy)
-    {
-        var enemy = ENEMY_GROUP.get();
-        if (enemy)
-        {
-            enemy.setActive(true);
-            enemy.setVisible(true);
-            enemy.startOnPath();
+	if (time > this.nextEnemy)
+	{
+		var enemy = ENEMY_GROUP.get(path);
+		if (enemy)
+		{
+			enemy.setActive(true);
+			enemy.setVisible(true);
+			enemy.startOnPath();
 			//ENEMY_SPEED = 1/Math.floor((Math.random() * (2000 - 500)) + 500);
-            this.nextEnemy = time + ENEMY_SPAWN_RATE;
-        }       
-    }
+			this.nextEnemy = time + ENEMY_SPAWN_RATE;
+		}       
+	}
 	
 }
 
