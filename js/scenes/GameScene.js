@@ -2,12 +2,10 @@ import {CST} from "../CST";
 //import {Enemy} from "../Enemy";
 //import {GlobalVariables} from "../GlobalVariables";
 
-//--------------------------------------------------GLOBAL VARIABLES-------------------------------------------
 var path;
 var TOWER_GROUP = [];
 var ENEMY_GROUP;
 var ATTACKS_GROUP;
-var THIS_SCENE;
 
 var ENEMY_SPEED = 1/10000;
 //var ENEMY_SPEED = 1/Math.floor((Math.random() * 10000) + 10000);
@@ -80,11 +78,11 @@ var map =  [[ 0,-1, 0,-1,-1,-1,-1,-1,-1,-1],
 
 //------------------------------------------FUNCTIONS---------------------------------------------------			
 //build the pathing and map for level
-function buildMap(){
+function buildMap(scene){
 	//path to which enemey follows
-    var graphics = THIS_SCENE.add.graphics();    
+    var graphics = scene.add.graphics();    
     drawLines(graphics);
-    path = THIS_SCENE.add.path(96, -32);
+    path = scene.add.path(96, -32);
     path.lineTo(96, 164);
     path.lineTo(480, 164);
     path.lineTo(480, 544);
@@ -92,21 +90,21 @@ function buildMap(){
     path.draw(graphics);
     
 	//add map image
-	THIS_SCENE.add.image(320, 256, 'maps');
+	scene.add.image(320, 256, 'map');
 
 	//add background music
-	var background = THIS_SCENE.sound.add('background');
+	var background = scene.sound.add('background');
 	background.volume = 0.04;
 	background.loop = true;
 	//background.play();																//sounds
 	
-	THIS_SCENE.nextEnemy = 0;
-	THIS_SCENE.physics.add.overlap(ENEMY_GROUP, ATTACKS_GROUP, damageEnemy);
-    THIS_SCENE.input.mouse.disableContextMenu();
+	scene.nextEnemy = 0;
+	scene.physics.add.overlap(ENEMY_GROUP, ATTACKS_GROUP, damageEnemy);
+    scene.input.mouse.disableContextMenu();
 }
 
 //user input related actions 
-function userAction(pointer){
+function userAction(pointer, scene){
 	var i = Math.floor(pointer.y/64);
 	var j = Math.floor(pointer.x/64);
 	if (pointer.leftButtonDown())
@@ -115,14 +113,14 @@ function userAction(pointer){
 			if(map[i][j] == 0)
 			{
 				var newTower = TOWER_GROUP[peasantStats.towerId].get(peasantStats);
-				newTower.placeTower(pointer);
+				newTower.placeTower(pointer,scene);
 			}
 			//if upgrade tower
 			else if(typeof map[i][j] === "object")
 			{
 				var currTower = map[i][j];
 				var newTower = TOWER_GROUP[soldierStats.towerId].get(soldierStats);
-				currTower.upgradeTower(pointer, newTower);
+				currTower.upgradeTower(pointer, newTower, scene);
 			}
         }
         else if (pointer.rightButtonDown())
@@ -193,7 +191,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.hp = 0;
         this.turned = 0;
 		
-		//this.text = THIS_SCENE.add.text(0, 0, "HP: "+ ENEMY_HP, {font: "16px Arial", fill: "#ffffff"});
+		//this.text = scene.add.text(0, 0, "HP: "+ ENEMY_HP, {font: "16px Arial", fill: "#ffffff"});
 		//this.text.setPadding(0, 0, 0, 60);
 		//this.text.setOrigin(0.5);
 		this.healthbar = new HealthBar(scene, 0, 0);
@@ -276,30 +274,30 @@ class Deathknight extends Enemy {
 		Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'deathknight');
 		
 		//create animations
-		THIS_SCENE.anims.create({
+		scene.anims.create({
 			key: 'dkdown',
-			frames: THIS_SCENE.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }),
+			frames: scene.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }),
 			frameRate: 3,
 			repeat: -1
 		});
-		THIS_SCENE.anims.create({
+		scene.anims.create({
 			key: 'dkright',
-			frames: THIS_SCENE.anims.generateFrameNames('deathknight', { prefix: 'walk_right_', start: 1, end: 4 }),
+			frames: scene.anims.generateFrameNames('deathknight', { prefix: 'walk_right_', start: 1, end: 4 }),
 			frameRate: 5,
 			repeat: -1
 		});
         this.anims.play('dkdown');
 		
 		//create sounds
-		this.death = THIS_SCENE.sound.add('dkDeath');
+		this.death = scene.sound.add('dkDeath');
 		this.death.volume = 0.05;
 		this.death.loop = false;
 		
-		this.damage = THIS_SCENE.sound.add('hit');
+		this.damage = scene.sound.add('hit');
 		this.damage.volume = 0.03;
 		this.damage.loop = false;
 		
-		/* this.walk = THIS_SCENE.sound.add('walk');
+		/* this.walk = scene.sound.add('walk');
 		this.walk.volume = 0.01;
 		this.walk.loop = true; */
 	}
@@ -329,15 +327,15 @@ class Tower extends Phaser.GameObjects.Sprite{
 		//this.aoeRange = aoeRange; //area of effect range
 		//this.spc = spc; //has special attack, each value represents special type, 0 = none, 1 = chance to stun, etc.
 		
-		this.text = THIS_SCENE.add.text(0, 0, this.towerName, {font: "16px Arial", fill: "#ffffff"});
+		this.text = scene.add.text(0, 0, this.towerName, {font: "16px Arial", fill: "#ffffff"});
 		
-		this.upgradeSound = THIS_SCENE.sound.add('upgradeSound');
+		this.upgradeSound = scene.sound.add('upgradeSound');
 		this.upgradeSound.volume = 0.05;
 		this.upgradeSound.loop = false;
 		
 	}
 	
-	placeTower(pointer) {
+	placeTower(pointer,scene) {
 		var i = Math.floor(pointer.y/64);
 		var j = Math.floor(pointer.x/64);
 		if(map[i][j] === 0) {
@@ -347,7 +345,7 @@ class Tower extends Phaser.GameObjects.Sprite{
 				this.text.y = (i+.50) * 64 + 64/2;
 				this.text.x = j * 64 + 64/2;
 				this.text.setOrigin(0.5);
-				//THIS_SCENE.add.container([this.text, this]);
+				//scene.add.container([this.text, this]);
 				this.setActive(true);
 				this.setVisible(true);
 				this.y = i * 64 + 64/2;
@@ -377,27 +375,27 @@ class Tower extends Phaser.GameObjects.Sprite{
 			
 	}
 	
-	upgradeTower(pointer, newTower) {
+	upgradeTower(pointer, newTower, scene) {
 		//check if tower is already upgraded, if not the upgrade
 		if(this.towerName !== newTower.towerName)
 		{
 			var i = Math.floor(pointer.y/64);
 			var j = Math.floor(pointer.x/64);
 			this.removeTower(pointer);
-			newTower.placeTower(pointer);
+			newTower.placeTower(pointer, scene);
 			//console.log(TOWER_GROUP.getTotalUsed());
 			//console.log(TOWER_GROUP.getLength());
 			this.text = newTower.towerName;
 			this.upgradeSound.play();
 
-            THIS_SCENE.tweens.add({
+            /* scene.tweens.add({
                 targets: newTower, // on the player 
                 duration: 200, // for 200ms 
                 scaleX: 1.2, // that scale vertically by 20% 
                 scaleY: 1.2, // and scale horizontally by 20% 
                 alpha: 0.2,
                 yoyo: true, // at the end, go back to original scale 
-            });
+            }); */
 
 		}
 		else
@@ -472,7 +470,7 @@ class HealthBar {
 
         this.draw();
 
-        THIS_SCENE.add.existing(this.bar);
+        scene.add.existing(this.bar);
     }
 
     setPosition(x, y) {
@@ -538,7 +536,7 @@ class Attack extends Phaser.GameObjects.Image {
 
 		this.speed = Phaser.Math.GetSpeed(600, 1);
 
-    	this.particles = THIS_SCENE.add.particles('attack');
+    	this.particles = scene.add.particles('attack');
 
         this.emitter = this.particles.createEmitter({
             speed: 75,
@@ -601,36 +599,32 @@ export class GameScene extends Phaser.Scene {
 
     //create function initializes and adds assets to game
     create() {
-        //remove some ambiguity of what 'this' is. Can be used in classes without having to send as a parameter since it's now globabl
-		THIS_SCENE = this;
-		
-		/*creates a group for a tower type, that way we can use TOWER_GROUP.get(towerStats) to instantiate new towers easily
-		loop through towerArr to get each tower object
-		then add each object to TOWER_GROUP arr
-		we do this becuase TOWER_GROUP can now be easily used to manipulate tower objects with Phaser functions.*/
-		//loop set to 2 since we only have 2 developed classes at the moment
-		for(var i = 0; i < 2; i++) {
-		    TOWER_GROUP[towerArr[i].towerId] = this.add.group({ classType: eval(towerArr[i].towerName), runChildUpdate: true });
-		}
-		
-		//enemy group will be a loop similar to tower group
-		ENEMY_GROUP = this.physics.add.group({ classType: Deathknight, runChildUpdate: true }); //key: 'walk_down_', frame: [1, 2, 3, 4], repeat: 5, active: true });
-		
-		//turned into attack group soon for different attack types
-		ATTACKS_GROUP = this.physics.add.group({ classType: Attack, runChildUpdate: true });
-		
-		//build the game map, this includes pathing, map image, background sounds, and general game assets
-		buildMap();
-		
-		//input related actions in userAction function
-		this.input.on('pointerdown', function (pointer){userAction(pointer)});
+        /*creates a group for a tower type, that way we can use TOWER_GROUP.get(towerStats) to instantiate new towers easily
+	loop through towerArr to get each tower object
+	then add each object to TOWER_GROUP arr
+	we do this becuase TOWER_GROUP can now be easily used to manipulate tower objects with Phaser functions.*/
+	//loop set to 2 since we only have 2 developed classes at the moment
+	for(var i = 0; i < 2; i++) {
+		TOWER_GROUP[towerArr[i].towerId] = this.add.group({ classType: eval(towerArr[i].towerName), runChildUpdate: true });
+	}
+	
+	//enemy group will be a loop similar to tower group
+	ENEMY_GROUP = this.physics.add.group({ classType: Deathknight, runChildUpdate: true }); //key: 'walk_down_', frame: [1, 2, 3, 4], repeat: 5, active: true });
+	
+	//turned into attack group soon for different attack types
+	ATTACKS_GROUP = this.physics.add.group({ classType: Attack, runChildUpdate: true });
+	
+	//build the game map, this includes pathing, map image, background sounds, and general game assets
+	buildMap(this);
+	
+	//input related actions in userAction function
+	this.input.on('pointerdown', function (pointer){userAction(pointer, this)});
 
-        /*let nextScene = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2, 'nextScene').setDepth(1);
-        nextScene.setInteractive();
-        nextScene.on("pointerdown", ()=>{
-            this.scene.start(CST.SCENES.GAME2, "Armory Level");
-        })*/
-
+	/*let nextScene = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2, 'nextScene').setDepth(1);
+	nextScene.setInteractive();
+	nextScene.on("pointerdown", ()=>{
+		this.scene.start(CST.SCENES.GAME2, "Armory Level");
+	})*/
     }
 
     //update function constantly refreshes so to progress game
