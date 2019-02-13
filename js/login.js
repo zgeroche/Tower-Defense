@@ -37,6 +37,7 @@ newUserButton = document.getElementById('New User');
 newUserButton.addEventListener('click', function(event){
     var user = document.getElementById('username').value;
     var pass = document.getElementById('password').value;
+
     const newItem = {
         username: user, 
         password: pass, 
@@ -48,9 +49,17 @@ newUserButton.addEventListener('click', function(event){
             wave:1}
     };
 
-    collection.insertOne(newItem)
-    .then(result => {
-        console.log(`Successfully inserted item with _id: ${result.insertedId}`);
+    collection.find({username: user}, {limit: 1}).first()
+    .then (result => {
+        if (result) {
+            alert('Username already in use');
+        }
+        else {
+            collection.insertOne(newItem)
+            .then(result => {
+                console.log(`Successfully inserted item with _id: ${result.insertedId}`);
+            })
+        }
     })
     .catch(err => console.error(`Failed to insert item: ${err}`))
 });
