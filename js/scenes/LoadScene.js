@@ -8,6 +8,12 @@ export class LoadScene extends Phaser.Scene{
     }
 
     preload(){
+		this.load.image('HUD', 'assets/HUD.png');
+		this.load.image('vol', 'assets/volume.png');
+		this.load.image('volDown', 'assets/volDown.png');
+		this.load.image('play', 'assets/play.png');
+		this.load.image('playDown', 'assets/playDown.png');
+		this.add.text(230, 230, 'Loading', { font: '50px Arial', fill: '#fff' });
         this.load.atlas('deathknight', './assets/deathknight.png', 'assets/deathknight.json');
         this.load.atlas('soldier', './assets/goldenarmor.png', 'assets/goldenarmor.json');
         this.load.atlas('peasant', './assets/peasant.png', 'assets/peasant.json');
@@ -16,6 +22,7 @@ export class LoadScene extends Phaser.Scene{
 		
 		//load map
 		this.load.image('map', 'assets/castle-gates.png', { frameWidth: 640, frameHeight: 512 });
+		this.load.image('map2', 'assets/armory.png', { frameWidth: 640, frameHeight: 512 });
 		
 		//load sounds
 		this.load.audio('dkDeath', 'assets/Sounds/Death Screams/Human/sfx_deathscream_human5.wav');
