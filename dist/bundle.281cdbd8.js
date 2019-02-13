@@ -4644,9 +4644,12 @@ function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.itera
           console.log("Found document: ".concat(JSON.stringify(result)));
           document.getElementById('content').style.display = 'inline';
           document.getElementById('login').style.display = 'none';
+          document.getElementById('loginError').style.display = 'none';
+          document.getElementById('newAccount').style.display = 'none';
+          document.getElementById('accountError').style.display = 'none';
         } else {
           console.log("nothing found for user:".concat(user, ", password:").concat(pass));
-          alert('Incorrect Username or Password');
+          document.getElementById('loginError').style.display = 'inline';
         }
 
         return result;
@@ -4670,8 +4673,20 @@ function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.itera
           wave: 1
         }
       };
-      collection.insertOne(newItem).then(function (result) {
-        console.log("Successfully inserted item with _id: ".concat(result.insertedId));
+      collection.find({
+        username: user
+      }, {
+        limit: 1
+      }).first().then(function (result) {
+        if (result) {
+          document.getElementById('accountError').style.display = 'none';
+        } else {
+          collection.insertOne(newItem).then(function (result) {
+            console.log("Successfully inserted item with _id: ".concat(result.insertedId));
+            document.getElementById('newAccount').style.display = 'inline';
+            document.getElementById('loginError').style.display = 'none';
+          });
+        }
       }).catch(function (err) {
         return console.error("Failed to insert item: ".concat(err));
       });
@@ -19649,7 +19664,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61712" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54876" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
