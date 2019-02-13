@@ -93,11 +93,14 @@ function buildMap(scene){
 	scene.add.image(320, 256, 'map');
 
 	//add background music
-	var background = scene.sound.add('background');
-	background.volume = 0.04;
-	background.loop = true;
-	//background.play();																//sounds
+	scene.bgm = scene.sound.add('background');
+	scene.bgm.volume = 0.04;
+	scene.bgm.loop = true;
+	//bgm.play();																//sounds
+
+	scene.scene.add('HUD', HUD, true, { x: 640, y: 66 });
 	
+	//misc
 	scene.nextEnemy = 0;
 	scene.physics.add.overlap(ENEMY_GROUP, ATTACKS_GROUP, damageEnemy);
     scene.input.mouse.disableContextMenu();
@@ -177,6 +180,89 @@ function addAttack(x, y, angle) {
     }
 }
 //---------------------------------------------------------CLASSES--------------------------------------------
+class HUD extends Phaser.Scene {
+
+     constructor (scene)
+    {
+        super(scene);
+        Phaser.Scene.call(this, { key: 'HUD', active: true });
+		
+    }
+
+    preload()
+    {
+        
+    }
+
+    create()
+    {
+		//Get scene with game in it
+		let sceneA = this.scene.get(CST.SCENES.GAME);
+	
+        //setup HUD
+		var HUD = this.add.image(320,33, 'HUD');
+		var volume = this.add.image(594,16, 'vol');
+		var volDown = this.add.image(594,16, 'volDown');
+		var play = this.add.image(556,16, 'play');
+		var playDown = this.add.image(556,16, 'playDown');
+		volDown.setVisible(false);
+		playDown.setVisible(false);
+		this.infoBar = this.add.text(270, 9, 'Wave 1: Death Knights', { fontFamily: 'Arial', fontSize: 15, color: '#00ff00' });
+		
+		/* HUD.setDepth(1);
+		volume.setDepth(1);
+		volDown.setDepth(1);
+		play.setDepth(1);
+		playDown.setDepth(1);
+		this.infoBar.setDepth(1); */
+		
+		volume.setInteractive({ useHandCursor: true });
+			volume.on("pointerover", ()=>{
+			volDown.setVisible(true);
+		});
+		volume.on("pointerout", ()=>{
+			volDown.setVisible(false);
+		});
+		
+		volume.on("pointerup", ()=>{
+			if(sceneA.bgm.isPaused)
+			{
+				sceneA.bgm.resume();
+			}
+			else if(sceneA.bgm.isPlaying)
+			{
+				sceneA.bgm.pause();
+			}
+			else
+			{
+				sceneA.bgm.play();
+			}
+		});
+		
+		play.setInteractive({ useHandCursor: true });
+		play.on("pointerover", ()=>{
+			playDown.setVisible(true);
+		});
+		play.on("pointerout", ()=>{
+			playDown.setVisible(false);
+		});
+		
+		play.on("pointerup", ()=>{
+			if(sceneA.scene.isActive())
+			{
+				sceneA.scene.pause();
+				sceneA.bgm.pause();
+			}
+			else
+			{
+				sceneA.scene.resume();
+				sceneA.bgm.resume();
+			}
+		});
+    }
+
+}
+
 //enemy class
 class Enemy extends Phaser.GameObjects.Sprite {
 
@@ -352,6 +438,7 @@ class Tower extends Phaser.GameObjects.Sprite{
 				this.x = j * 64 + 64/2;
 				//map[i][j] = 1;
 				map[i][j] = this;
+				this.setInteractive({ useHandCursor: true });
 			}   
 			//console.log(TOWER_GROUP.getTotalUsed());
 			//console.log(TOWER_GROUP.getLength());
@@ -587,10 +674,10 @@ export class GameScene extends Phaser.Scene {
     constructor(){
         super({
             key: CST.SCENES.GAME
-        })
+        });
+		
     }
 
-    
     //Preload function loads assets before game starts
  
     init(data){
@@ -599,7 +686,9 @@ export class GameScene extends Phaser.Scene {
 
     //create function initializes and adds assets to game
     create() {
-        /*creates a group for a tower type, that way we can use TOWER_GROUP.get(towerStats) to instantiate new towers easily
+		//Phaser.Scene.call(this, { key: 'sceneA', active: true });
+		
+    /*creates a group for a tower type, that way we can use TOWER_GROUP.get(towerStats) to instantiate new towers easily
 	loop through towerArr to get each tower object
 	then add each object to TOWER_GROUP arr
 	we do this becuase TOWER_GROUP can now be easily used to manipulate tower objects with Phaser functions.*/
@@ -625,7 +714,9 @@ export class GameScene extends Phaser.Scene {
 	nextScene.on("pointerdown", ()=>{
 		this.scene.start(CST.SCENES.GAME2, "Armory Level");
 	})*/
+	
     }
+	
 
     //update function constantly refreshes so to progress game
     update(time, delta, path) {  
