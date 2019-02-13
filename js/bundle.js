@@ -2229,19 +2229,24 @@ loginButton.addEventListener('click', function(event){
             console.log(`Found document: ${JSON.stringify(result)}`)
             document.getElementById('content').style.display = 'inline';
             document.getElementById('login').style.display = 'none';
+            document.getElementById('loginError').style.display ='none';
+            document.getElementById('newAccount').style.display ='none';
+            document.getElementById('accountError').style.display ='none';
+
         } else {
             console.log(`nothing found for user:${user}, password:${pass}`)
-            alert('Incorrect Username or Password');
+            document.getElementById('loginError').style.display ='inline';
         }
         return result
     }).catch(err => console.error(`Failed to find document: ${err}`))   
 });
 
-//New user creation button
+    //New user creation button
 newUserButton = document.getElementById('New User');
 newUserButton.addEventListener('click', function(event){
     var user = document.getElementById('username').value;
     var pass = document.getElementById('password').value;
+
     const newItem = {
         username: user, 
         password: pass, 
@@ -2253,9 +2258,19 @@ newUserButton.addEventListener('click', function(event){
             wave:1}
     };
 
-    collection.insertOne(newItem)
-    .then(result => {
-        console.log(`Successfully inserted item with _id: ${result.insertedId}`);
+    collection.find({username: user}, {limit: 1}).first()
+    .then (result => {
+        if (result) {
+            document.getElementById('accountError').style.display ='none';
+        }
+        else {
+            collection.insertOne(newItem)
+            .then(result => {
+                console.log(`Successfully inserted item with _id: ${result.insertedId}`);
+                document.getElementById('newAccount').style.display ='inline';
+                document.getElementById('loginError').style.display ='none';
+            })
+        }
     })
     .catch(err => console.error(`Failed to insert item: ${err}`))
 });

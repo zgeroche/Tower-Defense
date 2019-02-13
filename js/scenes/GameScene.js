@@ -17,9 +17,9 @@ var TOWER_FIRE_RATE = 300;
 
 //stats for each tower type loaded from file rather than defined here, but for now do this
 //objects to hold sounds and animation information as well?
-var peasantStats = 		 {towerId:0,  towerName:"Peasant", 		 upgrade:true,  str:5,  atkRange:"short",     atkType:"physical", atkRate:"slow", 	  hitfly:false};
-var soldierStats = 		 {towerId:1,  towerName:"Soldier", 		 upgrade:true,  str:10, atkRange:"short",     atkType:"physical", atkRate:"medium",   hitfly:false};
-var archerStats = 		 {towerId:2,  towerName:"Archer", 		 upgrade:true,  str:8,  atkRange:"medium",    atkType:"physical", atkRate:"slow", 	  hitfly:true};
+var peasantStats = 		 {towerId:0,  towerName:"Peasant", 		 upgrade:true,  str:50,  atkRange:150,        atkType:"physical", atkRate:500, 	      hitfly:false};
+var soldierStats = 		 {towerId:1,  towerName:"Soldier", 		 upgrade:true,  str:100, atkRange:200,        atkType:"physical", atkRate:400,        hitfly:false};
+var archerStats = 		 {towerId:2,  towerName:"Archer", 		 upgrade:true,  str:120, atkRange:250,        atkType:"physical", atkRate:350, 	      hitfly:true};
 var apprenticeStats = 	 {towerId:3,  towerName:"Apprentice", 	 upgrade:true,  str:7,  atkRange:"medium",    atkType:"magical",  atkRate:"medium",   hitfly:false};
 var knightStats = 		 {towerId:4,  towerName:"Knight", 		 upgrade:true,  str:15, atkRange:"short",     atkType:"physical", atkRate:"medium",   hitfly:false};
 var duelistStats = 		 {towerId:5,  towerName:"Duelist", 		 upgrade:true,  str:12, atkRange:"short",     atkType:"physical", atkRate:"fast", 	  hitfly:false};
@@ -93,11 +93,14 @@ function buildMap(scene){
 	scene.add.image(320, 256, 'map');
 
 	//add background music
-	var background = scene.sound.add('background');
-	background.volume = 0.04;
-	background.loop = true;
-	//background.play();																//sounds
+	scene.bgm = scene.sound.add('background');
+	scene.bgm.volume = 0.04;
+	scene.bgm.loop = true;
+	//bgm.play();																//sounds
 	
+	scene.scene.add('HUD', HUD, true, { x: 640, y: 66 });
+	
+	//misc
 	scene.nextEnemy = 0;
 	scene.physics.add.overlap(ENEMY_GROUP, ATTACKS_GROUP, damageEnemy);
     scene.input.mouse.disableContextMenu();
@@ -151,7 +154,7 @@ function damageEnemy(enemy, attack) {
         attack.setVisible(false);    
         
         // decrease the enemy hp with ATTACK_DAMAGE
-        enemy.receiveDamage(ATTACK_DAMAGE);
+        enemy.receiveDamage(attack.damage);
         //damage.play();
     }
 }
@@ -169,14 +172,97 @@ function drawLines(graphics) {
     graphics.strokePath();
 }	
 
-function addAttack(x, y, angle) {
+function addAttack(x, y, angle, damage) {
     var attack = ATTACKS_GROUP.get();
     if (attack)
     {
-        attack.fire(x, y, angle);
+        attack.fire(x, y, angle, damage);
     }
 }
 //---------------------------------------------------------CLASSES--------------------------------------------
+class HUD extends Phaser.Scene {
+
+     constructor (scene)
+    {
+        super(scene);
+        Phaser.Scene.call(this, { key: 'HUD', active: true });
+		
+    }
+
+    preload()
+    {
+        
+    }
+
+    create()
+    {
+		//Get scene with game in it
+		let sceneA = this.scene.get(CST.SCENES.GAME);
+	
+        //setup HUD
+		var HUD = this.add.image(320,33, 'HUD');
+		var volume = this.add.image(594,16, 'vol');
+		var volDown = this.add.image(594,16, 'volDown');
+		var play = this.add.image(556,16, 'play');
+		var playDown = this.add.image(556,16, 'playDown');
+		volDown.setVisible(false);
+		playDown.setVisible(false);
+		this.infoBar = this.add.text(270, 9, 'Wave 1: Death Knights', { fontFamily: 'Arial', fontSize: 15, color: '#00ff00' });
+		
+		/* HUD.setDepth(1);
+		volume.setDepth(1);
+		volDown.setDepth(1);
+		play.setDepth(1);
+		playDown.setDepth(1);
+		this.infoBar.setDepth(1); */
+		
+		volume.setInteractive({ useHandCursor: true });
+			volume.on("pointerover", ()=>{
+			volDown.setVisible(true);
+		});
+		volume.on("pointerout", ()=>{
+			volDown.setVisible(false);
+		});
+		
+		volume.on("pointerup", ()=>{
+			if(sceneA.bgm.isPaused)
+			{
+				sceneA.bgm.resume();
+			}
+			else if(sceneA.bgm.isPlaying)
+			{
+				sceneA.bgm.pause();
+			}
+			else
+			{
+				sceneA.bgm.play();
+			}
+		});
+		
+		play.setInteractive({ useHandCursor: true });
+		play.on("pointerover", ()=>{
+			playDown.setVisible(true);
+		});
+		play.on("pointerout", ()=>{
+			playDown.setVisible(false);
+		});
+		
+		play.on("pointerup", ()=>{
+			if(sceneA.scene.isActive())
+			{
+				sceneA.scene.pause();
+				sceneA.bgm.pause();
+			}
+			else
+			{
+				sceneA.scene.resume();
+				sceneA.bgm.resume();
+			}
+		});
+    }
+
+}
+
 //enemy class
 class Enemy extends Phaser.GameObjects.Sprite {
 
@@ -273,19 +359,7 @@ class Deathknight extends Enemy {
 		super(scene);
 		Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'deathknight');
 		
-		//create animations
-		scene.anims.create({
-			key: 'dkdown',
-			frames: scene.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }),
-			frameRate: 3,
-			repeat: -1
-		});
-		scene.anims.create({
-			key: 'dkright',
-			frames: scene.anims.generateFrameNames('deathknight', { prefix: 'walk_right_', start: 1, end: 4 }),
-			frameRate: 5,
-			repeat: -1
-		});
+		
         this.anims.play('dkdown');
 		
 		//create sounds
@@ -352,6 +426,7 @@ class Tower extends Phaser.GameObjects.Sprite{
 				this.x = j * 64 + 64/2;
 				//map[i][j] = 1;
 				map[i][j] = this;
+				this.setInteractive({ useHandCursor: true });
 			}   
 			//console.log(TOWER_GROUP.getTotalUsed());
 			//console.log(TOWER_GROUP.getLength());
@@ -407,12 +482,12 @@ class Tower extends Phaser.GameObjects.Sprite{
 	}
 	
 	fire() {
-		var enemy = getEnemy(this.x, this.y, 200);
-		if(enemy) {
-			var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-			addAttack(this.x, this.y, angle);
-			//this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make towers rotate to face enemy
-		}
+	    var enemy = getEnemy(this.x, this.y, this.atkRange);
+	    if(enemy) {
+	        var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+	        addAttack(this.x, this.y, angle, this.str);
+	        //this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make towers rotate to face enemy
+	    }
 	}
 	
 	update(time, delta, pointer)
@@ -549,21 +624,22 @@ class Attack extends Phaser.GameObjects.Image {
         
 	}
 
-	fire(x, y, angle)
-	{
-		this.setActive(true);
-		this.setVisible(true);
-		//  Attacks fire from the middle of the screen to the given x/y
-		this.setPosition(x, y);
+    fire(x, y, angle, damage)
+    {
+        this.setActive(true);
+        this.setVisible(true);
+        //  Attacks fire from the middle of the screen to the given x/y
+        this.setPosition(x, y);
 		
-	//  we don't need to rotate the attacks as they are round
-	//    this.setRotation(angle);
+        //  we don't need to rotate the attacks as they are round
+        //    this.setRotation(angle);
 
-		this.dx = Math.cos(angle);
-		this.dy = Math.sin(angle);
+        this.dx = Math.cos(angle);
+        this.dy = Math.sin(angle);
 
-		this.lifespan = 1000;
-	}
+        this.lifespan = 1000;
+        this.damage = damage;
+    }
 
 	update (time, delta)
 	{
@@ -619,6 +695,20 @@ export class GameScene extends Phaser.Scene {
 	
 	//input related actions in userAction function
 	this.input.on('pointerdown', function (pointer){userAction(pointer, this)});
+
+    //create animations
+	this.anims.create({
+	    key: 'dkdown',
+	    frames: this.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }),
+	    frameRate: 3,
+	    repeat: -1
+	});
+	this.anims.create({
+	    key: 'dkright',
+	    frames: this.anims.generateFrameNames('deathknight', { prefix: 'walk_right_', start: 1, end: 4 }),
+	    frameRate: 5,
+	    repeat: -1
+	});
 
 	/*let nextScene = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2, 'nextScene').setDepth(1);
 	nextScene.setInteractive();
