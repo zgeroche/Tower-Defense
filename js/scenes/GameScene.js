@@ -119,11 +119,17 @@ function userAction(pointer, scene){
 				newTower.placeTower(pointer,scene);
 			}
 			//if upgrade tower
-			else if(typeof map[i][j] === "object")
+			else if(map[i][j].towerId == 0)
 			{
 				var currTower = map[i][j];
 				var newTower = TOWER_GROUP[soldierStats.towerId].get(soldierStats);
 				currTower.upgradeTower(pointer, newTower, scene);
+			}
+			else if(map[i][j].towerId == 1)
+			{
+			    var currTower = map[i][j];
+			    var newTower = TOWER_GROUP[archerStats.towerId].get(archerStats);
+			    currTower.upgradeTower(pointer, newTower, scene);
 			}
         }
         else if (pointer.rightButtonDown())
@@ -277,9 +283,9 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.hp = 0;
         this.turned = 0;
 		
-		//this.text = scene.add.text(0, 0, "HP: "+ ENEMY_HP, {font: "16px Arial", fill: "#ffffff"});
-		//this.text.setPadding(0, 0, 0, 60);
-		//this.text.setOrigin(0.5);
+		this.text = scene.add.text(0, 0, "HP: "+ ENEMY_HP, {font: "16px Arial", fill: "#ffffff"});		//textHP
+		this.text.setPadding(0, 0, 0, 60);														//textHP
+		this.text.setOrigin(0.5);																//textHP
 		this.healthbar = new HealthBar(scene, 0, 0);
 		
     }
@@ -301,7 +307,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
 	
 	receiveDamage(damage) {
 		this.hp -= damage;           
-		//this.text.setText("HP: " + this.hp);
+		this.text.setText("HP: " + this.hp);											//textHP
 		this.healthbar.decrease(damage);
 		this.damage.play();																//sounds
 		
@@ -309,8 +315,8 @@ class Enemy extends Phaser.GameObjects.Sprite {
 		if (this.hp <= 0) {
 			this.setActive(false);
 			this.setVisible(false);
-			//this.text.setActive(false);
-			//this.text.setVisible(false);
+			this.text.setActive(false);													//textHP
+			this.text.setVisible(false);												//textHP
 			this.healthbar.destroy();
 			
 			//Need to set this to stop when all enemies are dead
@@ -328,7 +334,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
 		path.getPoint(this.follower.t, this.follower.vec);
 		
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
-		//this.text.setPosition(this.follower.vec.x, this.follower.vec.y);
+		this.text.setPosition(this.follower.vec.x, this.follower.vec.y);									//textHP
 		this.healthbar.setPosition(this.follower.vec.x - this.width, this.follower.vec.y - this.height);
 		
 		if (this.follower.vec.y == 164 && this.turned == 0) {
@@ -345,8 +351,8 @@ class Enemy extends Phaser.GameObjects.Sprite {
 		{
 			this.setActive(false);
 			this.setVisible(false);
-			//this.text.setActive(false);
-			//this.text.setVisible(false);
+			this.text.setActive(false);										//textHP
+			this.text.setVisible(false);									//textHP
 			this.healthbar.destroy();
 			//this.walk.stop();												//sounds
 			this.destroy();
@@ -531,6 +537,20 @@ class Soldier extends Tower {
 
 }
 
+class Archer extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'archer', 'tile051');
+		
+    }
+    aFn()
+    {
+        console.log(this.towerName);
+    }
+
+}
+
+
 //all other classes
 //HP class
 class HealthBar {
@@ -578,11 +598,11 @@ class HealthBar {
         this.bar.fillStyle(0xffffff);
         this.bar.fillRect(this.x + 2, this.y + 2, 76, 12);
 
-        if (this.value < 0.6 * ENEMY_HP) {
+        if (this.value < 0.3 * ENEMY_HP) {
             this.bar.fillStyle(0xff0000);
         }
-        else if (this.value < 0.3 * ENEMY_HP)
-            this.bar.fillStyle(0x00ffff);
+        else if (this.value < 0.6 * ENEMY_HP)
+            this.bar.fillStyle(0x00ff00);
         else {
             this.bar.fillStyle(0x00ff00);
         }
@@ -680,7 +700,7 @@ export class GameScene extends Phaser.Scene {
 	then add each object to TOWER_GROUP arr
 	we do this becuase TOWER_GROUP can now be easily used to manipulate tower objects with Phaser functions.*/
 	//loop set to 2 since we only have 2 developed classes at the moment
-	for(var i = 0; i < 2; i++) {
+	for(var i = 0; i < 3; i++) {
 		TOWER_GROUP[towerArr[i].towerId] = this.add.group({ classType: eval(towerArr[i].towerName), runChildUpdate: true });
 	}
 	
