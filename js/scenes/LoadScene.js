@@ -17,6 +17,7 @@ export class LoadScene extends Phaser.Scene{
         this.load.atlas('deathknight', './assets/deathknight.png', 'assets/deathknight.json');
         this.load.atlas('soldier', './assets/goldenarmor.png', 'assets/goldenarmor.json');
         this.load.atlas('peasant', './assets/peasant.png', 'assets/peasant.json');
+        this.load.atlas('archer', 'assets/archer.png', 'assets/archer.json');
 		//load enemy sprites, will be a loop like load tower sprites
 		this.load.atlas('deathknight', 'assets/deathknight.png', 'assets/deathknight.json');
 		

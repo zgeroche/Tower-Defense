@@ -119,11 +119,17 @@ function userAction(pointer, scene){
 				newTower.placeTower(pointer,scene);
 			}
 			//if upgrade tower
-			else if(typeof map[i][j] === "object")
+			else if(map[i][j].towerId == 0)
 			{
 				var currTower = map[i][j];
 				var newTower = TOWER_GROUP[soldierStats.towerId].get(soldierStats);
 				currTower.upgradeTower(pointer, newTower, scene);
+			}
+			else if(map[i][j].towerId == 1)
+			{
+			    var currTower = map[i][j];
+			    var newTower = TOWER_GROUP[archerStats.towerId].get(archerStats);
+			    currTower.upgradeTower(pointer, newTower, scene);
 			}
         }
         else if (pointer.rightButtonDown())
@@ -531,6 +537,20 @@ class Soldier extends Tower {
 
 }
 
+class Archer extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'archer', 'tile051');
+		
+    }
+    aFn()
+    {
+        console.log(this.towerName);
+    }
+
+}
+
+
 //all other classes
 //HP class
 class HealthBar {
@@ -680,7 +700,7 @@ export class GameScene extends Phaser.Scene {
 	then add each object to TOWER_GROUP arr
 	we do this becuase TOWER_GROUP can now be easily used to manipulate tower objects with Phaser functions.*/
 	//loop set to 2 since we only have 2 developed classes at the moment
-	for(var i = 0; i < 2; i++) {
+	for(var i = 0; i < 3; i++) {
 		TOWER_GROUP[towerArr[i].towerId] = this.add.group({ classType: eval(towerArr[i].towerName), runChildUpdate: true });
 	}
 	
