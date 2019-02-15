@@ -90,51 +90,10 @@ var MAP =  [[ 0,-1, 0,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1, 0,-1, 0,-1]]; */
 			
 var GV = require('./Globals.js');
-var PATH = GV.PATH;
-var TOWER_GROUP = GV.TOWER_GROUP;
-var ENEMY_GROUP = GV.ENEMY_GROUP;
-var ATTACKS_GROUP = GV.ATTACKS_GROUP;
-var SPAWNED = GV.SPAWNED;
-var WAVE = GV.WAVE;
-var GOLD = GV.GOLD;
-var ENEMY_SPEED = GV.ENEMY_SPEED;
-var ENEMY_HP = GV.ENEMY_HP;
-var ENEMY_SPAWN_RATE = GV.ENEMY_SPAWN_RATE;
-var ATTACK_DAMAGE = GV.ATTACK_DAMAGE;
-var TOWER_FIRE_RATE = GV.TOWER_FIRE_RATE;
-var peasantStats = GV.peasantStats;
-var soldierStats = GV.soldierStats;
-var archerStats = GV.archerStats;
-var apprenticeStats = GV.apprenticeStats;
-var knightStats = GV.knightStats;
-var duelistStats = GV.duelistStats;
-var riflemanStats = GV.riflemanStats;
-var rangerStats = GV.rangerStats;
-var wizardStats = GV.wizardStats;
-var sorceressStats = GV.sorceressStats;
-var commanderStats = GV.commanderStats;
-var paladinStats = GV.paladinStats;
-var swordmasterStats = GV.swordmasterStats;
-var cutpurseStats = GV.cutpurseStats;
-var cannoneerStats = GV.cannoneerStats;
-var sharpshooterStats = GV.sharpshooterStats;
-var beastmasterStats = GV.beastmasterStats;
-var assassinStats = GV.assassinStats;
-var firemageStats = GV.firemageStats;
-var icemageStats = GV.icemageStats;
-var lightningmageStats = GV.lightningmageStats;
-var warlockStats = GV.warlockStats;
-var priestessStats = GV.priestessStats;
-var TOWER_ARRAY = GV.TOWER_ARRAY;
-var deathknightStats = GV.deathknightStats;
-var skeletonStats = GV.skeletonStats;
-var batStats = GV.batStats;
-var ogreStats = GV.ogreStats;
-var spiderStats = GV. spiderStats;
-var ENEMY_ARRAY = GV.ENEMY_ARRAY;
-var MAP = GV.MAP
-//------------------------------------------FUNCTIONS---------------------------------------------------			
-//build the pathing and map for level
+//------------------------------------------FUNCTIONS---------------------------------------------------	
+var FN = require('./Functions.js');
+
+/* //build the pathing and map for level
 function buildMap(scene){
 	//path to which enemey follows
     var graphics = scene.add.graphics();    
@@ -269,97 +228,8 @@ function addAttack(x, y, angle, damage, type) {
     {
         attack.fire(x, y, angle, damage, type);
     }
-}
+} */
 //---------------------------------------------------------CLASSES--------------------------------------------
-class HUD extends Phaser.Scene {
-
-     constructor (scene)
-    {
-        super(scene);
-        Phaser.Scene.call(this, { key: 'HUD', active: true });
-		
-    }
-
-    preload()
-    {
-        
-    }
-
-    create()
-    {
-		//Get scene with game in it
-		let sceneA = this.scene.get(CST.SCENES.GAME);
-	
-        //setup HUD
-		var HUD = this.add.image(320,33, 'HUD');
-		var volume = this.add.image(594,16, 'vol');
-		var volDown = this.add.image(594,16, 'volDown');
-		var play = this.add.image(556,16, 'play');
-		var playDown = this.add.image(556,16, 'playDown');
-		volDown.setVisible(false);
-		playDown.setVisible(false);
-		this.infoBar = this.add.text(270, 9, 'Wave '+WAVE+': 10 '+ENEMY_ARRAY[WAVE-1].enemyName, { fontFamily: 'Arial', fontSize: 15, color: '#00ff00' });
-		this.goldBar = this.add.text(50, 40, 'Gold: '+GOLD, { fontFamily: 'Arial', fontSize: 15, color: '#ffd700'});
-		
-		/* HUD.setDepth(1);
-		volume.setDepth(1);
-		volDown.setDepth(1);
-		play.setDepth(1);
-		playDown.setDepth(1);
-		this.infoBar.setDepth(1); */
-		
-		volume.setInteractive({ useHandCursor: true });
-			volume.on("pointerover", ()=>{
-			volDown.setVisible(true);
-		});
-		volume.on("pointerout", ()=>{
-			volDown.setVisible(false);
-		});
-		
-		volume.on("pointerup", ()=>{
-			if(sceneA.bgm.isPaused)
-			{
-				sceneA.bgm.resume();
-			}
-			else if(sceneA.bgm.isPlaying)
-			{
-				sceneA.bgm.pause();
-			}
-			else
-			{
-				sceneA.bgm.play();
-			}
-		});
-		
-		play.setInteractive({ useHandCursor: true });
-		play.on("pointerover", ()=>{
-			playDown.setVisible(true);
-		});
-		play.on("pointerout", ()=>{
-			playDown.setVisible(false);
-		});
-		
-		play.on("pointerup", ()=>{
-			if(sceneA.scene.isActive())
-			{
-				sceneA.scene.pause();
-				sceneA.bgm.pause();
-			}
-			else
-			{
-				sceneA.scene.resume();
-				sceneA.bgm.resume();
-			}
-		});
-    }
-
-    update() {
-        this.infoBar.setText('Wave '+WAVE+': 10 '+ENEMY_ARRAY[WAVE-1].enemyName);
-        this.goldBar.setText('Gold: '+GOLD);
-    }
-
-}
-
 //enemy class
 class Enemy extends Phaser.GameObjects.Sprite {
 
@@ -399,7 +269,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
 		
 		//this.walk.play();																//sounds
 		
-		PATH.getPoint(this.follower.t, this.follower.vec);
+		GV.PATH.getPoint(this.follower.t, this.follower.vec);
 		
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
 		
@@ -433,16 +303,16 @@ class Enemy extends Phaser.GameObjects.Sprite {
 			//this.death.play();																//sounds
 			//this.walk.stop();																//sounds
 			this.destroy();
-			GOLD += this.value;
+			GV.GOLD += this.value;
 		}
 	}
 	
 	update (time, delta)
 	{
 		//ENEMY_SPEED = 1/Math.floor((Math.random() * (10000 - 5000)) + 5000);
-		this.follower.t += ENEMY_SPEED * delta * this.speed;
+		this.follower.t += GV.ENEMY_SPEED * delta * this.speed;
 		
-		PATH.getPoint(this.follower.t, this.follower.vec);
+		GV.PATH.getPoint(this.follower.t, this.follower.vec);
 		
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
 		this.text.setPosition(this.follower.vec.x, this.follower.vec.y);									//textHP
@@ -597,7 +467,7 @@ class Tower extends Phaser.GameObjects.Sprite{
 	placeTower(pointer,scene) {
 		var i = Math.floor(pointer.y/64);
 		var j = Math.floor(pointer.x/64);
-		if(MAP[i][j] === 0) {
+		if(GV.MAP[i][j] === 0) {
 			//console.log(tower);
 			if (this)
 			{
@@ -610,7 +480,7 @@ class Tower extends Phaser.GameObjects.Sprite{
 				this.y = i * 64 + 64/2;
 				this.x = j * 64 + 64/2;
 				//MAP[i][j] = 1;
-				MAP[i][j] = this;
+				GV.MAP[i][j] = this;
 				this.setInteractive({ useHandCursor: true });
 			}   
 			//console.log(TOWER_GROUP.getTotalUsed());
@@ -625,12 +495,12 @@ class Tower extends Phaser.GameObjects.Sprite{
 	removeTower(pointer) {
 		var i = Math.floor(pointer.y/64);
 		var j = Math.floor(pointer.x/64);
-		if(MAP[i][j] !== 0) {
+		if(GV.MAP[i][j] !== 0) {
 			this.setActive(false);
 			this.setVisible(false);
 			this.text.destroy();
-			MAP[i][j] = 0;												//remove from map
-			TOWER_GROUP[this.towerId].remove(this, true, true);			//removes from group, if want to keep it as inactive then remove this line
+			GV.MAP[i][j] = 0;												//remove from map
+			GV.TOWER_GROUP[this.towerId].remove(this, true, true);			//removes from group, if want to keep it as inactive then remove this line
 		}
 			
 	}
@@ -660,17 +530,17 @@ class Tower extends Phaser.GameObjects.Sprite{
 		}
 		else
 		{
-			TOWER_GROUP[newTower.towerId].remove(newTower, true, true);		//tower is created before it's placed so removed if the place clicked on is  not avaialble
+			GV.TOWER_GROUP[newTower.towerId].remove(newTower, true, true);		//tower is created before it's placed so removed if the place clicked on is  not avaialble
 			newTower.text.destroy();
 		}
 	
 	}
 	
 	fire() {
-	    var enemy = getEnemy(this.x, this.y, this.atkRange, this.hitFly);
+	    var enemy = FN.getEnemy(this.x, this.y, this.atkRange, this.hitFly);
 	    if(enemy) {
 	        var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-	        addAttack(this.x, this.y, angle, this.str, this.atkType);
+	        FN.addAttack(this.x, this.y, angle, this.str, this.atkType);
 	        //this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make towers rotate to face enemy
 	    }
 	}
@@ -679,7 +549,7 @@ class Tower extends Phaser.GameObjects.Sprite{
 	{
 		if(time > this.nextTic) {
 			this.fire();
-			this.nextTic = time + TOWER_FIRE_RATE;
+			this.nextTic = time + GV.TOWER_FIRE_RATE;
 		}
 	}
 	sayName()
@@ -858,7 +728,96 @@ class Attack extends Phaser.GameObjects.Image {
 	}
 
 };
+class HUD extends Phaser.Scene {
 
+     constructor (scene)
+    {
+        super(scene);
+        Phaser.Scene.call(this, { key: 'HUD', active: true });
+		
+    }
+
+    preload()
+    {
+        
+    }
+
+    create()
+    {
+		//Get scene with game in it
+		let sceneA = this.scene.get(CST.SCENES.GAME);
+	
+        //setup HUD
+		var HUD = this.add.image(320,33, 'HUD');
+		var volume = this.add.image(594,16, 'vol');
+		var volDown = this.add.image(594,16, 'volDown');
+		var play = this.add.image(556,16, 'play');
+		var playDown = this.add.image(556,16, 'playDown');
+		volDown.setVisible(false);
+		playDown.setVisible(false);
+		this.infoBar = this.add.text(270, 9, 'Wave '+WAVE+': 10 '+ENEMY_ARRAY[WAVE-1].enemyName, { fontFamily: 'Arial', fontSize: 15, color: '#00ff00' });
+		this.goldBar = this.add.text(50, 40, 'Gold: '+GOLD, { fontFamily: 'Arial', fontSize: 15, color: '#ffd700'});
+		
+		/* HUD.setDepth(1);
+		volume.setDepth(1);
+		volDown.setDepth(1);
+		play.setDepth(1);
+		playDown.setDepth(1);
+		this.infoBar.setDepth(1); */
+		
+		volume.setInteractive({ useHandCursor: true });
+			volume.on("pointerover", ()=>{
+			volDown.setVisible(true);
+		});
+		volume.on("pointerout", ()=>{
+			volDown.setVisible(false);
+		});
+		
+		volume.on("pointerup", ()=>{
+			if(sceneA.bgm.isPaused)
+			{
+				sceneA.bgm.resume();
+			}
+			else if(sceneA.bgm.isPlaying)
+			{
+				sceneA.bgm.pause();
+			}
+			else
+			{
+				sceneA.bgm.play();
+			}
+		});
+		
+		play.setInteractive({ useHandCursor: true });
+		play.on("pointerover", ()=>{
+			playDown.setVisible(true);
+		});
+		play.on("pointerout", ()=>{
+			playDown.setVisible(false);
+		});
+		
+		play.on("pointerup", ()=>{
+			if(sceneA.scene.isActive())
+			{
+				sceneA.scene.pause();
+				sceneA.bgm.pause();
+			}
+			else
+			{
+				sceneA.scene.resume();
+				sceneA.bgm.resume();
+			}
+		});
+    }
+
+    update() {
+        this.infoBar.setText('Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[WAVE-1].enemyName);
+        this.goldBar.setText('Gold: '+GV.GOLD);
+    }
+
+}
+
+//--------------------------------------------GAME-----------------------------------------//
 
 export class GameScene extends Phaser.Scene {
     constructor(){
@@ -876,117 +835,116 @@ export class GameScene extends Phaser.Scene {
 
     //create function initializes and adds assets to game
     create() {
-        /*creates a group for a tower type, that way we can use TOWER_GROUP.get(towerStats) to instantiate new towers easily
-	loop through TOWER_ARRAY to get each tower object
-	then add each object to TOWER_GROUP arr
-	we do this becuase TOWER_GROUP can now be easily used to manipulate tower objects with Phaser functions.*/
-	//loop set to 2 since we only have 2 developed classes at the moment
-	for(var i = 0; i < 3; i++) {
-		TOWER_GROUP[TOWER_ARRAY[i].towerId] = this.add.group({ classType: eval(TOWER_ARRAY[i].towerName), runChildUpdate: true });
-	}
-	
-	//enemy group will be a loop similar to tower group
-	for (var i = 0; i < 4; i++) {
-	    ENEMY_GROUP[ENEMY_ARRAY[i].enemyId] = this.physics.add.group({classType: eval(ENEMY_ARRAY[i].enemyName), runChildUpdate: true});
-	}
-	//ENEMY_GROUP = this.physics.add.group({ classType: Deathknight, runChildUpdate: true }); //key: 'walk_down_', frame: [1, 2, 3, 4], repeat: 5, active: true });
-	
-	//turned into attack group soon for different attack types
-	ATTACKS_GROUP = this.physics.add.group({ classType: Attack, runChildUpdate: true });
-	
-	//build the game map, this includes pathing, map image, background sounds, and general game assets
-	buildMap(this);
-	
-	//input related actions in userAction function
-	this.input.on('pointerdown', function (pointer){userAction(pointer, this)});
-	
-	//create animations
-	createAnimations(this, ENEMY_ARRAY);
-	
-    //create animations
-	/* this.anims.create({
-	    key: 'deathknight_down',
-	    frames: this.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }),
-	    frameRate: 5,
-	    repeat: -1
-	});
-	this.anims.create({
-	    key: 'deathknight_right',
-	    frames: this.anims.generateFrameNames('deathknight', { prefix: 'walk_right_', start: 1, end: 4 }),
-	    frameRate: 5,
-	    repeat: -1
-	});
+		/*creates a group for a tower type, that way we can use TOWER_GROUP.get(towerStats) to instantiate new towers easily
+		loop through TOWER_ARRAY to get each tower object
+		then add each object to TOWER_GROUP arr
+		we do this becuase TOWER_GROUP can now be easily used to manipulate tower objects with Phaser functions.*/
+		//loop set to 2 since we only have 2 developed classes at the moment
+		for(var i = 0; i < 3; i++) {
+			GV.TOWER_GROUP[GV.TOWER_ARRAY[i].towerId] = this.add.group({ classType: eval(GV.TOWER_ARRAY[i].towerName), runChildUpdate: true });
+		}
+		
+		//enemy group will be a loop similar to tower group
+		for (var i = 0; i < 4; i++) {
+			GV.ENEMY_GROUP[GV.ENEMY_ARRAY[i].enemyId] = this.physics.add.group({classType: eval(GV.ENEMY_ARRAY[i].enemyName), runChildUpdate: true});
+		}
+		//ENEMY_GROUP = this.physics.add.group({ classType: Deathknight, runChildUpdate: true }); //key: 'walk_down_', frame: [1, 2, 3, 4], repeat: 5, active: true });
+		
+		//turned into attack group soon for different attack types
+		GV.ATTACKS_GROUP = this.physics.add.group({ classType: Attack, runChildUpdate: true });
+		
+		//build the game map, this includes pathing, map image, background sounds, and general game assets
+		FN.buildMap(this);
+		
+		//input related actions in userAction function
+		this.input.on('pointerdown', function (pointer){FN.userAction(pointer, this)});
+		
+		//create animations
+		FN.createAnimations(this, GV.ENEMY_ARRAY);
+		
+		//create animations
+		/* this.anims.create({
+			key: 'deathknight_down',
+			frames: this.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }),
+			frameRate: 5,
+			repeat: -1
+		});
+		this.anims.create({
+			key: 'deathknight_right',
+			frames: this.anims.generateFrameNames('deathknight', { prefix: 'walk_right_', start: 1, end: 4 }),
+			frameRate: 5,
+			repeat: -1
+		});
 
-        //Skeleton Animations
-	this.anims.create({
-	    key: 'skeleton_down',
-	    frames: this.anims.generateFrameNames('skeleton', {prefix: 'walk_down_', start:1, end: 4}),
-	    frameRate: 5,
-	    repeat: -1
-	});
+			//Skeleton Animations
+		this.anims.create({
+			key: 'skeleton_down',
+			frames: this.anims.generateFrameNames('skeleton', {prefix: 'walk_down_', start:1, end: 4}),
+			frameRate: 5,
+			repeat: -1
+		});
 
-	this.anims.create({
-	    key: 'skeleton_right',
-	    frames: this.anims.generateFrameNames('skeleton', {prefix: 'walk_right_', start:1, end: 4}),
-	    frameRate: 5,
-	    repeat: -1
-	});
+		this.anims.create({
+			key: 'skeleton_right',
+			frames: this.anims.generateFrameNames('skeleton', {prefix: 'walk_right_', start:1, end: 4}),
+			frameRate: 5,
+			repeat: -1
+		});
 
-        //Bat Animations
-	this.anims.create({
-	    key: 'bat_down',
-	    frames: this.anims.generateFrameNames('bat', {prefix: 'fly_down_', start:1, end: 5}),
-	    frameRate: 5,
-	    repeat: -1
-	});
+			//Bat Animations
+		this.anims.create({
+			key: 'bat_down',
+			frames: this.anims.generateFrameNames('bat', {prefix: 'fly_down_', start:1, end: 5}),
+			frameRate: 5,
+			repeat: -1
+		});
 
-	this.anims.create({
-	    key: 'bat_right',
-	    frames: this.anims.generateFrameNames('bat', {prefix: 'fly_right_', start:1, end: 5}),
-	    frameRate: 5,
-	    repeat: -1
-	});
-        //Ogre Animations
-	this.anims.create({
-	    key: 'ogre_down',
-	    frames: this.anims.generateFrameNames('ogre', {prefix: 'walk_down_', start:1, end: 6}),
-	    frameRate: 5,
-	    repeat: -1
-	});
+		this.anims.create({
+			key: 'bat_right',
+			frames: this.anims.generateFrameNames('bat', {prefix: 'fly_right_', start:1, end: 5}),
+			frameRate: 5,
+			repeat: -1
+		});
+			//Ogre Animations
+		this.anims.create({
+			key: 'ogre_down',
+			frames: this.anims.generateFrameNames('ogre', {prefix: 'walk_down_', start:1, end: 6}),
+			frameRate: 5,
+			repeat: -1
+		});
 
-	this.anims.create({
-	    key: 'ogre_right',
-	    frames: this.anims.generateFrameNames('ogre', {prefix: 'walk_right_', start:1, end: 6}),
-	    frameRate: 5,
-	    repeat: -1
-	}); */
+		this.anims.create({
+			key: 'ogre_right',
+			frames: this.anims.generateFrameNames('ogre', {prefix: 'walk_right_', start:1, end: 6}),
+			frameRate: 5,
+			repeat: -1
+		}); */
 
-	/*let nextScene = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2, 'nextScene').setDepth(1);
-	nextScene.setInteractive();
-	nextScene.on("pointerdown", ()=>{
-		this.scene.start(CST.SCENES.GAME2, "Armory Level");
-	})*/
+		/*let nextScene = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2, 'nextScene').setDepth(1);
+		nextScene.setInteractive();
+		nextScene.on("pointerdown", ()=>{
+			this.scene.start(CST.SCENES.GAME2, "Armory Level");
+		})*/
     }
 
     //update function constantly refreshes so to progress game
     update(time, delta) {  
-            if (time > this.nextEnemy && SPAWNED <= 10)
-            {
-                var enemy = ENEMY_GROUP[WAVE-1].get(ENEMY_ARRAY[WAVE-1]);
-                if (enemy)
-                {
-                    enemy.setActive(true);
-                    enemy.setVisible(true);
-                    enemy.startOnPath();
-                    //ENEMY_SPEED = 1/Math.floor((Math.random() * (2000 - 500)) + 500);
-                    this.nextEnemy = time + ENEMY_SPAWN_RATE;
-                    SPAWNED += 1;
-                }
-                if (SPAWNED == 10 && WAVE < 4)
-                {
-                    SPAWNED = 0;
-                    WAVE += 1;
-                }
-            }
+		if (time > this.nextEnemy && GV.SPAWNED <= 10)
+		{
+			var enemy = GV.ENEMY_GROUP[GV.WAVE-1].get(GV.ENEMY_ARRAY[GV.WAVE-1]);
+			if (enemy)
+			{
+				enemy.setActive(true);
+				enemy.setVisible(true);
+				enemy.startOnPath();
+				this.nextEnemy = time + GV.ENEMY_SPAWN_RATE;
+				GV.SPAWNED += 1;
+			}
+			if (GV.SPAWNED == 10 && GV.WAVE < 4)
+			{
+				GV.SPAWNED = 0;
+				GV.WAVE += 1;
+			}
+		}
     }
 }
