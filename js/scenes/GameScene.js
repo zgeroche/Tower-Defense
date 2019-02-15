@@ -51,7 +51,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     //update function constantly refreshes so to progress game
-    update(time, delta, PATH) {  
+    update(time, delta) {  
 
         if (time > this.nextEnemy)
         {

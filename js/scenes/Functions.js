@@ -28,7 +28,7 @@ export function buildMap(scene){
 	
 	//misc
 	scene.nextEnemy = 0;
-	scene.physics.add.overlap(globals.ENEMY_GROUP, globals.ATTACKS_GROUP, globals.damageEnemy);
+	scene.physics.add.overlap(globals.ENEMY_GROUP, globals.ATTACKS_GROUP, damageEnemy);
 	scene.input.mouse.disableContextMenu();
 }
 
