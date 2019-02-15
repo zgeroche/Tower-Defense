@@ -26,8 +26,9 @@ export class GameScene extends Phaser.Scene {
 		we do this becuase TOWER_GROUP can now be easily used to manipulate tower objects with Phaser functions.*/
 		//loop set to 3 since we only have 3 developed classes at the moment
 		for(var i = 0; i < 3; i++) {
-			//globals.TOWER_GROUP[globals.TOWER_ARRAY[i].towerId] = this.add.group({ classType: globals.TOWER_ARRAY[i].towerName, runChildUpdate: true });
-			globals.TOWER_GROUP[globals.TOWER_ARRAY[i].towerId] = this.add.group({ classType: classes.Peasant, runChildUpdate: true });
+			var className = "classes."+globals.TOWER_ARRAY[i].towerName;
+			console.log(className);
+			globals.TOWER_GROUP[globals.TOWER_ARRAY[i].towerId] = this.add.group({ classType: eval(className), runChildUpdate: true });
 		}
 		
 		//enemy group will be a loop similar to tower group
