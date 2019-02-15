@@ -8,7 +8,7 @@ export class LoadScene extends Phaser.Scene{
     }
 
     preload(){
-		this.load.image('HUD', 'assets/HUD.png');
+		this.load.image('HUDimg', 'assets/HUD.png');
 		this.load.image('vol', 'assets/volume.png');
 		this.load.image('volDown', 'assets/volDown.png');
 		this.load.image('play', 'assets/play.png');

@@ -1,4 +1,5 @@
 var GV = require('./Globals.js');
+var CS = require('./Classes.js');
 
 //build the pathing and map for level
 export function buildMap(scene){
@@ -15,13 +16,18 @@ export function buildMap(scene){
 	//add map image
 	scene.add.image(320, 256, 'map');
 
+	//create animations
+	createAnimations(scene, GV.ENEMY_ARRAY);
+
 	//add background music
 	scene.bgm = scene.sound.add('background');
 	scene.bgm.volume = 0.04;
 	scene.bgm.loop = true;
 	//bgm.play();																//sounds
 	
-	//scene.scene.add('HUD', HUD, true, { x: 640, y: 66 });
+	console.log(CS.HUD);
+	
+	//scene.scene.add('HUD', CS.HUD, true, { x: 640, y: 66 });
 	
 	//misc
 	scene.nextEnemy = 0;

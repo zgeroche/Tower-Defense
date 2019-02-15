@@ -89,9 +89,7 @@ var MAP =  [[ 0,-1, 0,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1, 0,-1, 0,-1],
             [-1,-1,-1,-1,-1,-1, 0,-1, 0,-1]]; */
 			
-var GV = require('./Globals.js');
 //------------------------------------------FUNCTIONS---------------------------------------------------	
-var FN = require('./Functions.js');
 
 /* //build the pathing and map for level
 function buildMap(scene){
@@ -231,7 +229,7 @@ function addAttack(x, y, angle, damage, type) {
 } */
 //---------------------------------------------------------CLASSES--------------------------------------------
 //enemy class
-class Enemy extends Phaser.GameObjects.Sprite {
+/* class Enemy extends Phaser.GameObjects.Sprite {
 
     constructor (scene, stats)
     {
@@ -356,9 +354,9 @@ class Deathknight extends Enemy {
 		
 		
 
-		/* this.walk = scene.sound.add('walk');
-		this.walk.volume = 0.01;
-		this.walk.loop = true; */
+		//this.walk = scene.sound.add('walk');
+		//this.walk.volume = 0.01;
+		//this.walk.loop = true;
 	}
     turnDown()
     {
@@ -755,15 +753,15 @@ class HUD extends Phaser.Scene {
 		var playDown = this.add.image(556,16, 'playDown');
 		volDown.setVisible(false);
 		playDown.setVisible(false);
-		this.infoBar = this.add.text(270, 9, 'Wave '+WAVE+': 10 '+ENEMY_ARRAY[WAVE-1].enemyName, { fontFamily: 'Arial', fontSize: 15, color: '#00ff00' });
-		this.goldBar = this.add.text(50, 40, 'Gold: '+GOLD, { fontFamily: 'Arial', fontSize: 15, color: '#ffd700'});
+		this.infoBar = this.add.text(270, 9, 'Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[WAVE-1].enemyName, { fontFamily: 'Arial', fontSize: 15, color: '#00ff00' });
+		this.goldBar = this.add.text(50, 40, 'Gold: '+GV.GOLD, { fontFamily: 'Arial', fontSize: 15, color: '#ffd700'});
 		
-		/* HUD.setDepth(1);
-		volume.setDepth(1);
-		volDown.setDepth(1);
-		play.setDepth(1);
-		playDown.setDepth(1);
-		this.infoBar.setDepth(1); */
+		//HUD.setDepth(1);
+		//volume.setDepth(1);
+		//volDown.setDepth(1);
+		//play.setDepth(1);
+		//playDown.setDepth(1);
+		//this.infoBar.setDepth(1);
 		
 		volume.setInteractive({ useHandCursor: true });
 			volume.on("pointerover", ()=>{
@@ -815,7 +813,11 @@ class HUD extends Phaser.Scene {
         this.goldBar.setText('Gold: '+GV.GOLD);
     }
 
-}
+} */
+
+var GV = require('./Globals.js');	
+var FN = require('./Functions.js');
+var CS = require('./Classes.js');
 
 //--------------------------------------------GAME-----------------------------------------//
 
@@ -841,26 +843,25 @@ export class GameScene extends Phaser.Scene {
 		we do this becuase TOWER_GROUP can now be easily used to manipulate tower objects with Phaser functions.*/
 		//loop set to 2 since we only have 2 developed classes at the moment
 		for(var i = 0; i < 3; i++) {
-			GV.TOWER_GROUP[GV.TOWER_ARRAY[i].towerId] = this.add.group({ classType: eval(GV.TOWER_ARRAY[i].towerName), runChildUpdate: true });
+			var towerClass = "CS."+GV.TOWER_ARRAY[i].towerName;
+			GV.TOWER_GROUP[GV.TOWER_ARRAY[i].towerId] = this.add.group({ classType: eval(towerClass), runChildUpdate: true });
 		}
 		
 		//enemy group will be a loop similar to tower group
 		for (var i = 0; i < 4; i++) {
-			GV.ENEMY_GROUP[GV.ENEMY_ARRAY[i].enemyId] = this.physics.add.group({classType: eval(GV.ENEMY_ARRAY[i].enemyName), runChildUpdate: true});
+			var enemyClass = "CS."+GV.ENEMY_ARRAY[i].enemyName;
+			GV.ENEMY_GROUP[GV.ENEMY_ARRAY[i].enemyId] = this.physics.add.group({classType: eval(enemyClass), runChildUpdate: true});
 		}
 		//ENEMY_GROUP = this.physics.add.group({ classType: Deathknight, runChildUpdate: true }); //key: 'walk_down_', frame: [1, 2, 3, 4], repeat: 5, active: true });
 		
 		//turned into attack group soon for different attack types
-		GV.ATTACKS_GROUP = this.physics.add.group({ classType: Attack, runChildUpdate: true });
+		GV.ATTACKS_GROUP = this.physics.add.group({ classType: CS.Attack, runChildUpdate: true });
 		
-		//build the game map, this includes pathing, map image, background sounds, and general game assets
+		//build the game map, this includes pathing, map image, animations, background sounds, and general game assets
 		FN.buildMap(this);
 		
 		//input related actions in userAction function
 		this.input.on('pointerdown', function (pointer){FN.userAction(pointer, this)});
-		
-		//create animations
-		FN.createAnimations(this, GV.ENEMY_ARRAY);
 		
 		//create animations
 		/* this.anims.create({
