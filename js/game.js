@@ -1,6 +1,7 @@
 import {MenuScene} from "./scenes/MenuScene";
 import {GameScene} from "./scenes/GameScene";
 import {LoadScene} from "./scenes/LoadScene";
+import {Globals} from "./scenes/Globals";
 
 //-------------------------------------------------------SETUP-----------------------------------------------------
 //master config for game
@@ -19,7 +20,8 @@ var config = {
     scene: [
         LoadScene,
         MenuScene,
-        GameScene]
+        GameScene,
+		Globals]
 
 };
 

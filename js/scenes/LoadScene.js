@@ -5,8 +5,9 @@ export class LoadScene extends Phaser.Scene{
         super({
             key: CST.SCENES.LOAD
         })
+		
     }
-
+	
     preload(){
 		this.load.image('HUD', 'assets/HUD.png');
 		this.load.image('vol', 'assets/volume.png');
