@@ -16,18 +16,14 @@ export function buildMap(scene){
 	//add map image
 	scene.add.image(320, 256, 'map');
 
-	//create animations
-	createAnimations(scene, GV.ENEMY_ARRAY);
-
 	//add background music
 	scene.bgm = scene.sound.add('background');
 	scene.bgm.volume = 0.04;
 	scene.bgm.loop = true;
 	//bgm.play();																//sounds
 	
-	console.log(CS.HUD);
-	
 	//scene.scene.add('HUD', CS.HUD, true, { x: 640, y: 66 });
+	console.log(scene.scene.get('HUD'));
 	
 	//misc
 	scene.nextEnemy = 0;
