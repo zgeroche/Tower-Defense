@@ -6,6 +6,7 @@ var path;
 var TOWER_GROUP = [];
 var ENEMY_GROUP = [];
 var ATTACKS_GROUP;
+var BUTTON_GROUP;
 var SPAWNED = 0;
 var WAVE = 1;
 var GOLD = 0;
@@ -125,36 +126,38 @@ function userAction(pointer, scene){
 	var i = Math.floor(pointer.y/64);
 	var j = Math.floor(pointer.x/64);
 	if (pointer.leftButtonDown())
-        {
-			//if new tower
-			if(map[i][j] == 0)
-			{
-				var newTower = TOWER_GROUP[peasantStats.towerId].get(peasantStats);
-				newTower.placeTower(pointer,scene);
-			}
-			//if upgrade tower
-			else if(map[i][j].towerId == 0)
-			{
-				var currTower = map[i][j];
-				var newTower = TOWER_GROUP[soldierStats.towerId].get(soldierStats);
-				currTower.upgradeTower(pointer, newTower, scene);
-			}
-			else if(map[i][j].towerId == 1)
-			{
-			    var currTower = map[i][j];
-			    var newTower = TOWER_GROUP[archerStats.towerId].get(archerStats);
-			    currTower.upgradeTower(pointer, newTower, scene);
-			}
-        }
-        else if (pointer.rightButtonDown())
-        {
-			var tower = map[i][j];
-			if(typeof tower === "object")
-			{
-				tower.removeTower(pointer);
-			}
+    {
+		//if new tower
+		if(map[i][j] == 0)
+		{
+			var newTower = TOWER_GROUP[peasantStats.towerId].get(peasantStats);
+			newTower.placeTower(pointer,scene);
+			//var blackBox = BUTTON_GROUP.get();
+			//blackBox.makeButton(pointer, scene);
+		}
+		//if upgrade tower
+		else if(map[i][j].towerId == 0)
+		{
+			var currTower = map[i][j];
+			var newTower = TOWER_GROUP[soldierStats.towerId].get(soldierStats);
+			currTower.upgradeTower(pointer, newTower, scene);
+		}
+		else if(map[i][j].towerId == 1)
+		{
+			var currTower = map[i][j];
+			var newTower = TOWER_GROUP[archerStats.towerId].get(archerStats);
+			currTower.upgradeTower(pointer, newTower, scene);
+		}
+	}
+	else if (pointer.rightButtonDown())
+	{
+		var tower = map[i][j];
+		if(typeof tower === "object")
+		{
+			tower.removeTower(pointer);
+		}
 
-        }
+	}
 }
 
 function getEnemy(x, y, distance, hitFly) {
@@ -629,10 +632,7 @@ class Peasant extends Tower {
 		super(scene, stats);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'peasant', 'sprite35');
 	}
-	pFn()
-	{
-		console.log(this.towerName);
-	}
+	
 
 }
 
@@ -642,10 +642,7 @@ class Soldier extends Tower {
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'soldier', 'sprite25');
 
 	}
-	sFn()
-	{
-		console.log(this.towerName);
-	}
+	
 
 }
 
@@ -655,10 +652,7 @@ class Archer extends Tower {
         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'archer', 'tile051');
 		
     }
-    aFn()
-    {
-        console.log(this.towerName);
-    }
+
 
 }
 
@@ -714,8 +708,9 @@ class HealthBar {
         if (this.value < 0.3 * this.maxValue) {
             this.bar.fillStyle(0xff0000);
         }
-        else if (this.value < 0.6 * this.maxValue)
+        else if (this.value < 0.6 * this.maxValue) {
             this.bar.fillStyle(0xffff00);
+        }
         else {
             this.bar.fillStyle(0x00ff00);
         }
@@ -792,6 +787,34 @@ class Attack extends Phaser.GameObjects.Image {
 
 };
 
+class TowerButton extends Phaser.GameObjects.Image {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'towerbutton');
+	}
+	
+	makeButton(pointer,scene) {
+		var i = Math.floor(pointer.y/64);
+		var j = Math.floor(pointer.x/64);
+		if(map[i][j] === 0) {
+			if (this)
+			{
+				this.setActive(true);
+				this.setVisible(true);
+				this.y = pointer.y//i * 64 + 64/2;
+				this.x = pointer.x//j * 64 + 64/2;
+				map[i][j] = this;
+				this.setInteractive({ useHandCursor: true });
+			}   
+		}
+	}
+};
+		
+		
+
+
+
 
 export class GameScene extends Phaser.Scene {
     constructor(){
@@ -827,11 +850,17 @@ export class GameScene extends Phaser.Scene {
 	//turned into attack group soon for different attack types
 	ATTACKS_GROUP = this.physics.add.group({ classType: Attack, runChildUpdate: true });
 	
+	//test button group
+	BUTTON_GROUP = this.add.group({ classType: TowerButton, runChildUpdate: false });
+	
 	//build the game map, this includes pathing, map image, background sounds, and general game assets
 	buildMap(this);
 	
 	//input related actions in userAction function
 	this.input.on('pointerdown', function (pointer){userAction(pointer, this)});
+	this.input.on('gameobjectout', function(pointer, gameObject) {
+		gameObject.destroy();
+	});
 
     //create animations
 	this.anims.create({
