@@ -2,7 +2,7 @@ import {CST} from "../CST";
 //import {Enemy} from "../Enemy";
 //import {GlobalVariables} from "../GlobalVariables";
 
-var path;
+/* var PATH;
 var TOWER_GROUP = [];
 var ENEMY_GROUP = [];
 var ATTACKS_GROUP;
@@ -44,7 +44,7 @@ var lightningmageStats = {towerId:20, towerName:"LightningMage", upgrade:false, 
 var warlockStats = 		 {towerId:21, towerName:"Warlock", 		 upgrade:false, str:15, atkRange:"long",      atkType:"magical",  atkRate:"slow", 	  hitFly:true};
 var priestessStats =     {towerId:22, towerName:"Priestess", 	 upgrade:false, str:13, atkRange:"medium",    atkType:"magical",  atkRate:"medium",   hitFly:true};
 
-var towerArr = [peasantStats, 
+var TOWER_ARRAY = [peasantStats, 
 			soldierStats, 
 			archerStats, 
 			apprenticeStats, 
@@ -68,40 +68,83 @@ var towerArr = [peasantStats,
 			warlockStats,
 			priestessStats];
 
-var deathknightStats =  {enemyId: 0,    enemyName: "Deathknight",   speed: 1,   hp: 500,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 1};
-var skeletonStats =     {enemyId: 1,    enemyName: "Skeleton",      speed: 1,   hp: 600,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 2};
-var batStats =          {enemyId: 2,    enemyName: "Bat",           speed: 1,   hp: 300,    magicArmor: 0,  physicalArmor: 0,   flying: true,   value: 1};
-var ogreStats =         {enemyId: 3,    enemyName: "Ogre",          speed: .75, hp: 2000,   magicArmor: 10, physicalArmor: 10,  flying: false,  value: 5};
-var spiderStats =       {enemyId: 4,    enemyName: "Spider",        speed: 1.5, hp: 450,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 1};   
+var deathknightStats =  {enemyId: 0,    enemyName: "Deathknight",   speed: 1,   hp: 500,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 1, frameEnd: 4};
+var skeletonStats =     {enemyId: 1,    enemyName: "Skeleton",      speed: 1,   hp: 600,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 2, frameEnd: 4};
+var batStats =          {enemyId: 2,    enemyName: "Bat",           speed: 1,   hp: 300,    magicArmor: 0,  physicalArmor: 0,   flying: true,   value: 1, frameEnd: 5};
+var ogreStats =         {enemyId: 3,    enemyName: "Ogre",          speed: .75, hp: 2000,   magicArmor: 10, physicalArmor: 10,  flying: false,  value: 5, frameEnd: 6};
+var spiderStats =       {enemyId: 4,    enemyName: "Spider",        speed: 1.5, hp: 450,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 1, frameEnd: 4};   
 
-var enemyArr = [deathknightStats,
+var ENEMY_ARRAY = [deathknightStats,
                 skeletonStats,
                 batStats,
                 ogreStats
 ];
 //map for tower placement, 0=can place, -1=cannot place, towerObj=tower already occupying space
-var map =  [[ 0,-1, 0,-1,-1,-1,-1,-1,-1,-1],
+var MAP =  [[ 0,-1, 0,-1,-1,-1,-1,-1,-1,-1],
             [ 0,-1, 0, 0, 0, 0, 0, 0, 0,-1],
             [ 0,-1,-1,-1,-1,-1,-1,-1, 0,-1],
             [ 0, 0, 0, 0, 0, 0, 0,-1, 0,-1],
             [-1,-1,-1,-1,-1,-1, 0,-1, 0,-1],
             [-1,-1,-1,-1,-1,-1, 0,-1, 0,-1],
             [-1,-1,-1,-1,-1,-1, 0,-1, 0,-1],
-            [-1,-1,-1,-1,-1,-1, 0,-1, 0,-1]];
+            [-1,-1,-1,-1,-1,-1, 0,-1, 0,-1]]; */
 			
-
+var GV = require('./Globals.js');
+var PATH = GV.PATH;
+var TOWER_GROUP = GV.TOWER_GROUP;
+var ENEMY_GROUP = GV.ENEMY_GROUP;
+var ATTACKS_GROUP = GV.ATTACKS_GROUP;
+var SPAWNED = GV.SPAWNED;
+var WAVE = GV.WAVE;
+var GOLD = GV.GOLD;
+var ENEMY_SPEED = GV.ENEMY_SPEED;
+var ENEMY_HP = GV.ENEMY_HP;
+var ENEMY_SPAWN_RATE = GV.ENEMY_SPAWN_RATE;
+var ATTACK_DAMAGE = GV.ATTACK_DAMAGE;
+var TOWER_FIRE_RATE = GV.TOWER_FIRE_RATE;
+var peasantStats = GV.peasantStats;
+var soldierStats = GV.soldierStats;
+var archerStats = GV.archerStats;
+var apprenticeStats = GV.apprenticeStats;
+var knightStats = GV.knightStats;
+var duelistStats = GV.duelistStats;
+var riflemanStats = GV.riflemanStats;
+var rangerStats = GV.rangerStats;
+var wizardStats = GV.wizardStats;
+var sorceressStats = GV.sorceressStats;
+var commanderStats = GV.commanderStats;
+var paladinStats = GV.paladinStats;
+var swordmasterStats = GV.swordmasterStats;
+var cutpurseStats = GV.cutpurseStats;
+var cannoneerStats = GV.cannoneerStats;
+var sharpshooterStats = GV.sharpshooterStats;
+var beastmasterStats = GV.beastmasterStats;
+var assassinStats = GV.assassinStats;
+var firemageStats = GV.firemageStats;
+var icemageStats = GV.icemageStats;
+var lightningmageStats = GV.lightningmageStats;
+var warlockStats = GV.warlockStats;
+var priestessStats = GV.priestessStats;
+var TOWER_ARRAY = GV.TOWER_ARRAY;
+var deathknightStats = GV.deathknightStats;
+var skeletonStats = GV.skeletonStats;
+var batStats = GV.batStats;
+var ogreStats = GV.ogreStats;
+var spiderStats = GV. spiderStats;
+var ENEMY_ARRAY = GV.ENEMY_ARRAY;
+var MAP = GV.MAP
 //------------------------------------------FUNCTIONS---------------------------------------------------			
 //build the pathing and map for level
 function buildMap(scene){
 	//path to which enemey follows
     var graphics = scene.add.graphics();    
     drawLines(graphics);
-    path = scene.add.path(96, -32);
-    path.lineTo(96, 164);
-    path.lineTo(480, 164);
-    path.lineTo(480, 544);
+    PATH = scene.add.path(96, -32);
+    PATH.lineTo(96, 164);
+    PATH.lineTo(480, 164);
+    PATH.lineTo(480, 544);
     graphics.lineStyle(0, 0xffffff, 1);
-    path.draw(graphics);
+    PATH.draw(graphics);
     
 	//add map image
 	scene.add.image(320, 256, 'map');
@@ -120,6 +163,30 @@ function buildMap(scene){
     scene.input.mouse.disableContextMenu();
 }
 
+//create animations for all enemies
+function createAnimations(scene, sprites) {
+    for (var i = 0; i < sprites.length; i++) {
+		
+		var enemy = sprites[i].enemyName.toLowerCase();
+		var frameEnd = sprites[i].frameEnd;
+		var movement = "walk";
+		if(sprites[i].flying){movement = "fly";}
+		
+        scene.anims.create({
+			key: enemy + "_down",
+			frames: scene.anims.generateFrameNames(enemy, { prefix: movement+'_down_', start: 1, end: frameEnd }),
+			frameRate: 5,
+			repeat: -1
+        });
+		scene.anims.create({
+			key: enemy + "_right",
+			frames: scene.anims.generateFrameNames(enemy, { prefix: movement+'_right_', start: 1, end: frameEnd }),
+			frameRate: 5,
+			repeat: -1
+        }); 
+    }
+}
+
 //user input related actions 
 function userAction(pointer, scene){
 	var i = Math.floor(pointer.y/64);
@@ -127,28 +194,28 @@ function userAction(pointer, scene){
 	if (pointer.leftButtonDown())
         {
 			//if new tower
-			if(map[i][j] == 0)
+			if(MAP[i][j] == 0)
 			{
 				var newTower = TOWER_GROUP[peasantStats.towerId].get(peasantStats);
 				newTower.placeTower(pointer,scene);
 			}
 			//if upgrade tower
-			else if(map[i][j].towerId == 0)
+			else if(MAP[i][j].towerId == 0)
 			{
-				var currTower = map[i][j];
+				var currTower = MAP[i][j];
 				var newTower = TOWER_GROUP[soldierStats.towerId].get(soldierStats);
 				currTower.upgradeTower(pointer, newTower, scene);
 			}
-			else if(map[i][j].towerId == 1)
+			else if(MAP[i][j].towerId == 1)
 			{
-			    var currTower = map[i][j];
+			    var currTower = MAP[i][j];
 			    var newTower = TOWER_GROUP[archerStats.towerId].get(archerStats);
 			    currTower.upgradeTower(pointer, newTower, scene);
 			}
         }
         else if (pointer.rightButtonDown())
         {
-			var tower = map[i][j];
+			var tower = MAP[i][j];
 			if(typeof tower === "object")
 			{
 				tower.removeTower(pointer);
@@ -231,7 +298,7 @@ class HUD extends Phaser.Scene {
 		var playDown = this.add.image(556,16, 'playDown');
 		volDown.setVisible(false);
 		playDown.setVisible(false);
-		this.infoBar = this.add.text(270, 9, 'Wave '+WAVE+': 10 '+enemyArr[WAVE-1].enemyName, { fontFamily: 'Arial', fontSize: 15, color: '#00ff00' });
+		this.infoBar = this.add.text(270, 9, 'Wave '+WAVE+': 10 '+ENEMY_ARRAY[WAVE-1].enemyName, { fontFamily: 'Arial', fontSize: 15, color: '#00ff00' });
 		this.goldBar = this.add.text(50, 40, 'Gold: '+GOLD, { fontFamily: 'Arial', fontSize: 15, color: '#ffd700'});
 		
 		/* HUD.setDepth(1);
@@ -287,7 +354,7 @@ class HUD extends Phaser.Scene {
     }
 
     update() {
-        this.infoBar.setText('Wave '+WAVE+': 10 '+enemyArr[WAVE-1].enemyName);
+        this.infoBar.setText('Wave '+WAVE+': 10 '+ENEMY_ARRAY[WAVE-1].enemyName);
         this.goldBar.setText('Gold: '+GOLD);
     }
 
@@ -332,7 +399,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
 		
 		//this.walk.play();																//sounds
 		
-		path.getPoint(this.follower.t, this.follower.vec);
+		PATH.getPoint(this.follower.t, this.follower.vec);
 		
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
 		
@@ -375,7 +442,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
 		//ENEMY_SPEED = 1/Math.floor((Math.random() * (10000 - 5000)) + 5000);
 		this.follower.t += ENEMY_SPEED * delta * this.speed;
 		
-		path.getPoint(this.follower.t, this.follower.vec);
+		PATH.getPoint(this.follower.t, this.follower.vec);
 		
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
 		this.text.setPosition(this.follower.vec.x, this.follower.vec.y);									//textHP
@@ -410,7 +477,7 @@ class Deathknight extends Enemy {
 		Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'deathknight');
 
 		
-        this.anims.play('dkdown');
+        this.anims.play('deathknight_down');
 		
 		//create sounds
 		this.death = scene.sound.add('dkDeath');
@@ -425,12 +492,12 @@ class Deathknight extends Enemy {
 	}
     turnDown()
     {
-        this.anims.play('dkdown');
+        this.anims.play('deathknight_down');
     }
 
     turnRight()
     {
-        this.anims.play('dkright');
+        this.anims.play('deathknight_right');
     }
 
 	pFn()
@@ -530,7 +597,7 @@ class Tower extends Phaser.GameObjects.Sprite{
 	placeTower(pointer,scene) {
 		var i = Math.floor(pointer.y/64);
 		var j = Math.floor(pointer.x/64);
-		if(map[i][j] === 0) {
+		if(MAP[i][j] === 0) {
 			//console.log(tower);
 			if (this)
 			{
@@ -542,8 +609,8 @@ class Tower extends Phaser.GameObjects.Sprite{
 				this.setVisible(true);
 				this.y = i * 64 + 64/2;
 				this.x = j * 64 + 64/2;
-				//map[i][j] = 1;
-				map[i][j] = this;
+				//MAP[i][j] = 1;
+				MAP[i][j] = this;
 				this.setInteractive({ useHandCursor: true });
 			}   
 			//console.log(TOWER_GROUP.getTotalUsed());
@@ -558,11 +625,11 @@ class Tower extends Phaser.GameObjects.Sprite{
 	removeTower(pointer) {
 		var i = Math.floor(pointer.y/64);
 		var j = Math.floor(pointer.x/64);
-		if(map[i][j] !== 0) {
+		if(MAP[i][j] !== 0) {
 			this.setActive(false);
 			this.setVisible(false);
 			this.text.destroy();
-			map[i][j] = 0;												//remove from map
+			MAP[i][j] = 0;												//remove from map
 			TOWER_GROUP[this.towerId].remove(this, true, true);			//removes from group, if want to keep it as inactive then remove this line
 		}
 			
@@ -581,14 +648,14 @@ class Tower extends Phaser.GameObjects.Sprite{
 			this.text = newTower.towerName;
 			this.upgradeSound.play();
 
-            /* scene.tweens.add({
+            scene.scene.tweens.add({
                 targets: newTower, // on the player 
                 duration: 200, // for 200ms 
                 scaleX: 1.2, // that scale vertically by 20% 
                 scaleY: 1.2, // and scale horizontally by 20% 
                 alpha: 0.2,
                 yoyo: true, // at the end, go back to original scale 
-            }); */
+            });
 
 		}
 		else
@@ -810,17 +877,17 @@ export class GameScene extends Phaser.Scene {
     //create function initializes and adds assets to game
     create() {
         /*creates a group for a tower type, that way we can use TOWER_GROUP.get(towerStats) to instantiate new towers easily
-	loop through towerArr to get each tower object
+	loop through TOWER_ARRAY to get each tower object
 	then add each object to TOWER_GROUP arr
 	we do this becuase TOWER_GROUP can now be easily used to manipulate tower objects with Phaser functions.*/
 	//loop set to 2 since we only have 2 developed classes at the moment
 	for(var i = 0; i < 3; i++) {
-		TOWER_GROUP[towerArr[i].towerId] = this.add.group({ classType: eval(towerArr[i].towerName), runChildUpdate: true });
+		TOWER_GROUP[TOWER_ARRAY[i].towerId] = this.add.group({ classType: eval(TOWER_ARRAY[i].towerName), runChildUpdate: true });
 	}
 	
 	//enemy group will be a loop similar to tower group
 	for (var i = 0; i < 4; i++) {
-	    ENEMY_GROUP[enemyArr[i].enemyId] = this.physics.add.group({classType: eval(enemyArr[i].enemyName), runChildUpdate: true});
+	    ENEMY_GROUP[ENEMY_ARRAY[i].enemyId] = this.physics.add.group({classType: eval(ENEMY_ARRAY[i].enemyName), runChildUpdate: true});
 	}
 	//ENEMY_GROUP = this.physics.add.group({ classType: Deathknight, runChildUpdate: true }); //key: 'walk_down_', frame: [1, 2, 3, 4], repeat: 5, active: true });
 	
@@ -832,16 +899,19 @@ export class GameScene extends Phaser.Scene {
 	
 	//input related actions in userAction function
 	this.input.on('pointerdown', function (pointer){userAction(pointer, this)});
-
+	
+	//create animations
+	createAnimations(this, ENEMY_ARRAY);
+	
     //create animations
-	this.anims.create({
-	    key: 'dkdown',
+	/* this.anims.create({
+	    key: 'deathknight_down',
 	    frames: this.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }),
-	    frameRate: 3,
+	    frameRate: 5,
 	    repeat: -1
 	});
 	this.anims.create({
-	    key: 'dkright',
+	    key: 'deathknight_right',
 	    frames: this.anims.generateFrameNames('deathknight', { prefix: 'walk_right_', start: 1, end: 4 }),
 	    frameRate: 5,
 	    repeat: -1
@@ -889,7 +959,7 @@ export class GameScene extends Phaser.Scene {
 	    frames: this.anims.generateFrameNames('ogre', {prefix: 'walk_right_', start:1, end: 6}),
 	    frameRate: 5,
 	    repeat: -1
-	});
+	}); */
 
 	/*let nextScene = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2, 'nextScene').setDepth(1);
 	nextScene.setInteractive();
@@ -902,7 +972,7 @@ export class GameScene extends Phaser.Scene {
     update(time, delta) {  
             if (time > this.nextEnemy && SPAWNED <= 10)
             {
-                var enemy = ENEMY_GROUP[WAVE-1].get(enemyArr[WAVE-1]);
+                var enemy = ENEMY_GROUP[WAVE-1].get(ENEMY_ARRAY[WAVE-1]);
                 if (enemy)
                 {
                     enemy.setActive(true);
