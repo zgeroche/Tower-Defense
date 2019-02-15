@@ -33,6 +33,7 @@ export class LoadScene extends Phaser.Scene{
 		this.load.audio('upgradeSound', 'assets/Sounds/General Sounds/Positive Sounds/sfx_sounds_powerup6.wav');
 		
 		//load misc
+		this.load.image('towerbutton', './assets/blackbox.png');
 		this.load.image('attack', 'assets/coin.png');
 		this.load.image('menuscreen', './assets/bg.png', { frameWidth: 640, frameHeight: 512 });
         this.load.image('newgame', './assets/new.png');
