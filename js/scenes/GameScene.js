@@ -130,16 +130,31 @@ function userAction(pointer, scene){
 		//if new tower
 		if(map[i][j] == 0)
 		{
-			var newTower = TOWER_GROUP[peasantStats.towerId].get(peasantStats);
-			newTower.placeTower(pointer,scene);
-			//var blackBox = BUTTON_GROUP.get();
-			//blackBox.makeButton(pointer, scene);
+			//var newTower = TOWER_GROUP[peasantStats.towerId].get(peasantStats);
+			//newTower.placeTower(pointer,scene);
+			var blackBox = BUTTON_GROUP.get();
+			blackBox.priorityID = 1;
+			blackBox.makeButton(pointer, scene);
+			
+			blackBox.on("pointerout", ()=>{
+				blackBox.setActive(false);
+				blackBox.setVisible(false);
+			});
+			
+			blackBox.on("pointerdown", ()=>{
+				var newTower = TOWER_GROUP[peasantStats.towerId].get(peasantStats);
+				newTower.priorityID = 0;
+				newTower.placeTower(i, j, scene);
+				blackBox.setActive(false);
+				blackBox.setVisible(false);
+			});
 		}
 		//if upgrade tower
 		else if(map[i][j].towerId == 0)
 		{
 			var currTower = map[i][j];
 			var newTower = TOWER_GROUP[soldierStats.towerId].get(soldierStats);
+			newTower.priorityID = 0;
 			currTower.upgradeTower(pointer, newTower, scene);
 		}
 		else if(map[i][j].towerId == 1)
@@ -302,9 +317,6 @@ class Enemy extends Phaser.GameObjects.Sprite {
     constructor (scene, stats)
     {
         super(scene);
-        //dknight.animations.add('walk_down', 1, 4);
-        //this.anims.create({ key: 'down', frames: this.anims.generateFrameNames('deathknight', { prefix: 'walk_down_', start: 1, end: 4 }), frameRate: 5, repeat: -1 })
-		//var enemy = Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'deathknight');
 
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
         this.hp = stats.hp;
@@ -530,9 +542,9 @@ class Tower extends Phaser.GameObjects.Sprite{
 		
 	}
 	
-	placeTower(pointer,scene) {
-		var i = Math.floor(pointer.y/64);
-		var j = Math.floor(pointer.x/64);
+	placeTower(i, j, scene) {
+		//var i = Math.floor(pointer.y/64);
+		//var j = Math.floor(pointer.x/64);
 		if(map[i][j] === 0) {
 			//console.log(tower);
 			if (this)
@@ -578,7 +590,7 @@ class Tower extends Phaser.GameObjects.Sprite{
 			var i = Math.floor(pointer.y/64);
 			var j = Math.floor(pointer.x/64);
 			this.removeTower(pointer);
-			newTower.placeTower(pointer, scene);
+			newTower.placeTower(i, j, scene);
 			//console.log(TOWER_GROUP.getTotalUsed());
 			//console.log(TOWER_GROUP.getLength());
 			this.text = newTower.towerName;
@@ -802,9 +814,9 @@ class TowerButton extends Phaser.GameObjects.Image {
 			{
 				this.setActive(true);
 				this.setVisible(true);
-				this.y = pointer.y//i * 64 + 64/2;
-				this.x = pointer.x//j * 64 + 64/2;
-				map[i][j] = this;
+				this.x = pointer.x + 80//j * 64 + 64/2;
+				this.y = pointer.y - 16//i * 64 + 64/2;
+				//map[i][j] = this;
 				this.setInteractive({ useHandCursor: true });
 			}   
 		}
@@ -858,9 +870,7 @@ export class GameScene extends Phaser.Scene {
 	
 	//input related actions in userAction function
 	this.input.on('pointerdown', function (pointer){userAction(pointer, this)});
-	this.input.on('gameobjectout', function(pointer, gameObject) {
-		gameObject.destroy();
-	});
+	this.input.topOnly = true;
 
     //create animations
 	this.anims.create({
