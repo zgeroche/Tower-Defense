@@ -22,8 +22,7 @@ export function buildMap(scene){
 	scene.bgm.loop = true;
 	//bgm.play();																//sounds
 	
-	//scene.scene.add('HUD', CS.HUD, true, { x: 640, y: 66 });
-	console.log(scene.scene.get('HUD'));
+	scene.scene.add('HUD', CS.HUD, true, { x: 640, y: 66 });
 	
 	//misc
 	scene.nextEnemy = 0;

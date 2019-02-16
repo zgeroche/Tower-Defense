@@ -500,6 +500,7 @@ export class Attack extends Phaser.GameObjects.Image {
 	}
 
 };
+
 export class HUD extends Phaser.Scene {
 
      constructor (scene)
@@ -519,14 +520,14 @@ export class HUD extends Phaser.Scene {
 		let sceneA = this.scene.get(CST.SCENES.GAME);
 	
         //setup HUD
-		var HUDimg = this.add.image(320,33, 'HUDimg');
+		var HUD = this.add.image(320,33, 'HUD');
 		var volume = this.add.image(594,16, 'vol');
 		var volDown = this.add.image(594,16, 'volDown');
 		var play = this.add.image(556,16, 'play');
 		var playDown = this.add.image(556,16, 'playDown');
 		volDown.setVisible(false);
 		playDown.setVisible(false);
-		this.infoBar = this.add.text(270, 9, 'Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[WAVE-1].enemyName, { fontFamily: 'Arial', fontSize: 15, color: '#00ff00' });
+		this.infoBar = this.add.text(270, 9, 'Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName, { fontFamily: 'Arial', fontSize: 15, color: '#00ff00' });
 		this.goldBar = this.add.text(50, 40, 'Gold: '+GV.GOLD, { fontFamily: 'Arial', fontSize: 15, color: '#ffd700'});
 		
 		/* HUD.setDepth(1);
@@ -583,7 +584,7 @@ export class HUD extends Phaser.Scene {
 
     update() 
 	{
-        this.infoBar.setText('Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[WAVE-1].enemyName);
+        this.infoBar.setText('Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName);
         this.goldBar.setText('Gold: '+GV.GOLD);
     }
 
