@@ -6,7 +6,7 @@ var path;
 var TOWER_GROUP = [];
 var ENEMY_GROUP = [];
 var ATTACKS_GROUP;
-var BUTTON_GROUP;
+var BUTTON_GROUP = [];
 var SPAWNED = 0;
 var WAVE = 1;
 var GOLD = 0;
@@ -130,38 +130,88 @@ function userAction(pointer, scene){
 		//if new tower
 		if(map[i][j] == 0)
 		{
-			//var newTower = TOWER_GROUP[peasantStats.towerId].get(peasantStats);
-			//newTower.placeTower(pointer,scene);
-			var blackBox = BUTTON_GROUP.get();
-			blackBox.priorityID = 1;
-			blackBox.makeButton(pointer, scene);
+			var placeButton = BUTTON_GROUP[0].get();
+			placeButton.makeButton(pointer, scene);
 			
-			blackBox.on("pointerout", ()=>{
-				blackBox.setActive(false);
-				blackBox.setVisible(false);
-			});
-			
-			blackBox.on("pointerdown", ()=>{
+			placeButton.on("pointerdown", ()=>{
 				var newTower = TOWER_GROUP[peasantStats.towerId].get(peasantStats);
-				newTower.priorityID = 0;
 				newTower.placeTower(i, j, scene);
-				blackBox.setActive(false);
-				blackBox.setVisible(false);
+				placeButton.setActive(false);
+				placeButton.setVisible(false);
+				BUTTON_GROUP[0].remove(placeButton, true, true);
 			});
 		}
 		//if upgrade tower
 		else if(map[i][j].towerId == 0)
 		{
+			//old code to upgrade
 			var currTower = map[i][j];
 			var newTower = TOWER_GROUP[soldierStats.towerId].get(soldierStats);
-			newTower.priorityID = 0;
-			currTower.upgradeTower(pointer, newTower, scene);
+			currTower.upgradeTower(i, j, newTower, scene);
+			
+			
+			//New code for remove and upgrade buttons
+			var removeButton = BUTTON_GROUP[1].get();
+			removeButton.makeButton(pointer, scene);
+			
+			removeButton.on("pointerdown", ()=>{
+				var tower = map[i][j];
+				if(typeof tower ==="object")
+				{
+					tower.removeTower(i, j);
+				}
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				BUTTON_GROUP[1].remove(removeButton, true, true);
+			});
+			
+			var upgradeButton = BUTTON_GROUP[2].get();
+			upgradeButton.makeButton(pointer, scene);
+			
+			upgradeButton.on("pointerdown", ()=>{
+				var currTower = map[i][j];
+				var newTower = TOWER_GROUP[soldierStats.towerId].get(soldierStats);
+				currTower.upgradeTower(i, j, newTower, scene);
+				GOLD -= 2;
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				BUTTON_GROUP[2].remove(upgradeButton, true, true);
+			});
 		}
 		else if(map[i][j].towerId == 1)
 		{
+			//old code
 			var currTower = map[i][j];
 			var newTower = TOWER_GROUP[archerStats.towerId].get(archerStats);
-			currTower.upgradeTower(pointer, newTower, scene);
+			currTower.upgradeTower(i, j, newTower, scene);
+			
+			var removeButton = BUTTON_GROUP[1].get();
+			removeButton.makeButton(pointer, scene);
+			
+			//new code
+			removeButton.on("pointerdown", ()=>{
+				var tower = map[i][j];
+				if(typeof tower ==="object")
+				{
+					tower.removeTower(i, j);
+				}
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				BUTTON_GROUP[1].remove(removeButton, true, true);
+			});
+			
+			var upgradeButton = BUTTON_GROUP[2].get();
+			upgradeButton.makeButton(pointer, scene);
+			
+			upgradeButton.on("pointerdown", ()=>{
+				var currTower = map[i][j];
+				var newTower = TOWER_GROUP[soldierStats.towerId].get(soldierStats);
+				currTower.upgradeTower(i, j, newTower, scene);
+				GOLD -= 3;
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				BUTTON_GROUP[2].remove(upgradeButton, true, true);
+			});
 		}
 	}
 	else if (pointer.rightButtonDown())
@@ -169,7 +219,7 @@ function userAction(pointer, scene){
 		var tower = map[i][j];
 		if(typeof tower === "object")
 		{
-			tower.removeTower(pointer);
+			tower.removeTower(i, j);
 		}
 
 	}
@@ -560,6 +610,7 @@ class Tower extends Phaser.GameObjects.Sprite{
 				//map[i][j] = 1;
 				map[i][j] = this;
 				this.setInteractive({ useHandCursor: true });
+				GOLD -= 1;
 			}   
 			//console.log(TOWER_GROUP.getTotalUsed());
 			//console.log(TOWER_GROUP.getLength());
@@ -570,9 +621,9 @@ class Tower extends Phaser.GameObjects.Sprite{
 		}
 	}
 
-	removeTower(pointer) {
-		var i = Math.floor(pointer.y/64);
-		var j = Math.floor(pointer.x/64);
+	removeTower(i, j) {
+		//var i = Math.floor(pointer.y/64);
+		//var j = Math.floor(pointer.x/64);
 		if(map[i][j] !== 0) {
 			this.setActive(false);
 			this.setVisible(false);
@@ -583,13 +634,13 @@ class Tower extends Phaser.GameObjects.Sprite{
 			
 	}
 	
-	upgradeTower(pointer, newTower, scene) {
+	upgradeTower(i, j, newTower, scene) {
 		//check if tower is already upgraded, if not the upgrade
 		if(this.towerName !== newTower.towerName)
 		{
-			var i = Math.floor(pointer.y/64);
-			var j = Math.floor(pointer.x/64);
-			this.removeTower(pointer);
+			//var i = Math.floor(pointer.y/64);
+			//var j = Math.floor(pointer.x/64);
+			this.removeTower(i, j);
 			newTower.placeTower(i, j, scene);
 			//console.log(TOWER_GROUP.getTotalUsed());
 			//console.log(TOWER_GROUP.getLength());
@@ -803,7 +854,38 @@ class TowerButton extends Phaser.GameObjects.Image {
 	constructor(scene)
 	{
 		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'towerbutton');
+	}
+};
+
+class PlaceButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'placetowerbutton');
+	}
+			
+	makeButton(pointer,scene) {
+		var i = Math.floor(pointer.y/64);
+		var j = Math.floor(pointer.x/64);
+		if(map[i][j] === 0) {
+			if (this)
+			{
+				this.setActive(true);
+				this.setVisible(true);
+				this.x = 120;
+				this.y = 482;
+				//map[i][j] = this;
+				this.setInteractive();//{ useHandCursor: true });
+			}   
+		}
+	}
+};
+
+class RemoveButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'removetowerbutton');
 	}
 	
 	makeButton(pointer,scene) {
@@ -814,14 +896,39 @@ class TowerButton extends Phaser.GameObjects.Image {
 			{
 				this.setActive(true);
 				this.setVisible(true);
-				this.x = pointer.x + 80//j * 64 + 64/2;
-				this.y = pointer.y - 16//i * 64 + 64/2;
+				this.x = 120;
+				this.y = 482;
 				//map[i][j] = this;
-				this.setInteractive({ useHandCursor: true });
+				this.setInteractive();//{ useHandCursor: true });
 			}   
 		}
 	}
 };
+
+class UpgradeButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'upgradetowerbutton');
+	}
+		
+	makeButton(pointer,scene) {
+		var i = Math.floor(pointer.y/64);
+		var j = Math.floor(pointer.x/64);
+		if(map[i][j] === 0) {
+			if (this)
+			{
+				this.setActive(true);
+				this.setVisible(true);
+				this.x = 120;
+				this.y = 422;
+				//map[i][j] = this;
+				this.setInteractive();//{ useHandCursor: true });
+			}   
+		}
+	}
+};
+		
 		
 		
 
@@ -863,14 +970,15 @@ export class GameScene extends Phaser.Scene {
 	ATTACKS_GROUP = this.physics.add.group({ classType: Attack, runChildUpdate: true });
 	
 	//test button group
-	BUTTON_GROUP = this.add.group({ classType: TowerButton, runChildUpdate: false });
+	BUTTON_GROUP[0] = this.add.group({ classType: PlaceButton, runChildUpdate: false });
+	BUTTON_GROUP[1] = this.add.group({ classType: RemoveButton, runChildUpdate: false });
+	BUTTON_GROUP[2] = this.add.group({ classType: UpgradeButton, runChildUpdate: false });
 	
 	//build the game map, this includes pathing, map image, background sounds, and general game assets
 	buildMap(this);
 	
 	//input related actions in userAction function
 	this.input.on('pointerdown', function (pointer){userAction(pointer, this)});
-	this.input.topOnly = true;
 
     //create animations
 	this.anims.create({
