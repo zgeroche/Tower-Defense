@@ -1,5 +1,6 @@
 import {MenuScene} from "./scenes/MenuScene";
 import {GameScene} from "./scenes/GameScene";
+import {GameScene2} from "./scenes/GameScene2";
 import {LoadScene} from "./scenes/LoadScene";
 
 //-------------------------------------------------------SETUP-----------------------------------------------------
@@ -19,7 +20,8 @@ var config = {
     scene: [
         LoadScene,
         MenuScene,
-        GameScene]
+        GameScene,
+		GameScene2]
 
 };
 

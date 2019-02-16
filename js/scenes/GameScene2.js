@@ -3,17 +3,17 @@ var GV = require('./Globals.js');
 var FN = require('./Functions.js');
 var CS = require('./Classes.js');
 
-export class GameScene extends Phaser.Scene {
+export class GameScene2 extends Phaser.Scene {
     constructor(){
         super({
-            key: CST.SCENES.GAME
+            key: CST.SCENES.GAME2
         })
     }
     
     //Preload function loads assets before game starts
  
     init(data){
-        console.log(data);
+        //console.log(data);
     }
 
     //create function initializes and adds assets to game
@@ -46,21 +46,19 @@ export class GameScene extends Phaser.Scene {
 		GV.ATTACKS_GROUP = this.physics.add.group({ classType: CS.Attack, runChildUpdate: true });
 		
 		//build the game map, this includes pathing, map image, animations, background sounds, and general game assets
-		FN.buildMap(this, 'map');
+		FN.buildMap(this, 'map2');
 		
 		//create animations
 		FN.createAnimations(this, GV.ENEMY_ARRAY);
-
+		
 		//input related actions in userAction function
 		this.input.on('pointerdown', function (pointer){FN.userAction(pointer, this)});
 
-		let nextScene = this.add.text(100, 280, 'Next Level', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
+		/*let nextScene = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2, 'nextScene').setDepth(1);
 		nextScene.setInteractive();
-		nextScene.on("pointerup", ()=>{
-			this.scene.remove('HUD');
-			//this.scene.restart();
-			this.scene.start(CST.SCENES.GAME2);
-		});
+		nextScene.on("pointerdown", ()=>{
+			this.scene.start(CST.SCENES.GAME2, "Armory Level");
+		})*/
     }
 
     //update function constantly refreshes so to progress game

@@ -13,6 +13,7 @@ export class LoadScene extends Phaser.Scene{
 		this.load.image('volDown', 'assets/volDown.png');
 		this.load.image('play', 'assets/play.png');
 		this.load.image('playDown', 'assets/playDown.png');
+		this.load.image('armoryMap', 'assets/armory.png');
 		this.add.text(230, 230, 'Loading', { font: '50px Arial', fill: '#fff' });
         this.load.atlas('deathknight', 'assets/deathknight.png', 'assets/deathknight.json');
         this.load.atlas('soldier', 'assets/goldenarmor.png', 'assets/goldenarmor.json');
