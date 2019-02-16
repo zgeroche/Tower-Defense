@@ -130,6 +130,7 @@ function userAction(pointer, scene){
 		//if new tower
 		if(map[i][j] == 0)
 		{
+			BUTTON_GROUP[0].clear(true, true);
 			var placeButton = BUTTON_GROUP[0].get();
 			placeButton.makeButton(pointer, scene);
 			
@@ -145,14 +146,20 @@ function userAction(pointer, scene){
 		else if(map[i][j].towerId == 0)
 		{
 			//old code to upgrade
-			var currTower = map[i][j];
+			/* var currTower = map[i][j];
 			var newTower = TOWER_GROUP[soldierStats.towerId].get(soldierStats);
-			currTower.upgradeTower(i, j, newTower, scene);
+			currTower.upgradeTower(i, j, newTower, scene); */
 			
 			
 			//New code for remove and upgrade buttons
+			BUTTON_GROUP[1].clear(true, true);
+			BUTTON_GROUP[2].clear(true, true);
+			
 			var removeButton = BUTTON_GROUP[1].get();
 			removeButton.makeButton(pointer, scene);
+			
+			var upgradeButton = BUTTON_GROUP[2].get();
+			upgradeButton.makeButton(pointer, scene);
 			
 			removeButton.on("pointerdown", ()=>{
 				var tower = map[i][j];
@@ -163,16 +170,20 @@ function userAction(pointer, scene){
 				removeButton.setActive(false);
 				removeButton.setVisible(false);
 				BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				BUTTON_GROUP[2].remove(removeButton, true, true);
 			});
-			
-			var upgradeButton = BUTTON_GROUP[2].get();
-			upgradeButton.makeButton(pointer, scene);
+
 			
 			upgradeButton.on("pointerdown", ()=>{
 				var currTower = map[i][j];
 				var newTower = TOWER_GROUP[soldierStats.towerId].get(soldierStats);
 				currTower.upgradeTower(i, j, newTower, scene);
 				GOLD -= 2;
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				BUTTON_GROUP[1].remove(removeButton, true, true);
 				upgradeButton.setActive(false);
 				upgradeButton.setVisible(false);
 				BUTTON_GROUP[2].remove(upgradeButton, true, true);
@@ -181,14 +192,19 @@ function userAction(pointer, scene){
 		else if(map[i][j].towerId == 1)
 		{
 			//old code
-			var currTower = map[i][j];
+			/* var currTower = map[i][j];
 			var newTower = TOWER_GROUP[archerStats.towerId].get(archerStats);
-			currTower.upgradeTower(i, j, newTower, scene);
+			currTower.upgradeTower(i, j, newTower, scene); */
+			//new code
+			BUTTON_GROUP[1].clear(true, true);
+			BUTTON_GROUP[2].clear(true, true);
 			
 			var removeButton = BUTTON_GROUP[1].get();
 			removeButton.makeButton(pointer, scene);
 			
-			//new code
+			var upgradeButton = BUTTON_GROUP[2].get();
+			upgradeButton.makeButton(pointer, scene);
+
 			removeButton.on("pointerdown", ()=>{
 				var tower = map[i][j];
 				if(typeof tower ==="object")
@@ -198,19 +214,42 @@ function userAction(pointer, scene){
 				removeButton.setActive(false);
 				removeButton.setVisible(false);
 				BUTTON_GROUP[1].remove(removeButton, true, true);
-			});
-			
-			var upgradeButton = BUTTON_GROUP[2].get();
-			upgradeButton.makeButton(pointer, scene);
-			
-			upgradeButton.on("pointerdown", ()=>{
-				var currTower = map[i][j];
-				var newTower = TOWER_GROUP[soldierStats.towerId].get(soldierStats);
-				currTower.upgradeTower(i, j, newTower, scene);
-				GOLD -= 3;
 				upgradeButton.setActive(false);
 				upgradeButton.setVisible(false);
 				BUTTON_GROUP[2].remove(upgradeButton, true, true);
+			});
+			
+			
+			upgradeButton.on("pointerdown", ()=>{
+				var currTower = map[i][j];
+				var newTower = TOWER_GROUP[archerStats.towerId].get(archerStats);
+				currTower.upgradeTower(i, j, newTower, scene);
+				GOLD -= 3;
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				BUTTON_GROUP[2].remove(upgradeButton, true, true);
+			});
+		}
+		else if(map[i][j].towerId == 2)
+		{
+			//new code
+			BUTTON_GROUP[2].clear(true, true);
+			
+			var removeButton = BUTTON_GROUP[1].get();
+			removeButton.makeButton(pointer, scene);
+
+			removeButton.on("pointerdown", ()=>{
+				var tower = map[i][j];
+				if(typeof tower ==="object")
+				{
+					tower.removeTower(i, j);
+				}
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				BUTTON_GROUP[1].remove(removeButton, true, true);
 			});
 		}
 	}
@@ -855,6 +894,8 @@ class TowerButton extends Phaser.GameObjects.Image {
 	{
 		super(scene);
 	}
+	
+	
 };
 
 class PlaceButton extends TowerButton {
@@ -891,16 +932,14 @@ class RemoveButton extends TowerButton {
 	makeButton(pointer,scene) {
 		var i = Math.floor(pointer.y/64);
 		var j = Math.floor(pointer.x/64);
-		if(map[i][j] === 0) {
-			if (this)
-			{
-				this.setActive(true);
-				this.setVisible(true);
-				this.x = 120;
-				this.y = 482;
-				//map[i][j] = this;
-				this.setInteractive();//{ useHandCursor: true });
-			}   
+		if (this)
+		{
+			this.setActive(true);
+			this.setVisible(true);
+			this.x = 120;
+			this.y = 482;
+			//map[i][j] = this;
+			this.setInteractive();//{ useHandCursor: true });
 		}
 	}
 };
@@ -915,17 +954,15 @@ class UpgradeButton extends TowerButton {
 	makeButton(pointer,scene) {
 		var i = Math.floor(pointer.y/64);
 		var j = Math.floor(pointer.x/64);
-		if(map[i][j] === 0) {
-			if (this)
-			{
-				this.setActive(true);
-				this.setVisible(true);
-				this.x = 120;
-				this.y = 422;
-				//map[i][j] = this;
-				this.setInteractive();//{ useHandCursor: true });
-			}   
-		}
+		if (this)
+		{
+			this.setActive(true);
+			this.setVisible(true);
+			this.x = 120;
+			this.y = 422;
+			//map[i][j] = this;
+			this.setInteractive();//{ useHandCursor: true });
+		}   
 	}
 };
 		
