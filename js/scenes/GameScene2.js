@@ -14,6 +14,9 @@ export class GameScene2 extends Phaser.Scene {
  
     init(data){
         //console.log(data);
+        GV.WAVE = 1;
+        GV.GOLD = 25;
+        GV.SPAWNED = 0;
     }
 
     //create function initializes and adds assets to game
@@ -49,7 +52,19 @@ export class GameScene2 extends Phaser.Scene {
 		FN.buildMap(this, 'map2');
 		
 		//create animations
-		FN.createAnimations(this, GV.ENEMY_ARRAY);
+        //FN.createAnimations(this, GV.ENEMY_ARRAY);
+
+        //Wave Management
+		this.nextEnemy = GV.WAVE_DELAY;
+		this.complete = this.add.text(300,50, 'Wave Complete', {fontFamily: 'Arial', fontSize: 30, color: '#ff0000'}).setDepth(1);
+		this.complete.setVisible(false);
+		this.delay = this.add.text(240, 75, 'Next Level in ' + (GV.WAVE_DELAY/1000) + ' Seconds', {fontFamily: 'Arial', fontSize: 30, color: '#ff0000'}).setDepth(1);
+		this.skipWave = this.add.text(325,100, 'Skip Wait?', {fontFamily: 'Arial', fontSize: 30, color: '#ff0000'}).setDepth(1);
+		this.skipWave.setInteractive();
+		this.skipWave.on("pointerup", ()=>{
+		    this.nextEnemy = 0;
+		    this.skipWave.setVisible(false);
+		})
 		
 		//input related actions in userAction function
 		this.input.on('pointerdown', function (pointer){FN.userAction(pointer, this)});
@@ -63,22 +78,30 @@ export class GameScene2 extends Phaser.Scene {
 
     //update function constantly refreshes so to progress game
     update(time, delta) {  
-		if (time > this.nextEnemy && GV.SPAWNED <= 10)
-		{
-			var enemy = GV.ENEMY_GROUP[GV.WAVE-1].get(GV.ENEMY_ARRAY[GV.WAVE-1]);
-			if (enemy)
-			{
-				enemy.setActive(true);
-				enemy.setVisible(true);
-				enemy.startOnPath();
-				this.nextEnemy = time + GV.ENEMY_SPAWN_RATE;
-				GV.SPAWNED += 1;
-			}
-			if (GV.SPAWNED == 10 && GV.WAVE < 4)
-			{
-			   GV.SPAWNED = 0;
-			   GV.WAVE += 1;
-			}
-		}
+        this.delay.setText('Next wave in ' + Math.trunc((this.nextEnemy-time)/1000) + ' Seconds');
+        if (time > this.nextEnemy && GV.SPAWNED < 10)
+        {
+            this.complete.setVisible(false);
+            this.delay.setVisible(false);
+            this.skipWave.setVisible(false);
+            var enemy = GV.ENEMY_GROUP[GV.WAVE-1].get(GV.ENEMY_ARRAY[GV.WAVE-1]);
+            if (enemy)
+            {
+                enemy.setActive(true);
+                enemy.setVisible(true);
+                enemy.startOnPath();
+                this.nextEnemy = time + GV.ENEMY_SPAWN_RATE;
+                GV.SPAWNED += 1;
+            }
+        }
+        if (GV.SPAWNED == 10 && GV.WAVE < 4 && GV.ENEMY_GROUP[GV.WAVE-1].countActive(true) === 0)
+        {
+            this.complete.setVisible(true);
+            this.delay.setVisible(true);
+            this.skipWave.setVisible(true);
+            GV.SPAWNED = 0;
+            GV.WAVE += 1;
+            this.nextEnemy = time + GV.WAVE_DELAY;
+        }
     }
 }
