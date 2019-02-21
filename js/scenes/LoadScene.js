@@ -41,6 +41,7 @@ export class LoadScene extends Phaser.Scene{
 		this.load.image( 'removetowerbutton', './assets/buttons/removetower.png');
 		this.load.image('upgradetowerbutton', './assets/buttons/upgradetower.png');
 		this.load.image('attack', 'assets/coin.png');
+		this.load.image('highlight', 'assets/blue.png');
 		this.load.image('menuscreen', 'assets/bg.png', { frameWidth: 640, frameHeight: 512 });
         this.load.image('newgame', 'assets/new.png');
     }

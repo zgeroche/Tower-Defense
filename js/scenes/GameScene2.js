@@ -17,6 +17,14 @@ export class GameScene2 extends Phaser.Scene {
         GV.WAVE = 1;
         GV.GOLD = 25;
         GV.SPAWNED = 0;
+		GV.MAP = [[ 0,-1, 0,-1,-1,-1,-1,-1,-1,-1],
+				  [ 0,-1, 0, 0, 0, 0, 0, 0, 0,-1],
+				  [ 0,-1,-1,-1,-1,-1,-1,-1, 0,-1],
+				  [ 0, 0, 0, 0, 0, 0, 0,-1, 0,-1],
+				  [-1,-1,-1,-1,-1,-1, 0,-1, 0,-1],
+				  [-1,-1,-1,-1,-1,-1, 0,-1, 0,-1],
+				  [-1,-1,-1,-1,-1,-1, 0,-1, 0,-1],
+				  [-1,-1,-1,-1,-1,-1, 0,-1, 0,-1]];
     }
 
     //create function initializes and adds assets to game
@@ -25,7 +33,7 @@ export class GameScene2 extends Phaser.Scene {
 		loop through GV.TOWER_ARRAY to get each tower object
 		then add each object to GV.TOWER_GROUP arr
 		we do this becuase GV.TOWER_GROUP can now be easily used to manipulate tower objects with Phaser functions.*/
-		//loop set to 2 since we only have 2 developed classes at the moment
+		//loop set to 3 since we only have 3 developed classes at the moment
 		for(var i = 0; i < 3; i++) {
 			var towerClass = "CS."+GV.TOWER_ARRAY[i].towerName;
 			GV.TOWER_GROUP[GV.TOWER_ARRAY[i].towerId] = this.add.group({ classType: eval(towerClass), runChildUpdate: true });

@@ -540,7 +540,6 @@ export class HUD extends Phaser.Scene {
 			}
 		});
 		
-		
 		play.on("pointerover", ()=>{
 			playDown.setVisible(true);
 		});

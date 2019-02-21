@@ -22,7 +22,7 @@ export class GameScene extends Phaser.Scene {
 		loop through GV.TOWER_ARRAY to get each tower object
 		then add each object to GV.TOWER_GROUP arr
 		we do this becuase GV.TOWER_GROUP can now be easily used to manipulate tower objects with Phaser functions.*/
-		//loop set to 2 since we only have 2 developed classes at the moment
+		//loop set to 3 since we only have 3 developed classes at the moment
 		for(var i = 0; i < 3; i++) {
 			var towerClass = "CS."+GV.TOWER_ARRAY[i].towerName;
 			GV.TOWER_GROUP[GV.TOWER_ARRAY[i].towerId] = this.add.group({ classType: eval(towerClass), runChildUpdate: true });
@@ -75,8 +75,6 @@ export class GameScene extends Phaser.Scene {
 			this.scene.start(CST.SCENES.GAME2);
 		});		
     }
-
-    
 
     //update function constantly refreshes so to progress game
     update(time, delta) {  

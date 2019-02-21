@@ -14,7 +14,7 @@ export function buildMap(scene, mapBG){
     GV.PATH.draw(graphics);
     
 	//add map image
-	scene.add.image(320, 256, mapBG);
+	scene.add.image(320, 256, mapBG).setDepth(0);
 
 	//add background music
 	scene.bgm = scene.sound.add('background');
@@ -55,15 +55,47 @@ export function createAnimations(scene, sprites) {
     }
 }
 
+//highlights the location the user clicks on to place/upgrade/remove tower
+export function highlightLoc(scene, i, j){
+
+	//checks if highlight box exists already, if so destroy before creating a new one.
+	if(typeof scene.lightBox === 'object')
+	{
+		scene.lightBox.destroy();
+	}
+	
+	//create a box at any clickable location on the map
+	if(GV.MAP[i][j] != -1)
+	{
+		var x = j * 64 + 64/2;
+		var y = i * 64 + 64/2;
+		//var shape = new Phaser.Geom.Circle(0, 0, 20);
+		var shape = new Phaser.Geom.Rectangle(-32, -32, 64, 64);
+		scene.lightBox = scene.scene.add.particles('highlight');
+		scene.lightBox.createEmitter({
+			x: x, 
+			y: y,
+			//tint: 0xff00ff,
+			scale: { start: 0.3, end: 0 },
+			frequency: 35,
+			blendMode: 'SCREEN',
+			emitZone: { type: 'edge', source: shape, quantity: 30, yoyo: false}
+		});
+	}
+}
+
 //user input related actions 
 export function userAction(pointer, scene){
 	var i = Math.floor(pointer.y/64);
 	var j = Math.floor(pointer.x/64);
 	if (pointer.leftButtonDown())
         {
+			//highlight location clicked by user
+			highlightLoc(scene, i, j);
+			
 			//if new tower
 			if(GV.MAP[i][j] == 0)
-			{
+			{	
 				GV.BUTTON_GROUP[0].clear(true, true);
 				var placeButton = GV.BUTTON_GROUP[0].get();
 				placeButton.makeButton(pointer, scene);
