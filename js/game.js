@@ -11,6 +11,7 @@ var config = {
     parent: 'content',
     width: 640,
     height: 512,
+    //resolution: window.devicePixelRatio,
     physics: {
         default: 'arcade'
     },
