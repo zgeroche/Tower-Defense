@@ -16,7 +16,7 @@ export class LoadScene extends Phaser.Scene{
 		this.load.image('armoryMap', 'assets/armory.png');
 		this.add.text(230, 230, 'Loading', { font: '50px Arial', fill: '#fff' });
         this.load.atlas('deathknight', 'assets/deathknight.png', 'assets/deathknight.json');
-        this.load.atlas('soldier', 'assets/goldenarmor.png', 'assets/goldenarmor.json');
+        this.load.atlas('soldier', 'assets/soldier.png', 'assets/soldier.json');
         this.load.atlas('peasant', 'assets/peasant.png', 'assets/peasant.json');
         this.load.atlas('archer', 'assets/archer.png', 'assets/archer.json');
 		//load enemy sprites, will be a loop like load tower sprites
@@ -35,6 +35,7 @@ export class LoadScene extends Phaser.Scene{
 		this.load.audio('walk', 'assets/Sounds/Movement/Footsteps/sfx_movement_footstepsloop4_slow.wav');
 		this.load.audio('background', 'assets/Sounds/random silly chip song.ogg');
 		this.load.audio('upgradeSound', 'assets/Sounds/General Sounds/Positive Sounds/sfx_sounds_powerup6.wav');
+		this.load.audio('explosionSound', 'assets/Sounds/Explosions/Short/sfx_exp_short_hard2.wav');
 		
 		//load misc
 		this.load.image(  'placetowerbutton', './assets/buttons/placetower.png');
@@ -42,6 +43,7 @@ export class LoadScene extends Phaser.Scene{
 		this.load.image('upgradetowerbutton', './assets/buttons/upgradetower.png');
 		this.load.image('attack', 'assets/coin.png');
 		this.load.image('highlight', 'assets/blue.png');
+		this.load.image('explosion', 'assets/muzzleflash3.png');
 		this.load.image('menuscreen', 'assets/bg.png', { frameWidth: 640, frameHeight: 512 });
         this.load.image('newgame', 'assets/new.png');
     }

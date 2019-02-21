@@ -32,27 +32,47 @@ export function buildMap(scene, mapBG){
 }
 
 //create animations for all enemies
-export function createAnimations(scene, sprites) {
+export function createAnimations(scene, sprites, side) {
     for (var i = 0; i < sprites.length; i++) {
-		
-		var enemy = sprites[i].enemyName.toLowerCase();
-		var frameEnd = sprites[i].frameEnd;
-		var movement = "walk";
-		if(sprites[i].flying){movement = "fly";}
-		
-        scene.anims.create({
-			key: enemy + "_down",
-			frames: scene.anims.generateFrameNames(enemy, { prefix: movement+'_down_', start: 1, end: frameEnd }),
-			frameRate: 5,
-			repeat: -1
-        });
-		scene.anims.create({
-			key: enemy + "_right",
-			frames: scene.anims.generateFrameNames(enemy, { prefix: movement+'_right_', start: 1, end: frameEnd }),
-			frameRate: 5,
-			repeat: -1
-        }); 
-    }
+		if(side == 0)
+		{
+			var enemy = sprites[i].enemyName.toLowerCase();
+			var frameEnd = sprites[i].frameEnd;
+			var movement = "walk";
+			if(sprites[i].flying){movement = "fly";}
+			
+			scene.anims.create({
+				key: enemy + "_down",
+				frames: scene.anims.generateFrameNames(enemy, { prefix: movement+'_down_', start: 1, end: frameEnd }),
+				frameRate: 5,
+				repeat: -1
+			});
+			scene.anims.create({
+				key: enemy + "_right",
+				frames: scene.anims.generateFrameNames(enemy, { prefix: movement+'_right_', start: 1, end: frameEnd }),
+				frameRate: 5,
+				repeat: -1
+			}); 
+		}
+		if(side == 1)
+		{
+			var tower = sprites[i].towerName.toLowerCase();
+
+			scene.anims.create({
+				key: tower + "_idle",
+				frames: scene.anims.generateFrameNames(tower, { prefix: 'idle_down_', start: 1, end: 2 }),
+				frameRate: 5,
+				repeat: -1
+			});
+			scene.anims.create({
+				key: tower + "_atk",
+				frames: scene.anims.generateFrameNames(tower, { prefix: 'atk_down_', start: 1, end: 5 }),
+				frameRate: 5,
+				repeat: -1
+			}); 
+			
+		}
+	}
 }
 
 //highlights the location the user clicks on to place/upgrade/remove tower

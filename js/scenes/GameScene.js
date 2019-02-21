@@ -49,7 +49,9 @@ export class GameScene extends Phaser.Scene {
 		FN.buildMap(this, 'map');
 		
 		//create animations
-		FN.createAnimations(this, GV.ENEMY_ARRAY);
+		FN.createAnimations(this, GV.ENEMY_ARRAY, 0);
+		FN.createAnimations(this, GV.TOWER_ARRAY, 1);
+		
 
         //Wave Management
 		this.nextEnemy = GV.WAVE_DELAY;
