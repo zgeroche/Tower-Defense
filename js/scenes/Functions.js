@@ -14,7 +14,7 @@ export function buildMap(scene, mapBG){
     GV.PATH.draw(graphics);
     
 	//add map image
-	scene.add.image(320, 256, mapBG);
+	scene.add.image(320, 256, mapBG).setDepth(0);
 
 	//add background music
 	scene.bgm = scene.sound.add('background');
@@ -32,27 +32,76 @@ export function buildMap(scene, mapBG){
 }
 
 //create animations for all enemies
-export function createAnimations(scene, sprites) {
+export function createAnimations(scene, sprites, side) {
     for (var i = 0; i < sprites.length; i++) {
-		
-		var enemy = sprites[i].enemyName.toLowerCase();
-		var frameEnd = sprites[i].frameEnd;
-		var movement = "walk";
-		if(sprites[i].flying){movement = "fly";}
-		
-        scene.anims.create({
-			key: enemy + "_down",
-			frames: scene.anims.generateFrameNames(enemy, { prefix: movement+'_down_', start: 1, end: frameEnd }),
-			frameRate: 5,
-			repeat: -1
-        });
-		scene.anims.create({
-			key: enemy + "_right",
-			frames: scene.anims.generateFrameNames(enemy, { prefix: movement+'_right_', start: 1, end: frameEnd }),
-			frameRate: 5,
-			repeat: -1
-        }); 
-    }
+		if(side == 0)
+		{
+			var enemy = sprites[i].enemyName.toLowerCase();
+			var frameEnd = sprites[i].frameEnd;
+			var movement = "walk";
+			if(sprites[i].flying){movement = "fly";}
+			
+			scene.anims.create({
+				key: enemy + "_down",
+				frames: scene.anims.generateFrameNames(enemy, { prefix: movement+'_down_', start: 1, end: frameEnd }),
+				frameRate: 5,
+				repeat: -1
+			});
+			scene.anims.create({
+				key: enemy + "_right",
+				frames: scene.anims.generateFrameNames(enemy, { prefix: movement+'_right_', start: 1, end: frameEnd }),
+				frameRate: 5,
+				repeat: -1
+			}); 
+		}
+		if(side == 1)
+		{
+			var tower = sprites[i].towerName.toLowerCase();
+
+			scene.anims.create({
+				key: tower + "_idle",
+				frames: scene.anims.generateFrameNames(tower, { prefix: 'idle_down_', start: 1, end: 2 }),
+				frameRate: 5,
+				repeat: -1
+			});
+			scene.anims.create({
+				key: tower + "_atk",
+				frames: scene.anims.generateFrameNames(tower, { prefix: 'atk_down_', start: 1, end: 5 }),
+				frameRate: 5,
+				repeat: -1
+			}); 
+			
+		}
+	}
+}
+
+//highlights the location the user clicks on to place/upgrade/remove tower
+export function highlightLoc(scene, i, j){
+
+	//checks if highlight box exists already, if so destroy before creating a new one.
+	if(typeof scene.lightBox === 'object')
+	{
+		scene.lightBox.destroy();
+	}
+	
+	//create a box at any clickable location on the map
+	if(GV.MAP[i][j] != -1)
+	{
+		var x = j * 64 + 64/2;
+		var y = i * 64 + 64/2;
+		//var shape = new Phaser.Geom.Circle(0, 0, 20);
+		var shape = new Phaser.Geom.Rectangle(-32, -32, 64, 64);
+		scene.lightBox = scene.scene.add.particles('highlight');
+		scene.lightBox.createEmitter({
+			x: x, 
+			y: y,
+			//tint: 0xff00ff,
+			scale: { start: 0.3, end: 0 },
+			frequency: 35,
+			blendMode: 'SCREEN',
+			emitZone: { type: 'edge', source: shape, quantity: 30, yoyo: false}
+		});
+	}
 }
 
 //user input related actions 
@@ -61,9 +110,12 @@ export function userAction(pointer, scene){
 	var j = Math.floor(pointer.x/64);
 	if (pointer.leftButtonDown())
         {
+			//highlight location clicked by user
+			highlightLoc(scene, i, j);
+			
 			//if new tower
 			if(GV.MAP[i][j] == 0)
-			{
+			{	
 				GV.BUTTON_GROUP[0].clear(true, true);
 				var placeButton = GV.BUTTON_GROUP[0].get();
 				placeButton.makeButton(pointer, scene);

@@ -24,10 +24,32 @@ export class Enemy extends Phaser.GameObjects.Sprite {
         this.damage.volume = 0.03;
         this.damage.loop = false;
 		
+		this.explode = scene.sound.add('explosionSound');
+        this.explode.volume = 0.03;
+        this.explode.loop = false;
+		
 		this.text = scene.add.text(0, 0, "HP: "+ this.hp, {font: "16px Arial", fill: "#ffffff"});		//textHP
 		this.text.setPadding(0, 0, 0, 60);														//textHP
 		this.text.setOrigin(0.5);																//textHP
 		this.healthbar = new HealthBar(scene, 0, 0, this.hp);
+		
+    	var particles = scene.add.particles('explosion');
+
+        this.emitter = particles.createEmitter({
+			alpha: { start: 1, end: 0 },
+			scale: { start: 0.5, end: 2.5 },
+			//tint: { start: 0xff945e, end: 0xff945e },
+			speed: 20,
+			accelerationY: -300,
+			angle: { min: -85, max: -95 },
+			rotate: { min: -180, max: 180 },
+			lifespan: { min: 1000, max: 1100 },
+			blendMode: 'ADD',
+			frequency: 110,
+			maxParticles: 10,
+			on: false
+		});
+		
 
     }
 
@@ -62,6 +84,8 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		
 		// if hp drops below 0 we deactivate this enemy
 		if (this.hp <= 0) {
+			this.emitter.explode(5,this.follower.vec.x,this.follower.vec.y);
+			this.explode.play();		
 			this.setActive(false);
 			this.setVisible(false);
 			this.text.setActive(false);													//textHP
@@ -69,7 +93,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			this.healthbar.destroy();
 			
 			//Need to set this to stop when all enemies are dead
-			//this.death.play();																//sounds
+			this.death.play();																//sounds
 			//this.walk.stop();																//sounds
 			this.destroy();
 			GV.GOLD += this.value;
@@ -96,6 +120,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			this.healthbar.destroy();
 			//this.walk.stop();												//sounds
 			this.destroy();
+			this.emitter.destroy();
 		}
 
 		if (this.follower.vec.y == 164 && this.turned==0){
@@ -146,6 +171,11 @@ export class Skeleton extends Enemy {
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'skeleton');
 
         this.anims.play('skeleton_down');
+		
+		//create sounds
+		this.death = scene.sound.add('dkDeath');
+		this.death.volume = 0.05;
+		this.death.loop = false;
 
     }
 
@@ -166,6 +196,11 @@ export class Bat extends Enemy {
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'bat');
 
         this.anims.play('bat_down');
+		
+		//create sounds
+		this.death = scene.sound.add('dkDeath');
+		this.death.volume = 0.05;
+		this.death.loop = false;
 
     }
 
@@ -186,6 +221,11 @@ export class Ogre extends Enemy {
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'ogre');
 
         this.anims.play('ogre_down');
+		
+		//create sounds
+		this.death = scene.sound.add('dkDeath');
+		this.death.volume = 0.05;
+		this.death.loop = false;
 
     }
 
@@ -224,6 +264,8 @@ export class Tower extends Phaser.GameObjects.Sprite{
 		this.upgradeSound = scene.sound.add('upgradeSound');
 		this.upgradeSound.volume = 0.05;
 		this.upgradeSound.loop = false;
+		
+		this.attack = 0;
 		
 	}
 	
@@ -317,6 +359,17 @@ export class Tower extends Phaser.GameObjects.Sprite{
 	        FN.addAttack(this.x, this.y, angle, this.str, this.atkType);
 	        //this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make towers rotate to face enemy
 	    }
+		if(enemy && this.attack == 0)
+		{
+			this.anims.play(this.towerName.toLowerCase()+'_atk');
+			this.attack = 1;
+		}
+		else if(!enemy && this.attack == 1)
+		{
+			this.anims.play(this.towerName.toLowerCase()+'_idle');
+			this.attack = 0;
+		}
+		
 	}
 	
 	update(time, delta, pointer)
@@ -338,21 +391,27 @@ export class Peasant extends Tower {
 		// Note: In derived classes, super() must be called before you
 		// can use 'this'. Leaving this out will cause a reference error.
 		super(scene, stats);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'peasant', 'sprite35');
+		Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'peasant');
+		
+		this.anims.play('peasant_idle');
 	}
 }
 
 export class Soldier extends Tower {
 	constructor(scene, stats) {
 		super(scene, stats);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'soldier', 'sprite25');
+		Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'soldier');
+		
+		this.anims.play('soldier_idle');
 	}
 }
 
 export class Archer extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'archer', 'tile051');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'archer');
+		
+		this.anims.play('archer_idle');
     }
 }
 
@@ -539,7 +598,6 @@ export class HUD extends Phaser.Scene {
 				sceneA.bgm.play();
 			}
 		});
-		
 		
 		play.on("pointerover", ()=>{
 			playDown.setVisible(true);
