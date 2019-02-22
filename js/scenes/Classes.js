@@ -255,7 +255,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 		this.nextTic = 0;
 		this.towerId =  stats.towerId; //each tower has unique id
 		this.towerName = stats.towerName;
-		this.upgrade = stats.upgrade; //true = can upgrade, false = can't upgrade
+		this.cost = stats.cost //price of building the tower
 		this.str = stats.str; //value tha determines attack strength
 		this.atkRange = stats.atkRange;
 		this.atkType = stats.atkType;
@@ -284,15 +284,13 @@ export class Tower extends Phaser.GameObjects.Sprite{
 				this.text.y = (i+.50) * 64 + 64/2;
 				this.text.x = j * 64 + 64/2;
 				this.text.setOrigin(0.5);
-				//scene.add.container([this.text, this]);
 				this.setActive(true);
 				this.setVisible(true);
 				this.y = i * 64 + 64/2;
 				this.x = j * 64 + 64/2;
-				//GV.MAP[i][j] = 1;
 				GV.MAP[i][j] = this;
 				this.setInteractive({ useHandCursor: true });
-				GV.GOLD -= 1;
+				GV.GOLD -= this.cost;
 				this.upgradeSound.play();
 				
 				scene.scene.tweens.add({
@@ -304,8 +302,6 @@ export class Tower extends Phaser.GameObjects.Sprite{
 					yoyo: true, // at the end, go back to original scale 
 				});
 			}   
-			//console.log(TOWER_GROUP.getTotalUsed());
-			//console.log(TOWER_GROUP.getLength());
 		}
 		else
 		{
@@ -314,8 +310,6 @@ export class Tower extends Phaser.GameObjects.Sprite{
 	}
 
 	removeTower(i, j, scene) {
-		//var i = Math.floor(pointer.y/64);
-		//var j = Math.floor(pointer.x/64);
 		if(GV.MAP[i][j] !== 0) {
 			this.setActive(false);
 			this.setVisible(false);
@@ -334,11 +328,8 @@ export class Tower extends Phaser.GameObjects.Sprite{
 			//var j = Math.floor(pointer.x/64);
 			this.removeTower(i, j, scene);
 			newTower.placeTower(i, j, scene);
-			//console.log(TOWER_GROUP.getTotalUsed());
-			//console.log(TOWER_GROUP.getLength());
 			this.text = newTower.towerName;
 			this.upgradeSound.play();
-
             scene.scene.tweens.add({
                 targets: newTower, // on the player 
                 duration: 200, // for 200ms 
@@ -364,7 +355,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 	        FN.addAttack(this.x, this.y, angle, this.str, this.atkType);
 	        //this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make towers rotate to face enemy
 	    }
-		if(enemy && this.attack == 0)
+		/* if(enemy && this.attack == 0)
 		{
 			this.anims.play(this.towerName.toLowerCase()+'_atk');
 			this.attack = 1;
@@ -373,7 +364,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 		{
 			this.anims.play(this.towerName.toLowerCase()+'_idle');
 			this.attack = 0;
-		}
+		} */
 		
 	}
 	
@@ -381,7 +372,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 	{
 		if(time > this.nextTic) {
 			this.fire();
-			this.nextTic = time + GV.TOWER_FIRE_RATE;
+			this.nextTic = time + this.atkRate;
 		}
 	}
 	sayName()
@@ -420,6 +411,138 @@ export class Archer extends Tower {
     }
 }
 
+export class Apprentice extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class Knight extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class Duelist extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class Rifleman extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class Ranger extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class Wizard extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class Sorceress extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class Commander extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class Paladin extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class Swordmaster extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class Cutpurse extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class Cannoneer extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class Sharpshooter extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class Assassin extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class FireMage extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class IceMage extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class LightningMage extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class Warlock extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class Priestess extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
 
 //all other classes
 //HP class
@@ -648,8 +771,7 @@ export class TowerButton extends Phaser.GameObjects.Image {
 		{
 			this.setActive(true);
 			this.setVisible(true);
-			//GV.MAP[i][j] = this;
-			this.setInteractive();//{ useHandCursor: true });
+			this.setInteractive();
 		}   
 	}
 };
@@ -679,6 +801,226 @@ export class UpgradeButton extends TowerButton {
 	{
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'upgradetowerbutton');
+		this.x = 120;
+		this.y = 422;
+	}
+};
+
+export class SoldierButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'soldierbutton');
+		this.x = 120;
+		this.y = 482;
+	}
+};
+
+export class ArcherButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'archerbutton');
+		this.x = 120;
+		this.y = 422;
+	}
+};
+
+export class ApprenticeButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'apprenticebutton');
+		this.x = 120;
+		this.y = 362;
+	}
+};
+
+export class KnightButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'knightbutton');
+		this.x = 120;
+		this.y = 482;
+	}
+};
+
+export class DuelistButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'duelistbutton');
+		this.x = 120;
+		this.y = 422;
+	}
+};
+
+export class RiflemanButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'riflemanbutton');
+		this.x = 120;
+		this.y = 482;
+	}
+};
+
+export class RangerButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'rangerbutton');
+		this.x = 120;
+		this.y = 422;
+	}
+};
+
+export class WizardButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'wizardbutton');
+		this.x = 120;
+		this.y = 482;
+	}
+};
+
+export class SorceressButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sorceressbutton');
+		this.x = 120;
+		this.y = 422;
+	}
+};
+
+export class CommanderButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'commanderbutton');
+		this.x = 120;
+		this.y = 482;
+	}
+};
+
+export class PaladinButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'paladinbutton');
+		this.x = 120;
+		this.y = 422;
+	}
+};
+
+export class SwordmasterButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'swordmasterbutton');
+		this.x = 120;
+		this.y = 482;
+	}
+};
+
+export class CutpurseButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cutpursebutton');
+		this.x = 120;
+		this.y = 422;
+	}
+};
+
+export class CannoneerButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cannoneerbutton');
+		this.x = 120;
+		this.y = 482;
+	}
+};
+
+export class SharpshooterButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sharpshooterbutton');
+		this.x = 120;
+		this.y = 422;
+	}
+};
+
+export class BeastmasterButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'beastmasterbutton');
+		this.x = 120;
+		this.y = 482;
+	}
+};
+
+export class AssassinButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'assassinbutton');
+		this.x = 120;
+		this.y = 422;
+	}
+};
+
+export class FireMageButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'firemagebutton');
+		this.x = 120;
+		this.y = 482;
+	}
+};
+
+export class IceMageButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'icemagebutton');
+		this.x = 120;
+		this.y = 422;
+	}
+};
+
+export class LightningMageButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'lightningmagebutton');
+		this.x = 120;
+		this.y = 362;
+	}
+};
+
+export class WarlockButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'warlockbutton');
+		this.x = 120;
+		this.y = 482;
+	}
+};
+
+export class PriestessButton extends TowerButton {
+	constructor(scene)
+	{
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'priestessbutton');
 		this.x = 120;
 		this.y = 422;
 	}
