@@ -109,182 +109,671 @@ export function userAction(pointer, scene){
 	var i = Math.floor(pointer.y/64);
 	var j = Math.floor(pointer.x/64);
 	if (pointer.leftButtonDown())
-        {
-			//highlight location clicked by user
-			highlightLoc(scene, i, j);
-			/* for (var count = 0; count < 25; count++) {
-				GV.BUTTON_GROUP[count].clear(true, true);
-			} */
+    {
+		//highlight location clicked by user
+		highlightLoc(scene, i, j);
+		for (var count = 0; count < 2; count++) {
+			GV.BUTTON_GROUP[count].clear(true, true);
+		}
+		
+		//if new tower
+		if(GV.MAP[i][j] == 0)
+		{	
+			var placeButton = GV.BUTTON_GROUP[0].get();
+			placeButton.makeButton(pointer, scene);
 			
-			//if new tower
-			if(GV.MAP[i][j] == 0)
-			{	
-				var placeButton = GV.BUTTON_GROUP[0].get();
-				placeButton.makeButton(pointer, scene);
-				
-				placeButton.on("pointerdown", ()=>{
-					var newTower = GV.TOWER_GROUP[GV.PEASANT_STATS.towerId].get(GV.PEASANT_STATS);
-					newTower.placeTower(i, j, scene);
-					placeButton.setActive(false);
-					placeButton.setVisible(false);
-					GV.BUTTON_GROUP[0].remove(placeButton, true, true);
-				});
-			}
-			//if upgrade tower
-			else if(GV.MAP[i][j].towerId == 0)
-			{
-				//New code for remove and upgrade buttons
-				var removeButton = GV.BUTTON_GROUP[1].get();
-				removeButton.makeButton(pointer, scene);
-				
-				var upgradeButton = GV.BUTTON_GROUP[2].get();
-				upgradeButton.makeButton(pointer, scene);
-				
-				removeButton.on("pointerdown", ()=>{
-					var tower = GV.MAP[i][j];
-					if(typeof tower ==="object")
-					{
-						tower.removeTower(i, j, scene);
-					}
-					removeButton.setActive(false);
-					removeButton.setVisible(false);
-					GV.BUTTON_GROUP[1].remove(removeButton, true, true);
-					upgradeButton.setActive(false);
-					upgradeButton.setVisible(false);
-					GV.BUTTON_GROUP[2].remove(removeButton, true, true);
-				});
+			placeButton.on("pointerdown", ()=>{
+				var newTower = GV.TOWER_GROUP[GV.PEASANT_STATS.towerId].get(GV.PEASANT_STATS);
+				newTower.placeTower(i, j, scene);
+				placeButton.setActive(false);
+				placeButton.setVisible(false);
+				GV.BUTTON_GROUP[0].remove(placeButton, true, true);
+			});
+		}
+		//if tower clicked on is a peasant
+		else if(GV.MAP[i][j].towerId == 0)
+		{
+			//New code for remove and upgrade buttons
+			var removeButton = GV.BUTTON_GROUP[1].get();
+			removeButton.makeButton(pointer, scene);
+			
+			var upgradeButton = GV.BUTTON_GROUP[2].get();
+			upgradeButton.makeButton(pointer, scene);
+			
+			removeButton.on("pointerdown", ()=>{
+				var tower = GV.MAP[i][j];
+				if(typeof tower ==="object")
+				{
+					tower.removeTower(i, j, scene);
+				}
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(removeButton, true, true);
+			});
 
+			
+			upgradeButton.on("pointerdown", ()=>{
+				//remove upgrade and remove buttons
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
 				
-				upgradeButton.on("pointerdown", ()=>{
-					//remove upgrade and remove buttons
-					removeButton.setActive(false);
-					removeButton.setVisible(false);
-					GV.BUTTON_GROUP[1].remove(removeButton, true, true);
-					upgradeButton.setActive(false);
-					upgradeButton.setVisible(false);
-					GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
-					
-					//make soldier, archer and apprentice buttons
-					var soldierButton = GV.BUTTON_GROUP[3].get();
-					soldierButton.makeButton(pointer, scene);
-					
-					var archerButton = GV.BUTTON_GROUP[4].get();
-					archerButton.makeButton(pointer, scene);
-					
-					var apprenticeButton = GV.BUTTON_GROUP[5].get();
-					apprenticeButton.makeButton(pointer, scene);
-					
-					//Assign function to each button
-					soldierButton.on("pointerdown", ()=>{
-						var currTower = GV.MAP[i][j];
-						var newTower = GV.TOWER_GROUP[GV.SOLDIER_STATS.towerId].get(GV.SOLDIER_STATS);
-						currTower.upgradeTower(i, j, newTower, scene);
-						soldierButton.setActive(false);
-						soldierButton.setVisible(false);
-						GV.BUTTON_GROUP[3].remove(removeButton, true, true);
-						archerButton.setActive(false);
-						archerButton.setVisible(false);
-						GV.BUTTON_GROUP[4].remove(upgradeButton, true, true);
-						apprenticeButton.setActive(false);
-						apprenticeButton.setVisible(false);
-						GV.BUTTON_GROUP[5].remove(upgradeButton, true, true);
-					});
-					
-					archerButton.on("pointerdown", ()=>{
-						var currTower = GV.MAP[i][j];
-						var newTower = GV.TOWER_GROUP[GV.ARCHER_STATS.towerId].get(GV.ARCHER_STATS);
-						currTower.upgradeTower(i, j, newTower, scene);
-						soldierButton.setActive(false);
-						soldierButton.setVisible(false);
-						GV.BUTTON_GROUP[3].remove(removeButton, true, true);
-						archerButton.setActive(false);
-						archerButton.setVisible(false);
-						GV.BUTTON_GROUP[4].remove(upgradeButton, true, true);
-						apprenticeButton.setActive(false);
-						apprenticeButton.setVisible(false);
-						GV.BUTTON_GROUP[5].remove(upgradeButton, true, true);
-					});
-					
-					apprenticeButton.on("pointerdown", ()=>{
-						var currTower = GV.MAP[i][j];
-						var newTower = GV.TOWER_GROUP[GV.APPRENTICE_STATS.towerId].get(GV.APPRENTICE_STATS);
-						currTower.upgradeTower(i, j, newTower, scene);
-						soldierButton.setActive(false);
-						soldierButton.setVisible(false);
-						GV.BUTTON_GROUP[3].remove(removeButton, true, true);
-						archerButton.setActive(false);
-						archerButton.setVisible(false);
-						GV.BUTTON_GROUP[4].remove(upgradeButton, true, true);
-						apprenticeButton.setActive(false);
-						apprenticeButton.setVisible(false);
-						GV.BUTTON_GROUP[5].remove(upgradeButton, true, true);
-					});
-						
-				});
-			}
-			else if(GV.MAP[i][j].towerId == 1)
-			{
-				//new code
-				var removeButton = GV.BUTTON_GROUP[1].get();
-				removeButton.makeButton(pointer, scene);
+				//make soldier, archer and apprentice buttons
+				var soldierButton = GV.BUTTON_GROUP[3].get();
+				soldierButton.makeButton(pointer, scene);
 				
-				var upgradeButton = GV.BUTTON_GROUP[2].get();
-				upgradeButton.makeButton(pointer, scene);
-
-				removeButton.on("pointerdown", ()=>{
-					var tower = GV.MAP[i][j];
-					if(typeof tower ==="object")
-					{
-						tower.removeTower(i, j, scene);
+				var archerButton = GV.BUTTON_GROUP[4].get();
+				archerButton.makeButton(pointer, scene);
+				
+				var apprenticeButton = GV.BUTTON_GROUP[5].get();
+				apprenticeButton.makeButton(pointer, scene);
+				
+				//Assign function to each button
+				soldierButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.SOLDIER_STATS.towerId].get(GV.SOLDIER_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 3; count < 6; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
 					}
-					removeButton.setActive(false);
-					removeButton.setVisible(false);
-					GV.BUTTON_GROUP[1].remove(removeButton, true, true);
-					upgradeButton.setActive(false);
-					upgradeButton.setVisible(false);
-					GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
 				});
 				
-				
-				upgradeButton.on("pointerdown", ()=>{
+				archerButton.on("pointerdown", ()=>{
 					var currTower = GV.MAP[i][j];
 					var newTower = GV.TOWER_GROUP[GV.ARCHER_STATS.towerId].get(GV.ARCHER_STATS);
 					currTower.upgradeTower(i, j, newTower, scene);
-					removeButton.setActive(false);
-					removeButton.setVisible(false);
-					GV.BUTTON_GROUP[1].remove(removeButton, true, true);
-					upgradeButton.setActive(false);
-					upgradeButton.setVisible(false);
-					GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
-				});
-			}
-			else if(GV.MAP[i][j].towerId == 2)
-			{
-				//new code
-				var removeButton = GV.BUTTON_GROUP[1].get();
-				removeButton.makeButton(pointer, scene);
-
-				removeButton.on("pointerdown", ()=>{
-					var tower = GV.MAP[i][j];
-					if(typeof tower ==="object")
-					{
-						tower.removeTower(i, j, scene);
+					for (var count = 3; count < 6; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
 					}
-					removeButton.setActive(false);
-					removeButton.setVisible(false);
-					GV.BUTTON_GROUP[1].remove(removeButton, true, true);
 				});
-			}
+				
+				apprenticeButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.APPRENTICE_STATS.towerId].get(GV.APPRENTICE_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 3; count < 6; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+					
+			});
 		}
-		else if (pointer.rightButtonDown())
+		//if tower clicked on is a soldier
+		else if(GV.MAP[i][j].towerId == 1)
 		{
-			var tower = GV.MAP[i][j];
-			if(typeof tower === "object")
-			{
-				tower.removeTower(i, j, scene);
-			}
+			//new code
+			var removeButton = GV.BUTTON_GROUP[1].get();
+			removeButton.makeButton(pointer, scene);
+			
+			var upgradeButton = GV.BUTTON_GROUP[2].get();
+			upgradeButton.makeButton(pointer, scene);
 
+			removeButton.on("pointerdown", ()=>{
+				var tower = GV.MAP[i][j];
+				if(typeof tower ==="object")
+				{
+					tower.removeTower(i, j, scene);
+				}
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+			});				
+			
+			upgradeButton.on("pointerdown", ()=>{
+				//remove upgrade and remove buttons
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+				
+				//make knight and duelist buttons
+				var knightButton = GV.BUTTON_GROUP[6].get();
+				knightButton.makeButton(pointer, scene);
+				
+				var duelistButton = GV.BUTTON_GROUP[7].get();
+				duelistButton.makeButton(pointer, scene);
+				
+				//Assign function to each button
+				knightButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.KNIGHT_STATS.towerId].get(GV.KNIGHT_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 6; count < 8; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+				
+				duelistButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.DUELIST_STATS.towerId].get(GV.DUELIST_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 6; count < 8; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+					
+			});
 		}
+		//if tower clicked on is an archer
+		else if(GV.MAP[i][j].towerId == 2)
+		{
+			//new code
+			var removeButton = GV.BUTTON_GROUP[1].get();
+			removeButton.makeButton(pointer, scene);
+			
+			var upgradeButton = GV.BUTTON_GROUP[2].get();
+			upgradeButton.makeButton(pointer, scene);
+
+			removeButton.on("pointerdown", ()=>{
+				var tower = GV.MAP[i][j];
+				if(typeof tower ==="object")
+				{
+					tower.removeTower(i, j, scene);
+				}
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+			});				
+			
+			upgradeButton.on("pointerdown", ()=>{
+				//remove upgrade and remove buttons
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+				
+				//make rifleman and ranger buttons
+				var riflemanButton = GV.BUTTON_GROUP[8].get();
+				riflemanButton.makeButton(pointer, scene);
+				
+				var rangerButton = GV.BUTTON_GROUP[9].get();
+				rangerButton.makeButton(pointer, scene);
+				
+				//Assign function to each button
+				riflemanButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.RIFLEMAN_STATS.towerId].get(GV.RIFLEMAN_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 8; count < 10; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+				
+				rangerButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.RANGER_STATS.towerId].get(GV.RANGER_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 8; count < 10; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+					
+			});
+		}
+		//if tower clicked on is apprentice
+		else if (GV.MAP[i][j].towerId == 3)
+		{
+			//new code
+			var removeButton = GV.BUTTON_GROUP[1].get();
+			removeButton.makeButton(pointer, scene);
+			
+			var upgradeButton = GV.BUTTON_GROUP[2].get();
+			upgradeButton.makeButton(pointer, scene);
+
+			removeButton.on("pointerdown", ()=>{
+				var tower = GV.MAP[i][j];
+				if(typeof tower ==="object")
+				{
+					tower.removeTower(i, j, scene);
+				}
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+			});				
+			
+			upgradeButton.on("pointerdown", ()=>{
+				//remove upgrade and remove buttons
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+				
+				//make wizard and sorceress buttons
+				var wizardButton = GV.BUTTON_GROUP[10].get();
+				wizardButton.makeButton(pointer, scene);
+				
+				var sorceressButton = GV.BUTTON_GROUP[11].get();
+				sorceressButton.makeButton(pointer, scene);
+				
+				//Assign function to each button
+				wizardButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.WIZARD_STATS.towerId].get(GV.WIZARD_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 10; count < 12; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+				
+				sorceressButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.SORCERESS_STATS.towerId].get(GV.SORCERESS_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 10; count < 12; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+					
+			});
+		}
+		//if tower clicked on is knight
+		else if (GV.MAP[i][j].towerId == 4)
+		{
+			//new code
+			var removeButton = GV.BUTTON_GROUP[1].get();
+			removeButton.makeButton(pointer, scene);
+			
+			var upgradeButton = GV.BUTTON_GROUP[2].get();
+			upgradeButton.makeButton(pointer, scene);
+
+			removeButton.on("pointerdown", ()=>{
+				var tower = GV.MAP[i][j];
+				if(typeof tower ==="object")
+				{
+					tower.removeTower(i, j, scene);
+				}
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+			});				
+			
+			upgradeButton.on("pointerdown", ()=>{
+				//remove upgrade and remove buttons
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+				
+				//make commander and paladin buttons
+				var commanderButton = GV.BUTTON_GROUP[12].get();
+				commanderButton.makeButton(pointer, scene);
+				
+				var paladinButton = GV.BUTTON_GROUP[13].get();
+				paladinButton.makeButton(pointer, scene);
+				
+				//Assign function to each button
+				commanderButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.COMMANDER_STATS.towerId].get(GV.COMMANDER_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 12; count < 14; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+				
+				paladinButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.PALADIN_STATS.towerId].get(GV.PALADIN_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 12; count < 14; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+					
+			});
+		}
+		//if tower clicked on is duelist
+		else if (GV.MAP[i][j].towerId ==5)
+		{
+			//new code
+			var removeButton = GV.BUTTON_GROUP[1].get();
+			removeButton.makeButton(pointer, scene);
+			
+			var upgradeButton = GV.BUTTON_GROUP[2].get();
+			upgradeButton.makeButton(pointer, scene);
+
+			removeButton.on("pointerdown", ()=>{
+				var tower = GV.MAP[i][j];
+				if(typeof tower ==="object")
+				{
+					tower.removeTower(i, j, scene);
+				}
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+			});				
+			
+			upgradeButton.on("pointerdown", ()=>{
+				//remove upgrade and remove buttons
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+				
+				//make swordmaster and cutpurse buttons
+				var swordmasterButton = GV.BUTTON_GROUP[14].get();
+				swordmasterButton.makeButton(pointer, scene);
+				
+				var cutpurseButton = GV.BUTTON_GROUP[15].get();
+				cutpurseButton.makeButton(pointer, scene);
+				
+				//Assign function to each button
+				swordmasterButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.SWORDMASTER_STATS.towerId].get(GV.SWORDMASTER_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 14; count < 16; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+				
+				cutpurseButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.CUTPURSE_STATS.towerId].get(GV.CUTPURSE_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 14; count < 16; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+					
+			});
+		}
+		//if tower clicked on is rifleman
+		else if (GV.MAP[i][j].towerId == 6)
+		{
+			//new code
+			var removeButton = GV.BUTTON_GROUP[1].get();
+			removeButton.makeButton(pointer, scene);
+			
+			var upgradeButton = GV.BUTTON_GROUP[2].get();
+			upgradeButton.makeButton(pointer, scene);
+
+			removeButton.on("pointerdown", ()=>{
+				var tower = GV.MAP[i][j];
+				if(typeof tower ==="object")
+				{
+					tower.removeTower(i, j, scene);
+				}
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+			});				
+			
+			upgradeButton.on("pointerdown", ()=>{
+				//remove upgrade and remove buttons
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+				
+				//make cannoneer and sharpshooter buttons
+				var cannoneerButton = GV.BUTTON_GROUP[16].get();
+				cannoneerButton.makeButton(pointer, scene);
+				
+				var sharpshooterButton = GV.BUTTON_GROUP[17].get();
+				sharpshooterButton.makeButton(pointer, scene);
+				
+				//Assign function to each button
+				cannoneerButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.CANNONEER_STATS.towerId].get(GV.CANNONEER_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 16; count < 18; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+				
+				sharpshooterButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.SHARPSHOOTER_STATS.towerId].get(GV.SHARPSHOOTER_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 16; count < 18; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+					
+			});
+		}
+		//if tower clicked on is ranger
+		else if (GV.MAP[i][j].towerId == 7)
+		{
+			//new code
+			var removeButton = GV.BUTTON_GROUP[1].get();
+			removeButton.makeButton(pointer, scene);
+			
+			var upgradeButton = GV.BUTTON_GROUP[2].get();
+			upgradeButton.makeButton(pointer, scene);
+
+			removeButton.on("pointerdown", ()=>{
+				var tower = GV.MAP[i][j];
+				if(typeof tower ==="object")
+				{
+					tower.removeTower(i, j, scene);
+				}
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+			});				
+			
+			upgradeButton.on("pointerdown", ()=>{
+				//remove upgrade and remove buttons
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+				
+				//make beastmaster and assassin buttons
+				var beastmasterButton = GV.BUTTON_GROUP[18].get();
+				beastmasterButton.makeButton(pointer, scene);
+				
+				var assassinButton = GV.BUTTON_GROUP[19].get();
+				assassinButton.makeButton(pointer, scene);
+				
+				//Assign function to each button
+				beastmasterButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.BEASTMASTER_STATS.towerId].get(GV.BEASTMASTER_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 18; count < 20; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+				
+				assassinButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.ASSASSIN_STATS.towerId].get(GV.ASSASSIN_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 18; count < 20; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+					
+			});
+		}
+		//if tower clicked on is wizard
+		else if (GV.MAP[i][j].towerId == 8)
+		{
+			//new code
+			var removeButton = GV.BUTTON_GROUP[1].get();
+			removeButton.makeButton(pointer, scene);
+			
+			var upgradeButton = GV.BUTTON_GROUP[2].get();
+			upgradeButton.makeButton(pointer, scene);
+
+			removeButton.on("pointerdown", ()=>{
+				var tower = GV.MAP[i][j];
+				if(typeof tower ==="object")
+				{
+					tower.removeTower(i, j, scene);
+				}
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+			});				
+			
+			upgradeButton.on("pointerdown", ()=>{
+				//remove upgrade and remove buttons
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+				
+				//make fire, ice and lightning mage buttons
+				var firemageButton = GV.BUTTON_GROUP[20].get();
+				firemageButton.makeButton(pointer, scene);
+				
+				var icemageButton = GV.BUTTON_GROUP[21].get();
+				icemageButton.makeButton(pointer, scene);
+				
+				var lightningmageButton = GV.BUTTON_GROUP[22].get();
+				lightningmageButton.makeButton(pointer, scene);
+				
+				//Assign function to each button
+				firemageButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.FIREMAGE_STATS.towerId].get(GV.FIREMAGE_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 20; count < 23; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+				
+				icemageButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.ICEMAGE_STATS.towerId].get(GV.ICEMAGE_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 20; count < 23; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+				
+				lightningmageButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.LIGHTNINGMAGE_STATS.towerId].get(GV.LIGHTNINGMAGE_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 20; count < 23; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+					
+			});
+		}
+		//if tower clicked on is sorceress
+		else if (GV.MAP[i][j].towerId == 9)
+		{
+			//new code
+			var removeButton = GV.BUTTON_GROUP[1].get();
+			removeButton.makeButton(pointer, scene);
+			
+			var upgradeButton = GV.BUTTON_GROUP[2].get();
+			upgradeButton.makeButton(pointer, scene);
+
+			removeButton.on("pointerdown", ()=>{
+				var tower = GV.MAP[i][j];
+				if(typeof tower ==="object")
+				{
+					tower.removeTower(i, j, scene);
+				}
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+			});				
+			
+			upgradeButton.on("pointerdown", ()=>{
+				//remove upgrade and remove buttons
+				removeButton.setActive(false);
+				removeButton.setVisible(false);
+				GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+				upgradeButton.setActive(false);
+				upgradeButton.setVisible(false);
+				GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+				
+				//make warlock and priestess buttons
+				var warlockButton = GV.BUTTON_GROUP[23].get();
+				warlockButton.makeButton(pointer, scene);
+				
+				var priestessButton = GV.BUTTON_GROUP[24].get();
+				priestessButton.makeButton(pointer, scene);
+				
+				//Assign function to each button
+				warlockButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.WARLOCK_STATS.towerId].get(GV.WARLOCK_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 23; count < 25; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+				
+				priestessButton.on("pointerdown", ()=>{
+					var currTower = GV.MAP[i][j];
+					var newTower = GV.TOWER_GROUP[GV.PRIESTESS_STATS.towerId].get(GV.PRIESTESS_STATS);
+					currTower.upgradeTower(i, j, newTower, scene);
+					for (var count = 23; count < 25; count++) {
+						GV.BUTTON_GROUP[count].clear(true, true);
+					}
+				});
+					
+			});
+		}
+	}
+	else if (pointer.rightButtonDown())
+	{
+		var tower = GV.MAP[i][j];
+		if(typeof tower === "object")
+		{
+			tower.removeTower(i, j, scene);
+		}
+	}
 }
 
 export function getEnemy(x, y, distance, hitFly) {
