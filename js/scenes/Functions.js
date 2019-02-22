@@ -112,11 +112,13 @@ export function userAction(pointer, scene){
         {
 			//highlight location clicked by user
 			highlightLoc(scene, i, j);
+			/* for (var count = 0; count < 25; count++) {
+				GV.BUTTON_GROUP[count].clear(true, true);
+			} */
 			
 			//if new tower
 			if(GV.MAP[i][j] == 0)
 			{	
-				GV.BUTTON_GROUP[0].clear(true, true);
 				var placeButton = GV.BUTTON_GROUP[0].get();
 				placeButton.makeButton(pointer, scene);
 				
@@ -131,16 +133,7 @@ export function userAction(pointer, scene){
 			//if upgrade tower
 			else if(GV.MAP[i][j].towerId == 0)
 			{
-				//old code to upgrade
-				/* var currTower = GV.MAP[i][j];
-				var newTower = GV.TOWER_GROUP[GV.SOLDIER_STATS.towerId].get(GV.SOLDIER_STATS);
-				currTower.upgradeTower(i, j, newTower, scene); */
-				
-				
 				//New code for remove and upgrade buttons
-				GV.BUTTON_GROUP[1].clear(true, true);
-				GV.BUTTON_GROUP[2].clear(true, true);
-				
 				var removeButton = GV.BUTTON_GROUP[1].get();
 				removeButton.makeButton(pointer, scene);
 				
@@ -163,28 +156,75 @@ export function userAction(pointer, scene){
 
 				
 				upgradeButton.on("pointerdown", ()=>{
-					var currTower = GV.MAP[i][j];
-					var newTower = GV.TOWER_GROUP[GV.SOLDIER_STATS.towerId].get(GV.SOLDIER_STATS);
-					currTower.upgradeTower(i, j, newTower, scene);
-					GV.GOLD -= 2;
+					//remove upgrade and remove buttons
 					removeButton.setActive(false);
 					removeButton.setVisible(false);
 					GV.BUTTON_GROUP[1].remove(removeButton, true, true);
 					upgradeButton.setActive(false);
 					upgradeButton.setVisible(false);
 					GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+					
+					//make soldier, archer and apprentice buttons
+					var soldierButton = GV.BUTTON_GROUP[3].get();
+					soldierButton.makeButton(pointer, scene);
+					
+					var archerButton = GV.BUTTON_GROUP[4].get();
+					archerButton.makeButton(pointer, scene);
+					
+					var apprenticeButton = GV.BUTTON_GROUP[5].get();
+					apprenticeButton.makeButton(pointer, scene);
+					
+					//Assign function to each button
+					soldierButton.on("pointerdown", ()=>{
+						var currTower = GV.MAP[i][j];
+						var newTower = GV.TOWER_GROUP[GV.SOLDIER_STATS.towerId].get(GV.SOLDIER_STATS);
+						currTower.upgradeTower(i, j, newTower, scene);
+						soldierButton.setActive(false);
+						soldierButton.setVisible(false);
+						GV.BUTTON_GROUP[3].remove(removeButton, true, true);
+						archerButton.setActive(false);
+						archerButton.setVisible(false);
+						GV.BUTTON_GROUP[4].remove(upgradeButton, true, true);
+						apprenticeButton.setActive(false);
+						apprenticeButton.setVisible(false);
+						GV.BUTTON_GROUP[5].remove(upgradeButton, true, true);
+					});
+					
+					archerButton.on("pointerdown", ()=>{
+						var currTower = GV.MAP[i][j];
+						var newTower = GV.TOWER_GROUP[GV.ARCHER_STATS.towerId].get(GV.ARCHER_STATS);
+						currTower.upgradeTower(i, j, newTower, scene);
+						soldierButton.setActive(false);
+						soldierButton.setVisible(false);
+						GV.BUTTON_GROUP[3].remove(removeButton, true, true);
+						archerButton.setActive(false);
+						archerButton.setVisible(false);
+						GV.BUTTON_GROUP[4].remove(upgradeButton, true, true);
+						apprenticeButton.setActive(false);
+						apprenticeButton.setVisible(false);
+						GV.BUTTON_GROUP[5].remove(upgradeButton, true, true);
+					});
+					
+					apprenticeButton.on("pointerdown", ()=>{
+						var currTower = GV.MAP[i][j];
+						var newTower = GV.TOWER_GROUP[GV.APPRENTICE_STATS.towerId].get(GV.APPRENTICE_STATS);
+						currTower.upgradeTower(i, j, newTower, scene);
+						soldierButton.setActive(false);
+						soldierButton.setVisible(false);
+						GV.BUTTON_GROUP[3].remove(removeButton, true, true);
+						archerButton.setActive(false);
+						archerButton.setVisible(false);
+						GV.BUTTON_GROUP[4].remove(upgradeButton, true, true);
+						apprenticeButton.setActive(false);
+						apprenticeButton.setVisible(false);
+						GV.BUTTON_GROUP[5].remove(upgradeButton, true, true);
+					});
+						
 				});
 			}
 			else if(GV.MAP[i][j].towerId == 1)
 			{
-				//old code
-				/* var currTower = GV.MAP[i][j];
-				var newTower = GV.TOWER_GROUP[GV.ARCHER_STATS.towerId].get(GV.ARCHER_STATS);
-				currTower.upgradeTower(i, j, newTower, scene); */
 				//new code
-				GV.BUTTON_GROUP[1].clear(true, true);
-				GV.BUTTON_GROUP[2].clear(true, true);
-				
 				var removeButton = GV.BUTTON_GROUP[1].get();
 				removeButton.makeButton(pointer, scene);
 				
@@ -210,7 +250,6 @@ export function userAction(pointer, scene){
 					var currTower = GV.MAP[i][j];
 					var newTower = GV.TOWER_GROUP[GV.ARCHER_STATS.towerId].get(GV.ARCHER_STATS);
 					currTower.upgradeTower(i, j, newTower, scene);
-					GV.GOLD -= 3;
 					removeButton.setActive(false);
 					removeButton.setVisible(false);
 					GV.BUTTON_GROUP[1].remove(removeButton, true, true);
@@ -222,8 +261,6 @@ export function userAction(pointer, scene){
 			else if(GV.MAP[i][j].towerId == 2)
 			{
 				//new code
-				GV.BUTTON_GROUP[2].clear(true, true);
-				
 				var removeButton = GV.BUTTON_GROUP[1].get();
 				removeButton.makeButton(pointer, scene);
 

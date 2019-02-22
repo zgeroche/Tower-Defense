@@ -23,7 +23,7 @@ export class GameScene extends Phaser.Scene {
 		then add each object to GV.TOWER_GROUP arr
 		we do this becuase GV.TOWER_GROUP can now be easily used to manipulate tower objects with Phaser functions.*/
 		//loop set to 3 since we only have 3 developed classes at the moment
-		for(var i = 0; i < 3; i++) {
+		for(var i = 0; i < 22; i++) {
 			var towerClass = "CS."+GV.TOWER_ARRAY[i].towerName;
 			GV.TOWER_GROUP[GV.TOWER_ARRAY[i].towerId] = this.add.group({ classType: eval(towerClass), runChildUpdate: true });
 		}
@@ -38,9 +38,12 @@ export class GameScene extends Phaser.Scene {
 		GV.ATTACKS_GROUP = this.physics.add.group({ classType: CS.Attack, runChildUpdate: true });
 		
 		//test button group
-		GV.BUTTON_GROUP[0] = this.add.group({ classType: CS.PlaceButton, runChildUpdate: false });
+		for (var i = 0; i < 25; i++) {
+			GV.BUTTON_GROUP[i] = this.add.group({ classType: eval(GV.BUTTON_ARRAY[i]), runChildUpdate: false});
+		}
+		/* GV.BUTTON_GROUP[0] = this.add.group({ classType: CS.PlaceButton, runChildUpdate: false });
 		GV.BUTTON_GROUP[1] = this.add.group({ classType: CS.RemoveButton, runChildUpdate: false });
-		GV.BUTTON_GROUP[2] = this.add.group({ classType: CS.UpgradeButton, runChildUpdate: false });
+		GV.BUTTON_GROUP[2] = this.add.group({ classType: CS.UpgradeButton, runChildUpdate: false }); */
 		
 		//turned into attack group soon for different attack types
 		GV.ATTACKS_GROUP = this.physics.add.group({ classType: CS.Attack, runChildUpdate: true });
