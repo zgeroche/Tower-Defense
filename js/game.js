@@ -3,6 +3,7 @@ import {GameScene} from "./scenes/GameScene";
 import {GameScene2} from "./scenes/GameScene2";
 import {LoadScene} from "./scenes/LoadScene";
 import {GameOverScene} from "./scenes/GameOverScene";
+var FN = require('./scenes/Functions.js');
 
 //-------------------------------------------------------SETUP-----------------------------------------------------
 //master config for game
@@ -12,7 +13,6 @@ var config = {
     parent: 'content',
     width: 1600,
     height: 1280,
-    //resolution: window.devicePixelRatio,
     physics: {
         default: 'arcade'
     },
@@ -30,4 +30,21 @@ var config = {
 
 //begin game
 var game = new Phaser.Game(config);
+resize();
+window.addEventListener("resize", resize, false);
 
+function resize() {
+    var canvas = document.querySelector("Canvas");
+    var windowWidth = window.innerWidth;
+    var windowHeight = window.innerHeight;
+    var windowRatio = windowWidth/windowHeight;
+    var gameRatio = game.config.width/game.config.height;
+    if (windowRatio < gameRatio) {
+        canvas.style.width = windowWidth + "px";
+        canvas.style.height = (windowWidth/gameRatio) + "px";
+    }
+    else {
+        canvas.style.width = (windowHeight * gameRatio) + "px";
+        canvas.style.height = windowHeight + "px";
+    }
+}
