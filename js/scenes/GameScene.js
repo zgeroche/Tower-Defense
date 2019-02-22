@@ -85,18 +85,18 @@ export class GameScene extends Phaser.Scene {
     //update function constantly refreshes so to progress game
     update(time, delta) {  
         //Check if player still alive
-        if (GV.PLAYER_HEALTH <= 0)
+        /*if (GV.PLAYER_HEALTH <= 0)
         {
             this.scene.remove('HUD');
             this.delay.destroy();
             this.complete.destroy();
             this.skipWave.destroy();
-            this.cameras.main.fade(2500,0,0,0, false);
+             this.cameras.main.fade(2500,0,0,0, false);
             this.cameras.main.once('camerafadeoutcomplete', ()=>{
                 this.scene.start(CST.SCENES.GAMEOVER);
-            });
+            }); 
         }
-        else {
+        else {*/
             this.delay.setText('Next wave in ' + Math.trunc((this.nextEnemy-time)/1000) + ' Seconds');
             if (time > this.nextEnemy && GV.SPAWNED < 10)
             {
@@ -122,6 +122,6 @@ export class GameScene extends Phaser.Scene {
                 GV.WAVE += 1;
                 this.nextEnemy = time + GV.WAVE_DELAY;
             }
-        }
+        //}
     }
 }
