@@ -6,18 +6,22 @@ export function buildMap(scene, mapBG){
 	//path to which enemey follows
     var graphics = scene.add.graphics();    
     drawLines(graphics);
-    GV.PATH = scene.add.path(0, 480);		//start point for path coords
-    GV.PATH.lineTo(352, 480);
-    GV.PATH.lineTo(352, 160);
-    GV.PATH.lineTo(608, 160);
-    GV.PATH.lineTo(608, 736);
-    GV.PATH.lineTo(480, 736);
-    GV.PATH.lineTo(480, 1056);
-    GV.PATH.lineTo(1120, 1056);
-    GV.PATH.lineTo(1120, 288);
-    GV.PATH.lineTo(1568, 288);
+    GV.WALKPATH = scene.add.path(0, 480);		//start point for path coords
+    GV.WALKPATH.lineTo(352, 480);
+    GV.WALKPATH.lineTo(352, 160);
+    GV.WALKPATH.lineTo(608, 160);
+    GV.WALKPATH.lineTo(608, 736);
+    GV.WALKPATH.lineTo(480, 736);
+    GV.WALKPATH.lineTo(480, 1056);
+    GV.WALKPATH.lineTo(1120, 1056);
+    GV.WALKPATH.lineTo(1120, 288);
+    GV.WALKPATH.lineTo(1568, 288);
     graphics.lineStyle(1, 0xffffff, 1);
-    GV.PATH.draw(graphics);
+    GV.WALKPATH.draw(graphics);
+
+    GV.FLYPATH = scene.add.path(0, 480);
+    GV.FLYPATH.lineTo(1568, 288);
+    GV.FLYPATH.draw(graphics);
     
 	//add map image
 	scene.add.image(800, 640, mapBG).setDepth(0);
@@ -58,6 +62,12 @@ export function createAnimations(scene, sprites, side) {
 				frames: scene.anims.generateFrameNames(enemy, { prefix: movement+'_right_', start: 1, end: frameEnd }),
 				frameRate: 5,
 				repeat: -1
+			}); 
+			scene.anims.create({
+			    key: enemy + "_up",
+			    frames: scene.anims.generateFrameNames(enemy, { prefix: movement+'_up_', start: 1, end: frameEnd }),
+			    frameRate: 5,
+			    repeat: -1
 			}); 
 		}
 		if(side == 1)
