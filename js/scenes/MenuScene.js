@@ -21,7 +21,7 @@ export class MenuScene extends Phaser.Scene{
 
         newGame.setInteractive();
         newGame.on("pointerdown", ()=>{
-            this.scene.start(CST.SCENES.GAME, "Starting New Game");
+            this.scene.start(CST.SCENES.GAME);
         })
     }
 }
