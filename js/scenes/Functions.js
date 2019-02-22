@@ -14,7 +14,7 @@ export function buildMap(scene, mapBG){
     GV.PATH.draw(graphics);
     
 	//add map image
-	scene.add.image(320, 256, mapBG).setDepth(0);
+	//scene.add.image(320, 256, mapBG).setDepth(0);
 
 	//add background music
 	scene.bgm = scene.sound.add('background');

@@ -7,7 +7,7 @@ export class GameOverScene extends Phaser.Scene{
         })
     }
     init(data){
-        console.log(data);
+        //console.log(data);
     }
 
     preload(){

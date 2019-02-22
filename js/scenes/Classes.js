@@ -123,8 +123,8 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			//this.walk.stop();												//sounds
 			this.destroy();
 			//particles.destroy();
-			this.camera.shake(150, .05, false);
-			this.camera.flash(150,  200, 0, 0, false);
+			//this.camera.shake(150, .05, false);							//camera
+			//this.camera.flash(150,  200, 0, 0, false);					//camera
 			GV.PLAYER_HEALTH -= this.damage;
 		}
 
