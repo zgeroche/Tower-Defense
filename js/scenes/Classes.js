@@ -12,7 +12,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
         this.hp = stats.hp;
         this.value = stats.value;
-        this.speed = stats.speed;
+        this.speed = stats.speed/3; //had to divide by 3 (randomly chose 3) so that the walk speed would slow down
         this.magicArmor = stats.magicArmor;
         this.physicalArmor = stats.physicalArmor;
         this.flying = stats.flying;
@@ -122,7 +122,6 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			this.healthbar.destroy();
 			//this.walk.stop();												//sounds
 			this.destroy();
-			//particles.destroy();
 			//this.camera.shake(150, .05, false);							//camera
 			//this.camera.flash(150,  200, 0, 0, false);					//camera
 			GV.PLAYER_HEALTH -= this.damage;

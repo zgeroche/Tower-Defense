@@ -10,8 +10,8 @@ import {GameOverScene} from "./scenes/GameOverScene";
 var config = {
     type: Phaser.AUTO,
     parent: 'content',
-    width: 640,
-    height: 512,
+    width: 1600,
+    height: 1280,
     //resolution: window.devicePixelRatio,
     physics: {
         default: 'arcade'
