@@ -31,7 +31,7 @@ export function buildMap(scene, mapBG){
     scene.input.mouse.disableContextMenu();
 }
 
-//create animations for all enemies
+//create animations for all enemies and towers
 export function createAnimations(scene, sprites, side) {
     for (var i = 0; i < sprites.length; i++) {
 		if(side == 0)
@@ -67,7 +67,7 @@ export function createAnimations(scene, sprites, side) {
 			scene.anims.create({
 				key: tower + "_atk",
 				frames: scene.anims.generateFrameNames(tower, { prefix: 'atk_down_', start: 1, end: 5 }),
-				frameRate: 5,
+				frameRate: 15,
 				repeat: -1
 			}); 
 			
