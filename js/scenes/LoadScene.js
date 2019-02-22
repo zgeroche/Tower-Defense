@@ -28,7 +28,8 @@ export class LoadScene extends Phaser.Scene{
         this.load.atlas('ogre', 'assets/ogre.png', 'assets/ogre.json');
 		
 		//load map
-		this.load.image('map', 'assets/castle-gates.png', { frameWidth: 640, frameHeight: 512 });
+		//this.load.image('map', 'assets/castle-gates.png', { frameWidth: 640, frameHeight: 512 });
+		this.load.image('map', 'assets/castle gates - big.png', { frameWidth: 1600, frameHeight: 1280 });
 		this.load.image('map2', 'assets/armory.png', { frameWidth: 640, frameHeight: 512 });
 		
 		//load sounds

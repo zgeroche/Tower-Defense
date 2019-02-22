@@ -6,15 +6,21 @@ export function buildMap(scene, mapBG){
 	//path to which enemey follows
     var graphics = scene.add.graphics();    
     drawLines(graphics);
-    GV.PATH = scene.add.path(96, -32);
-    GV.PATH.lineTo(96, 164);
-    GV.PATH.lineTo(480, 164);
-    GV.PATH.lineTo(480, 544);
-    graphics.lineStyle(0, 0xffffff, 1);
+    GV.PATH = scene.add.path(0, 480);		//start point for path coords
+    GV.PATH.lineTo(352, 480);
+    GV.PATH.lineTo(352, 160);
+    GV.PATH.lineTo(608, 160);
+    GV.PATH.lineTo(608, 736);
+    GV.PATH.lineTo(480, 736);
+    GV.PATH.lineTo(480, 1056);
+    GV.PATH.lineTo(1120, 1056);
+    GV.PATH.lineTo(1120, 288);
+    GV.PATH.lineTo(1568, 288);
+    graphics.lineStyle(1, 0xffffff, 1);
     GV.PATH.draw(graphics);
     
 	//add map image
-	scene.add.image(320, 256, mapBG).setDepth(0);
+	scene.add.image(800, 640, mapBG).setDepth(0);
 
 	//add background music
 	scene.bgm = scene.sound.add('background');
@@ -191,7 +197,6 @@ export function userAction(pointer, scene){
 					for (var count = 3; count < 6; count++) {
 						GV.BUTTON_GROUP[count].clear(true, true);
 					}
-				});
 				
 				apprenticeButton.on("pointerdown", ()=>{
 					var currTower = GV.MAP[i][j];
@@ -804,13 +809,13 @@ export function damageEnemy(enemy, attack) {
 
 export function drawLines(graphics) {
     graphics.lineStyle(1, 0x0000ff, 0.8);
-    for(var i = 0; i < 8; i++) {
+    for(var i = 0; i < 20; i++) {
         graphics.moveTo(0, i * 64);
-        graphics.lineTo(640, i * 64);
+        graphics.lineTo(1600, i * 64);
     }
-    for(var j = 0; j < 10; j++) {
+    for(var j = 0; j < 25; j++) {
         graphics.moveTo(j * 64, 0);
-        graphics.lineTo(j * 64, 512);
+        graphics.lineTo(j * 64, 1280);
     }
     graphics.strokePath();
 }	
