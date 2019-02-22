@@ -7,6 +7,7 @@ var SPAWNED = 0;
 var WAVE = 1;
 var GOLD = 25;
 var WAVE_DELAY = 15000;
+var PLAYER_HEALTH = 100;
 
 var ENEMY_SPEED = 1/10000;
 var ENEMY_HP = 1000;
@@ -64,11 +65,11 @@ var TOWER_ARRAY = [PEASANT_STATS, //0
 			WARLOCK_STATS,//21
 			PRIESTESS_STATS];//22
 
-var DEATHKNIGHT_STATS =  {enemyId: 0,    enemyName: "Deathknight",   speed: 1,   hp: 500,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 1, frameEnd: 4};
-var SKELETON_STATS =     {enemyId: 1,    enemyName: "Skeleton",      speed: 1,   hp: 600,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 2, frameEnd: 4};
-var BAT_STATS =          {enemyId: 2,    enemyName: "Bat",           speed: 1,   hp: 300,    magicArmor: 0,  physicalArmor: 0,   flying: true,   value: 1, frameEnd: 5};
-var OGRE_STATS =         {enemyId: 3,    enemyName: "Ogre",          speed: .75, hp: 2000,   magicArmor: 10, physicalArmor: 10,  flying: false,  value: 5, frameEnd: 6};
-var SPIDER_STATS =       {enemyId: 4,    enemyName: "Spider",        speed: 1.5, hp: 450,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 1, frameEnd: 4};   
+var DEATHKNIGHT_STATS =  {enemyId: 0,    enemyName: "Deathknight",   speed: 1,   hp: 500,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 1, frameEnd: 4, damage: 100};
+var SKELETON_STATS =     {enemyId: 1,    enemyName: "Skeleton",      speed: 1,   hp: 600,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 2, frameEnd: 4, damage: 10};
+var BAT_STATS =          {enemyId: 2,    enemyName: "Bat",           speed: 1,   hp: 300,    magicArmor: 0,  physicalArmor: 0,   flying: true,   value: 1, frameEnd: 5, damage: 7};
+var OGRE_STATS =         {enemyId: 3,    enemyName: "Ogre",          speed: .75, hp: 2000,   magicArmor: 10, physicalArmor: 10,  flying: false,  value: 5, frameEnd: 6, damage: 20};
+var SPIDER_STATS =       {enemyId: 4,    enemyName: "Spider",        speed: 1.5, hp: 450,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 1, frameEnd: 4, damage: 5};   
 
 var ENEMY_ARRAY = [DEATHKNIGHT_STATS,
                 SKELETON_STATS,
@@ -127,6 +128,7 @@ ENEMY_SPEED,
 ENEMY_HP,
 ENEMY_SPAWN_RATE,
 WAVE_DELAY,
+PLAYER_HEALTH,
 ATTACK_DAMAGE,
 TOWER_FIRE_RATE,
 PEASANT_STATS,

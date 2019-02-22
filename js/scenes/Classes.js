@@ -16,13 +16,15 @@ export class Enemy extends Phaser.GameObjects.Sprite {
         this.magicArmor = stats.magicArmor;
         this.physicalArmor = stats.physicalArmor;
         this.flying = stats.flying;
-
+        this.damage = stats.damage;
+        
         this.turned = 0;
 
+        this.camera = scene.cameras.main;
         
-        this.damage = scene.sound.add('hit');
-        this.damage.volume = 0.03;
-        this.damage.loop = false;
+        this.hurt = scene.sound.add('hit');
+        this.hurt.volume = 0.03;
+        this.hurt.loop = false;
 		
 		this.explode = scene.sound.add('explosionSound');
         this.explode.volume = 0.03;
@@ -80,7 +82,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		//this.hp -= damage;           
 		this.text.setText("HP: " + this.hp);											//textHP
 		this.healthbar.decrease(damage);
-		this.damage.play();														//sounds
+		this.hurt.play();														//sounds
 		
 		// if hp drops below 0 we deactivate this enemy
 		if (this.hp <= 0) {
@@ -120,7 +122,10 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			this.healthbar.destroy();
 			//this.walk.stop();												//sounds
 			this.destroy();
-			this.emitter.destroy();
+			//particles.destroy();
+			this.camera.shake(150, .05, false);
+			this.camera.flash(150,  200, 0, 0, false);
+			GV.PLAYER_HEALTH -= this.damage;
 		}
 
 		if (this.follower.vec.y == 164 && this.turned==0){
@@ -682,14 +687,15 @@ export class HUD extends Phaser.Scene {
 	
         //setup HUD
 		var HUD = this.add.image(320,33, 'HUD');
+		this.playerHealth = this.add.text(50, 8, 'Health: ' + GV.PLAYER_HEALTH +'/100', {fontFamily: 'VT323', fontSize: 18, color: '#ff0000'});
 		var volume = this.add.image(594,16, 'vol');
 		var volDown = this.add.image(594,16, 'volDown');
 		var play = this.add.image(556,16, 'play');
 		var playDown = this.add.image(556,16, 'playDown');
 		volDown.setVisible(false);
 		playDown.setVisible(false);
-		this.infoBar = this.add.text(270, 9, 'Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName, { fontFamily: 'Arial', fontSize: 15, color: '#00ff00' });
-		this.goldBar = this.add.text(50, 40, 'Gold: '+GV.GOLD, { fontFamily: 'Arial', fontSize: 15, color: '#ffd700'});
+		this.infoBar = this.add.text(270, 8, 'Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName, { fontFamily: 'VT323', fontSize: 25, color: '#00ff00' });
+		this.goldBar = this.add.text(50, 37, 'Gold: '+GV.GOLD, { fontFamily: 'VT323', fontSize: 25, color: '#ffd700'});
 		
 		/* HUD.setDepth(1);
 		volume.setDepth(1);
@@ -747,6 +753,7 @@ export class HUD extends Phaser.Scene {
 	{
         this.infoBar.setText('Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName);
         this.goldBar.setText('Gold: '+GV.GOLD);
+        this.playerHealth.setText('Health: ' + GV.PLAYER_HEALTH +'/100');
     }
 }
 
