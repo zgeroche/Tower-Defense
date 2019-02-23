@@ -207,7 +207,7 @@ export function userAction(pointer, scene){
 					for (var count = 3; count < 6; count++) {
 						GV.BUTTON_GROUP[count].clear(true, true);
 					}
-				
+				});
 				apprenticeButton.on("pointerdown", ()=>{
 					var currTower = GV.MAP[i][j];
 					var newTower = GV.TOWER_GROUP[GV.APPRENTICE_STATS.towerId].get(GV.APPRENTICE_STATS);
@@ -216,9 +216,10 @@ export function userAction(pointer, scene){
 						GV.BUTTON_GROUP[count].clear(true, true);
 					}
 				});
-					
-			});
+			});		
+			
 		}
+
 		//if tower clicked on is a soldier
 		else if(GV.MAP[i][j].towerId == 1)
 		{
