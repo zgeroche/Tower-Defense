@@ -317,7 +317,7 @@
       }
     },
     {
-      "filename": "fly_up_3",
+      "filename": "sprite16",
       "frame": {
         "x": 144,
         "y": 312,
@@ -338,7 +338,7 @@
       }
     },
     {
-      "filename": "fly_up_4",
+      "filename": "sprite17",
       "frame": {
         "x": 194,
         "y": 312,
@@ -359,7 +359,7 @@
       }
     },
     {
-      "filename": "fly_up_2",
+      "filename": "sprite18",
       "frame": {
         "x": 72,
         "y": 316,
@@ -380,7 +380,7 @@
       }
     },
     {
-      "filename": "fly_up_5",
+      "filename": "sprite19",
       "frame": {
         "x": 264,
         "y": 316,
@@ -401,7 +401,7 @@
       }
     },
     {
-      "filename": "fly_up_1",
+      "filename": "sprite20",
       "frame": {
         "x": 2,
         "y": 320,

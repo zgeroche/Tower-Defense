@@ -1,5 +1,4 @@
-var WALKPATH;
-var FLYPATH;
+var PATH;
 var TOWER_GROUP = [];
 var ENEMY_GROUP = [];
 var ATTACKS_GROUP;
@@ -18,10 +17,10 @@ var TOWER_FIRE_RATE = 300;
 
 //stats for each tower type loaded from file rather than defined here, but for now do this
 //objects to hold sounds and animation information as well?
-var PEASANT_STATS = 		 {towerId:0,  towerName:"Peasant", 		 cost:5,  str:50,  atkRange:150, atkType:"physical", atkRate:750,  hitFly:false};
-var SOLDIER_STATS = 		 {towerId:1,  towerName:"Soldier", 		 cost:10,  str:100, atkRange:200, atkType:"physical", atkRate:400,  hitFly:false};
-var ARCHER_STATS = 			 {towerId:2,  towerName:"Archer", 		 cost:20,  str:75,  atkRange:300, atkType:"physical", atkRate:600,  hitFly:true};
-var APPRENTICE_STATS = 		 {towerId:3,  towerName:"Apprentice", 	 cost:20,  str:80,  atkRange:250, atkType:"magical",  atkRate:500,  hitFly:false};
+var PEASANT_STATS = 		 {towerId:0,  towerName:"Peasant", 		 cost:1,  str:50,  atkRange:150, atkType:"physical", atkRate:750,  hitFly:false};
+var SOLDIER_STATS = 		 {towerId:1,  towerName:"Soldier", 		 cost:2,  str:100, atkRange:200, atkType:"physical", atkRate:400,  hitFly:false};
+var ARCHER_STATS = 			 {towerId:2,  towerName:"Archer", 		 cost:2,  str:75,  atkRange:300, atkType:"physical", atkRate:600,  hitFly:true};
+var APPRENTICE_STATS = 		 {towerId:3,  towerName:"Apprentice", 	 cost:2,  str:80,  atkRange:250, atkType:"magical",  atkRate:500,  hitFly:false};
 var KNIGHT_STATS = 			 {towerId:4,  towerName:"Knight", 		 cost:3,  str:200, atkRange:200, atkType:"physical", atkRate:600,  hitFly:false};
 var DUELIST_STATS = 		 {towerId:5,  towerName:"Duelist", 		 cost:3,  str:125, atkRange:225, atkType:"physical", atkRate:400,  hitFly:false};
 var RIFLEMAN_STATS =	 	 {towerId:6,  towerName:"Rifleman", 	 cost:3,  str:150, atkRange:350, atkType:"physical", atkRate:650,  hitFly:true};
@@ -66,9 +65,9 @@ var TOWER_ARRAY = [PEASANT_STATS, //0
 			WARLOCK_STATS,//21
 			PRIESTESS_STATS];//22
 
-var DEATHKNIGHT_STATS =  {enemyId: 0,    enemyName: "Deathknight",   speed: 1,   hp: 500,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 1, frameEnd: 4, damage: 10};
-var SKELETON_STATS =     {enemyId: 1,    enemyName: "Skeleton",      speed: 1,   hp: 600,    magicArmor: 10,  physicalArmor: 0,   flying: false,  value: 2, frameEnd: 4, damage: 10};
-var BAT_STATS =          {enemyId: 2,    enemyName: "Bat",           speed: 2,   hp: 300,    magicArmor: 0,  physicalArmor: 0,   flying: true,   value: 1, frameEnd: 5, damage: 7};
+var DEATHKNIGHT_STATS =  {enemyId: 0,    enemyName: "Deathknight",   speed: 1,   hp: 500,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 1, frameEnd: 4, damage: 100};
+var SKELETON_STATS =     {enemyId: 1,    enemyName: "Skeleton",      speed: 1,   hp: 600,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 2, frameEnd: 4, damage: 10};
+var BAT_STATS =          {enemyId: 2,    enemyName: "Bat",           speed: 1,   hp: 300,    magicArmor: 0,  physicalArmor: 0,   flying: true,   value: 1, frameEnd: 5, damage: 7};
 var OGRE_STATS =         {enemyId: 3,    enemyName: "Ogre",          speed: .75, hp: 2000,   magicArmor: 10, physicalArmor: 10,  flying: false,  value: 5, frameEnd: 6, damage: 20};
 var SPIDER_STATS =       {enemyId: 4,    enemyName: "Spider",        speed: 1.5, hp: 450,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 1, frameEnd: 4, damage: 5};   
 
@@ -129,8 +128,7 @@ var MAP =  [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-
 			
 			
 export{
-WALKPATH,
-FLYPATH,
+PATH,
 TOWER_GROUP,
 ENEMY_GROUP,
 ATTACKS_GROUP,

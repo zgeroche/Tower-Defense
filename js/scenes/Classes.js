@@ -17,8 +17,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
         this.physicalArmor = stats.physicalArmor;
         this.flying = stats.flying;
         this.damage = stats.damage;
-        this.enemyName = stats.enemyName.toLowerCase();
-
+        
         this.turned = 0;
 
         this.camera = scene.cameras.main;
@@ -62,10 +61,8 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		//this.hp = ENEMY_HP;
 		
 		//this.walk.play();																//sounds
-		if (!this.flying)
-		{GV.WALKPATH.getPoint(this.follower.t, this.follower.vec);}
-		else
-		{GV.FLYPATH.getPoint(this.follower.t, this.follower.vec);}
+		
+		GV.PATH.getPoint(this.follower.t, this.follower.vec);
 		
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
 		
@@ -104,41 +101,15 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			GV.GOLD += this.value;
 		}
 	}
-
-	turnDown()
-	{
-	    let anim = this.enemyName + "_down";
-	    this.anims.play(anim);
-
-	}
-
-	turnRight()
-	{
-	    let anim = this.enemyName + "_right";
-	    this.anims.play(anim);
-	    this.flipX = false;
-	}
-	turnUp()
-	{
-	    let anim = this.enemyName + "_up";
-	    this.anims.play(anim);
-	}
-	turnLeft()
-	{
-	    let anim = this.enemyName + "_right";
-	    this.anims.play(anim);
-	    this.flipX = true;
-	}
 	
 	update (time, delta)
 	{
 		//ENEMY_SPEED = 1/Math.floor((Math.random() * (10000 - 5000)) + 5000);
 		this.follower.t += GV.ENEMY_SPEED * delta * this.speed;
-		if (!this.flying){ GV.WALKPATH.getPoint(this.follower.t, this.follower.vec);}
-		else{ GV.FLYPATH.getPoint(this.follower.t, this.follower.vec)};
+		
+		GV.PATH.getPoint(this.follower.t, this.follower.vec);
 		
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
-		//console.log(this.follower.vec.x);
 		this.text.setPosition(this.follower.vec.x, this.follower.vec.y);									//textHP
 		this.healthbar.setPosition(this.follower.vec.x - this.width, this.follower.vec.y - this.height);
 
@@ -155,47 +126,15 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			//this.camera.flash(150,  200, 0, 0, false);					//camera
 			GV.PLAYER_HEALTH -= this.damage;
 		}
-		if (!this.flying)
+
+		if (this.follower.vec.y == 164 && this.turned==0){
+		    this.turnRight();
+		    this.turned = 1;
+		}
+		else if (this.follower.vec.y != 164 && this.turned ==1)
 		{
-		    if (this.follower.vec.x == 352 && this.turned==0){
-		        this.turnUp();
-		        this.turned += 1;
-		    }
-		    else if (this.follower.vec.y == 160 && this.turned ==1)
-		    {
-		        this.turnRight();
-		        this.turned += 1;
-		    }
-		    else if (this.follower.vec.x == 608 && this.turned == 2)
-		    {
-		        this.turnDown();
-		        this.turned += 1;
-		    }
-		    else if (this.follower.vec.y == 736 && this.turned == 3)
-		    {
-		        this.turnLeft();
-		        this.turned += 1;
-		    }
-		    else if (this.follower.vec.x == 480 && this.turned == 4)
-		    {
-		        this.turnDown();
-		        this.turned += 1;
-		    }
-		    else if (this.follower.vec.y == 1056 && this.turned == 5)
-		    {
-		        this.turnRight();
-		        this.turned += 1;
-		    }
-		    else if (this.follower.vec.x == 1120 && this.turned == 6)
-		    {
-		        this.turnUp();
-		        this.turned += 1;
-		    }
-		    else if (this.follower.vec.y == 288 && this.turned == 7)
-		    {
-		        this.turnRight();
-		        this.turned += 1;
-		    }
+		    this.turnDown();
+		    this.turned = 2;
 		}
 	}
 };
@@ -206,7 +145,7 @@ export class Deathknight extends Enemy {
 		Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'deathknight');
 
 		
-        this.anims.play('deathknight_right');
+        this.anims.play('deathknight_down');
 		
 		//create sounds
 		this.death = scene.sound.add('dkDeath');
@@ -219,6 +158,15 @@ export class Deathknight extends Enemy {
 		this.walk.volume = 0.01;
 		this.walk.loop = true; */
 	}
+    turnDown()
+    {
+        this.anims.play('deathknight_down');
+    }
+
+    turnRight()
+    {
+        this.anims.play('deathknight_right');
+    }
 }
 
 export class Skeleton extends Enemy {
@@ -226,13 +174,23 @@ export class Skeleton extends Enemy {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'skeleton');
 
-        this.anims.play('skeleton_right');
+        this.anims.play('skeleton_down');
 		
 		//create sounds
 		this.death = scene.sound.add('dkDeath');
 		this.death.volume = 0.05;
 		this.death.loop = false;
 
+    }
+
+    turnDown()
+    {
+        this.anims.play('skeleton_down');
+    }
+
+    turnRight()
+    {
+        this.anims.play('skeleton_right');
     }
 }
 
@@ -241,13 +199,23 @@ export class Bat extends Enemy {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'bat');
 
-        this.anims.play('bat_right');
+        this.anims.play('bat_down');
 		
 		//create sounds
 		this.death = scene.sound.add('dkDeath');
 		this.death.volume = 0.05;
 		this.death.loop = false;
 
+    }
+
+    turnDown()
+    {
+        this.anims.play('bat_down');
+    }
+
+    turnRight()
+    {
+        this.anims.play('bat_right');
     }
 }
 
@@ -256,13 +224,23 @@ export class Ogre extends Enemy {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'ogre');
 
-        this.anims.play('ogre_right');
+        this.anims.play('ogre_down');
 		
 		//create sounds
 		this.death = scene.sound.add('dkDeath');
 		this.death.volume = 0.05;
 		this.death.loop = false;
 
+    }
+
+    turnDown()
+    {
+        this.anims.play('ogre_down');
+    }
+
+    turnRight()
+    {
+        this.anims.play('ogre_right');
     }
 }
 
@@ -302,33 +280,26 @@ export class Tower extends Phaser.GameObjects.Sprite{
 			//console.log(tower);
 			if (this)
 			{
-			    if (GV.GOLD - this.cost >= 0)
-			    {
-			        this.text.y = (i+.50) * 64 + 64/2;
-			        this.text.x = j * 64 + 64/2;
-			        this.text.setOrigin(0.5);
-			        this.setActive(true);
-			        this.setVisible(true);
-			        this.y = i * 64 + 64/2;
-			        this.x = j * 64 + 64/2;
-			        GV.MAP[i][j] = this;
-			        this.setInteractive({ useHandCursor: true });
-			        GV.GOLD -= this.cost;
-			        this.upgradeSound.play();
+				this.text.y = (i+.50) * 64 + 64/2;
+				this.text.x = j * 64 + 64/2;
+				this.text.setOrigin(0.5);
+				this.setActive(true);
+				this.setVisible(true);
+				this.y = i * 64 + 64/2;
+				this.x = j * 64 + 64/2;
+				GV.MAP[i][j] = this;
+				this.setInteractive({ useHandCursor: true });
+				GV.GOLD -= this.cost;
+				this.upgradeSound.play();
 				
-			        scene.scene.tweens.add({
-			            targets: this, // on the player 
-			            duration: 200, // for 200ms 
-			            scaleX: 1.2, // that scale vertically by 20% 
-			            scaleY: 1.2, // and scale horizontally by 20% 
-			            alpha: 0.2,
-			            yoyo: true, // at the end, go back to original scale 
-			        });
-			    }
-			    else 
-			    {
-
-			    }
+				scene.scene.tweens.add({
+					targets: this, // on the player 
+					duration: 200, // for 200ms 
+					scaleX: 1.2, // that scale vertically by 20% 
+					scaleY: 1.2, // and scale horizontally by 20% 
+					alpha: 0.2,
+					yoyo: true, // at the end, go back to original scale 
+				});
 			}   
 		}
 		else
@@ -714,16 +685,16 @@ export class HUD extends Phaser.Scene {
 		let sceneA = this.scene.get(CST.SCENES.GAME);
 	
         //setup HUD
-		var HUD = this.add.image(0,0, 'HUD').setOrigin(0);
-		this.playerHealth = this.add.text(125, 20, 'Health: ' + GV.PLAYER_HEALTH +'/100', {fontFamily: 'VT323', fontSize: 45, color: '#ff0000'});
-		var volume = this.add.image(1485,40, 'vol');
-		var volDown = this.add.image(1485,40, 'volDown');
-		var play = this.add.image(1390,40, 'play');
-		var playDown = this.add.image(1390,40, 'playDown');
+		var HUD = this.add.image(320,33, 'HUD');
+		this.playerHealth = this.add.text(50, 8, 'Health: ' + GV.PLAYER_HEALTH +'/100', {fontFamily: 'VT323', fontSize: 18, color: '#ff0000'});
+		var volume = this.add.image(594,16, 'vol');
+		var volDown = this.add.image(594,16, 'volDown');
+		var play = this.add.image(556,16, 'play');
+		var playDown = this.add.image(556,16, 'playDown');
 		volDown.setVisible(false);
 		playDown.setVisible(false);
-		this.infoBar = this.add.text(675, 20, 'Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName + '\'s', { fontFamily: 'VT323', fontSize: 62, color: '#00ff00' });
-		this.goldBar = this.add.text(125, 93, 'Gold: '+GV.GOLD, { fontFamily: 'VT323', fontSize: 62, color: '#ffd700'});
+		this.infoBar = this.add.text(270, 8, 'Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName, { fontFamily: 'VT323', fontSize: 25, color: '#00ff00' });
+		this.goldBar = this.add.text(50, 37, 'Gold: '+GV.GOLD, { fontFamily: 'VT323', fontSize: 25, color: '#ffd700'});
 		
 		/* HUD.setDepth(1);
 		volume.setDepth(1);
@@ -779,7 +750,7 @@ export class HUD extends Phaser.Scene {
 
     update() 
 	{
-        this.infoBar.setText('Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName + '\'s');
+        this.infoBar.setText('Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName);
         this.goldBar.setText('Gold: '+GV.GOLD);
         this.playerHealth.setText('Health: ' + GV.PLAYER_HEALTH +'/100');
     }
