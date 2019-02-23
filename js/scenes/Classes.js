@@ -725,6 +725,7 @@ export class HUD extends Phaser.Scene {
 		this.infoBar = this.add.text(675, 20, 'Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName + '\'s', { fontFamily: 'VT323', fontSize: 62, color: '#00ff00' });
 		this.goldBar = this.add.text(125, 93, 'Gold: '+GV.GOLD, { fontFamily: 'VT323', fontSize: 62, color: '#ffd700'});
 		
+		 
 		/* HUD.setDepth(1);
 		volume.setDepth(1);
 		volDown.setDepth(1);
@@ -810,7 +811,7 @@ export class PlaceButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'placetowerbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -820,7 +821,7 @@ export class RemoveButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'removetowerbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -830,7 +831,7 @@ export class UpgradeButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'upgradetowerbutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -840,7 +841,7 @@ export class SoldierButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'soldierbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -850,7 +851,7 @@ export class ArcherButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'archerbutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -860,7 +861,7 @@ export class ApprenticeButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'apprenticebutton');
 		this.x = 120;
-		this.y = 362;
+		this.y = 862;
 	}
 };
 
@@ -870,7 +871,7 @@ export class KnightButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'knightbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -880,7 +881,7 @@ export class DuelistButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'duelistbutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -890,7 +891,7 @@ export class RiflemanButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'riflemanbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -900,7 +901,7 @@ export class RangerButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'rangerbutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -910,7 +911,7 @@ export class WizardButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'wizardbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -920,7 +921,7 @@ export class SorceressButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sorceressbutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -930,7 +931,7 @@ export class CommanderButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'commanderbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -940,7 +941,7 @@ export class PaladinButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'paladinbutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -950,7 +951,7 @@ export class SwordmasterButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'swordmasterbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -960,7 +961,7 @@ export class CutpurseButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cutpursebutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -970,7 +971,7 @@ export class CannoneerButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cannoneerbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -980,7 +981,7 @@ export class SharpshooterButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sharpshooterbutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -990,7 +991,7 @@ export class BeastmasterButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'beastmasterbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -1000,7 +1001,7 @@ export class AssassinButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'assassinbutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -1010,7 +1011,7 @@ export class FireMageButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'firemagebutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -1020,7 +1021,7 @@ export class IceMageButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'icemagebutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -1030,7 +1031,7 @@ export class LightningMageButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'lightningmagebutton');
 		this.x = 120;
-		this.y = 362;
+		this.y = 862;
 	}
 };
 
@@ -1040,7 +1041,7 @@ export class WarlockButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'warlockbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -1050,6 +1051,6 @@ export class PriestessButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'priestessbutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };

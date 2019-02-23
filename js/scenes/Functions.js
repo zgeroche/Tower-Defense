@@ -6,25 +6,27 @@ export function buildMap(scene, mapBG){
 	//path to which enemey follows
     var graphics = scene.add.graphics();    
     drawLines(graphics);
-    GV.WALKPATH = scene.add.path(0, 480);		//start point for path coords
-    GV.WALKPATH.lineTo(352, 480);
-    GV.WALKPATH.lineTo(352, 160);
-    GV.WALKPATH.lineTo(608, 160);
-    GV.WALKPATH.lineTo(608, 736);
-    GV.WALKPATH.lineTo(480, 736);
-    GV.WALKPATH.lineTo(480, 1056);
-    GV.WALKPATH.lineTo(1120, 1056);
-    GV.WALKPATH.lineTo(1120, 288);
+    GV.WALKPATH = scene.add.path(0, 352);		//start point for path coords
+    GV.WALKPATH.lineTo(416, 352);
+    GV.WALKPATH.lineTo(416, 160);
+    GV.WALKPATH.lineTo(800, 160);
+    GV.WALKPATH.lineTo(800, 608);
+    GV.WALKPATH.lineTo(608, 600);
+    GV.WALKPATH.lineTo(608, 864);
+    GV.WALKPATH.lineTo(1248, 864);
+    GV.WALKPATH.lineTo(1248, 544);
+    GV.WALKPATH.lineTo(1568, 544);
     GV.WALKPATH.lineTo(1568, 288);
+    GV.WALKPATH.lineTo(1920, 288);
     graphics.lineStyle(1, 0xffffff, 1);
     GV.WALKPATH.draw(graphics);
 
-    GV.FLYPATH = scene.add.path(0, 480);
-    GV.FLYPATH.lineTo(1568, 288);
+    GV.FLYPATH = scene.add.path(0, 352);
+    GV.FLYPATH.lineTo(1920, 288);
     GV.FLYPATH.draw(graphics);
     
 	//add map image
-	scene.add.image(800, 640, mapBG).setDepth(0);
+	scene.add.image(960, 512, mapBG).setDepth(0);
 
 	//add background music
 	scene.bgm = scene.sound.add('background');
@@ -820,13 +822,13 @@ export function damageEnemy(enemy, attack) {
 
 export function drawLines(graphics) {
     graphics.lineStyle(1, 0x0000ff, 0.8);
-    for(var i = 0; i < 20; i++) {
+    for(var i = 0; i < 16; i++) {
         graphics.moveTo(0, i * 64);
-        graphics.lineTo(1600, i * 64);
+        graphics.lineTo(1920, i * 64);
     }
-    for(var j = 0; j < 25; j++) {
+    for(var j = 0; j < 30; j++) {
         graphics.moveTo(j * 64, 0);
-        graphics.lineTo(j * 64, 1280);
+        graphics.lineTo(j * 64, 1024);
     }
     graphics.strokePath();
 }	

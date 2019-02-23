@@ -11,8 +11,8 @@ var FN = require('./scenes/Functions.js');
 var config = {
     type: Phaser.AUTO,
     parent: 'content',
-    width: 1600,
-    height: 1280,
+    width: 1920,
+    height: 1024,
     physics: {
         default: 'arcade'
     },
@@ -30,7 +30,7 @@ var config = {
 
 //begin game
 var game = new Phaser.Game(config);
-resize();
+/* resize();
 window.addEventListener("resize", resize, false);
 
 function resize() {
@@ -47,4 +47,4 @@ function resize() {
         canvas.style.width = (windowHeight * gameRatio) + "px";
         canvas.style.height = windowHeight + "px";
     }
-}
+} */
