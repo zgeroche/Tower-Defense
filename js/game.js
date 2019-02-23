@@ -3,7 +3,6 @@ import {GameScene} from "./scenes/GameScene";
 import {GameScene2} from "./scenes/GameScene2";
 import {LoadScene} from "./scenes/LoadScene";
 import {GameOverScene} from "./scenes/GameOverScene";
-var FN = require('./scenes/Functions.js');
 
 //-------------------------------------------------------SETUP-----------------------------------------------------
 //master config for game

@@ -67,15 +67,18 @@ var TOWER_ARRAY = [PEASANT_STATS, //0
 			PRIESTESS_STATS];//22
 
 var DEATHKNIGHT_STATS =  {enemyId: 0,    enemyName: "Deathknight",   speed: 1,   hp: 500,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 1, frameEnd: 4, damage: 10};
-var SKELETON_STATS =     {enemyId: 1,    enemyName: "Skeleton",      speed: 1,   hp: 600,    magicArmor: 10,  physicalArmor: 0,   flying: false,  value: 2, frameEnd: 4, damage: 10};
+var SKELETON_STATS =     {enemyId: 1,    enemyName: "Skeleton",      speed: 1,   hp: 600,    magicArmor: 10,  physicalArmor: 0,  flying: false,  value: 2, frameEnd: 4, damage: 10};
 var BAT_STATS =          {enemyId: 2,    enemyName: "Bat",           speed: 2,   hp: 300,    magicArmor: 0,  physicalArmor: 0,   flying: true,   value: 1, frameEnd: 5, damage: 7};
-var OGRE_STATS =         {enemyId: 3,    enemyName: "Ogre",          speed: .75, hp: 2000,   magicArmor: 10, physicalArmor: 10,  flying: false,  value: 5, frameEnd: 6, damage: 20};
-var SPIDER_STATS =       {enemyId: 4,    enemyName: "Spider",        speed: 1.5, hp: 450,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 1, frameEnd: 4, damage: 5};   
+var OGRE_STATS =         {enemyId: 4,    enemyName: "Ogre",          speed: .75, hp: 2000,   magicArmor: 10, physicalArmor: 10,  flying: false,  value: 5, frameEnd: 6, damage: 20};
+var GOBLIN_STATS =       {enemyId: 3,    enemyName: "Goblin",        speed: 1.5, hp: 400,    magicArmor: 0,  physicalArmor: 5,   flying: false,  value: 3, frameEnd: 3, damage:10};
+var SPIDER_STATS =       {enemyId: 5,    enemyName: "Spider",        speed: 1.5, hp: 450,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 1, frameEnd: 4, damage: 5};   
 
 var ENEMY_ARRAY = [DEATHKNIGHT_STATS,
                 SKELETON_STATS,
                 BAT_STATS,
+                GOBLIN_STATS,
                 OGRE_STATS
+                
 ];
 
 var BUTTON_ARRAY = ["CS.PlaceButton",//0
@@ -170,6 +173,7 @@ SKELETON_STATS,
 BAT_STATS,
 OGRE_STATS,
 SPIDER_STATS,
+GOBLIN_STATS,
 ENEMY_ARRAY,
 BUTTON_ARRAY,
 MAP
