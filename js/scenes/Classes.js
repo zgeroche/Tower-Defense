@@ -157,7 +157,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		}
 		if (!this.flying)
 		{
-		    if (this.follower.vec.x == 352 && this.turned==0){
+		    if (this.follower.vec.x == 416 && this.turned==0){
 		        this.turnUp();
 		        this.turned += 1;
 		    }
@@ -166,35 +166,45 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		        this.turnRight();
 		        this.turned += 1;
 		    }
-		    else if (this.follower.vec.x == 608 && this.turned == 2)
+		    else if (this.follower.vec.x == 800 && this.turned == 2)
 		    {
 		        this.turnDown();
 		        this.turned += 1;
 		    }
-		    else if (this.follower.vec.y == 736 && this.turned == 3)
+		    else if (this.follower.vec.y == 608 && this.turned == 3)
 		    {
 		        this.turnLeft();
 		        this.turned += 1;
 		    }
-		    else if (this.follower.vec.x == 480 && this.turned == 4)
+		    else if (this.follower.vec.x == 608 && this.turned == 4)
 		    {
 		        this.turnDown();
 		        this.turned += 1;
 		    }
-		    else if (this.follower.vec.y == 1056 && this.turned == 5)
+		    else if (this.follower.vec.y == 864 && this.turned == 5)
 		    {
 		        this.turnRight();
 		        this.turned += 1;
 		    }
-		    else if (this.follower.vec.x == 1120 && this.turned == 6)
+		    else if (this.follower.vec.x == 1248 && this.turned == 6)
 		    {
 		        this.turnUp();
 		        this.turned += 1;
 		    }
-		    else if (this.follower.vec.y == 288 && this.turned == 7)
+		    else if (this.follower.vec.y == 544 && this.turned == 7)
 		    {
 		        this.turnRight();
 		        this.turned += 1;
+		    }
+		    else if (this.follower.vec.x == 1568 && this.turned == 8)
+		    {
+		        this.turnUp();
+		        this.turned +=1;
+		    }
+		    else if (this.follower.vec.y == 288 && this.turned == 9)
+		    {
+		        this.turnRight();
+		        this.turned +=1;
 		    }
 		}
 	}

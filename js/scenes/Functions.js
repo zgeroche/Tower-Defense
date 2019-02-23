@@ -11,7 +11,7 @@ export function buildMap(scene, mapBG){
     GV.WALKPATH.lineTo(416, 160);
     GV.WALKPATH.lineTo(800, 160);
     GV.WALKPATH.lineTo(800, 608);
-    GV.WALKPATH.lineTo(608, 600);
+    GV.WALKPATH.lineTo(608, 608);
     GV.WALKPATH.lineTo(608, 864);
     GV.WALKPATH.lineTo(1248, 864);
     GV.WALKPATH.lineTo(1248, 544);

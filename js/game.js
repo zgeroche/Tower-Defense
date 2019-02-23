@@ -30,7 +30,7 @@ var config = {
 
 //begin game
 var game = new Phaser.Game(config);
-/* resize();
+ resize();
 window.addEventListener("resize", resize, false);
 
 function resize() {
@@ -47,4 +47,4 @@ function resize() {
         canvas.style.width = (windowHeight * gameRatio) + "px";
         canvas.style.height = windowHeight + "px";
     }
-} */
+} 
