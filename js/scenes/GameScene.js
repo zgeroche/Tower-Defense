@@ -13,6 +13,7 @@ export class GameScene extends Phaser.Scene {
     //Preload function loads assets before game starts
  
     init(data){
+        GV.PLAYER_HEALTH = 100; 
         //console.log(data);
     }
 
@@ -30,7 +31,7 @@ export class GameScene extends Phaser.Scene {
 		}
 
         //enemy group will be a loop similar to tower group
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < 5; i++) {
             var enemyClass = "CS."+GV.ENEMY_ARRAY[i].enemyName;
             GV.ENEMY_GROUP[GV.ENEMY_ARRAY[i].enemyId] = this.physics.add.group({classType: eval(enemyClass), runChildUpdate: true});
         }
@@ -85,7 +86,7 @@ export class GameScene extends Phaser.Scene {
     //update function constantly refreshes so to progress game
     update(time, delta) {  
         //Check if player still alive
-        /*if (GV.PLAYER_HEALTH <= 0)
+        if (GV.PLAYER_HEALTH <= 0)
         {
             this.scene.remove('HUD');
             this.delay.destroy();
@@ -96,7 +97,7 @@ export class GameScene extends Phaser.Scene {
                 this.scene.start(CST.SCENES.GAMEOVER);
             }); 
         }
-        else {*/
+        else {
             this.delay.setText('Next wave in ' + Math.trunc((this.nextEnemy-time)/1000) + ' Seconds');
             if (time > this.nextEnemy && GV.SPAWNED < 10)
             {
@@ -113,7 +114,7 @@ export class GameScene extends Phaser.Scene {
                     GV.SPAWNED += 1;
                 }
             }
-            if (GV.SPAWNED == 10 && GV.WAVE < 4 && GV.ENEMY_GROUP[GV.WAVE-1].countActive(true) === 0)
+            if (GV.SPAWNED == 10 && GV.WAVE < 5 && GV.ENEMY_GROUP[GV.WAVE-1].countActive(true) === 0)
             {
                 this.complete.setVisible(true);
                 this.delay.setVisible(true);
@@ -122,6 +123,6 @@ export class GameScene extends Phaser.Scene {
                 GV.WAVE += 1;
                 this.nextEnemy = time + GV.WAVE_DELAY;
             }
-        //}
+        }
     }
 }
