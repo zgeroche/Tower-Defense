@@ -150,8 +150,8 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			this.healthbar.destroy();
 			//this.walk.stop();												//sounds
 			this.destroy();
-			this.camera.shake(150, .05, false);							//camera
-			this.camera.flash(150,  200, 0, 0, false);					//camera
+			//this.camera.shake(150, .05, false);							//camera
+			//this.camera.flash(150,  200, 0, 0, false);					//camera
 			GV.PLAYER_HEALTH -= this.damage;
 		}
 		if (!this.flying)
@@ -750,7 +750,6 @@ export class HUD extends Phaser.Scene {
 		this.infoBar = this.add.text(675, 20, 'Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName + '\'s', { fontFamily: 'VT323', fontSize: 62, color: '#00ff00' });
 		this.goldBar = this.add.text(125, 93, 'Gold: '+GV.GOLD, { fontFamily: 'VT323', fontSize: 62, color: '#ffd700'});
 		
-		 
 		/* HUD.setDepth(1);
 		volume.setDepth(1);
 		volDown.setDepth(1);
