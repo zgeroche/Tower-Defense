@@ -25,6 +25,7 @@ export class LoadScene extends Phaser.Scene{
         this.load.atlas('skeleton', 'assets/skeleton.png', 'assets/skeleton.json');
         this.load.atlas('bat', 'assets/bat.png', 'assets/bat.json');
         this.load.atlas('ogre', 'assets/ogre.png', 'assets/ogre.json');
+        this.load.atlas('goblin', 'assets/goblin.png', 'assets/goblin.json');
 		
 		//load map
 		//this.load.image('map', 'assets/castle-gates.png', { frameWidth: 640, frameHeight: 512 });

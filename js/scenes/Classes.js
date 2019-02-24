@@ -59,7 +59,6 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 	startOnPath ()
 	{
 		this.follower.t = 0;
-		//this.hp = ENEMY_HP;
 		
 		//this.walk.play();																//sounds
 		if (!this.flying)
@@ -151,13 +150,13 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			this.healthbar.destroy();
 			//this.walk.stop();												//sounds
 			this.destroy();
-			//this.camera.shake(150, .05, false);							//camera
-			//this.camera.flash(150,  200, 0, 0, false);					//camera
+			this.camera.shake(150, .05, false);							//camera
+			this.camera.flash(150,  200, 0, 0, false);					//camera
 			GV.PLAYER_HEALTH -= this.damage;
 		}
 		if (!this.flying)
 		{
-		    if (this.follower.vec.x == 352 && this.turned==0){
+		    if (this.follower.vec.x == 416 && this.turned==0){
 		        this.turnUp();
 		        this.turned += 1;
 		    }
@@ -166,35 +165,45 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		        this.turnRight();
 		        this.turned += 1;
 		    }
-		    else if (this.follower.vec.x == 608 && this.turned == 2)
+		    else if (this.follower.vec.x == 800 && this.turned == 2)
 		    {
 		        this.turnDown();
 		        this.turned += 1;
 		    }
-		    else if (this.follower.vec.y == 736 && this.turned == 3)
+		    else if (this.follower.vec.y == 608 && this.turned == 3)
 		    {
 		        this.turnLeft();
 		        this.turned += 1;
 		    }
-		    else if (this.follower.vec.x == 480 && this.turned == 4)
+		    else if (this.follower.vec.x == 608 && this.turned == 4)
 		    {
 		        this.turnDown();
 		        this.turned += 1;
 		    }
-		    else if (this.follower.vec.y == 1056 && this.turned == 5)
+		    else if (this.follower.vec.y == 864 && this.turned == 5)
 		    {
 		        this.turnRight();
 		        this.turned += 1;
 		    }
-		    else if (this.follower.vec.x == 1120 && this.turned == 6)
+		    else if (this.follower.vec.x == 1248 && this.turned == 6)
 		    {
 		        this.turnUp();
 		        this.turned += 1;
 		    }
-		    else if (this.follower.vec.y == 288 && this.turned == 7)
+		    else if (this.follower.vec.y == 544 && this.turned == 7)
 		    {
 		        this.turnRight();
 		        this.turned += 1;
+		    }
+		    else if (this.follower.vec.x == 1568 && this.turned == 8)
+		    {
+		        this.turnUp();
+		        this.turned +=1;
+		    }
+		    else if (this.follower.vec.y == 288 && this.turned == 9)
+		    {
+		        this.turnRight();
+		        this.turned +=1;
 		    }
 		}
 	}
@@ -266,7 +275,22 @@ export class Ogre extends Enemy {
     }
 }
 
+export class Goblin extends Enemy {
+    constructor(scene, stats){
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'goblin');
+
+        this.anims.play('goblin_right');
+		
+        //create sounds
+        this.death = scene.sound.add('dkDeath');
+        this.death.volume = 0.05;
+        this.death.loop = false;
+    }
+}
+/************************************************************************************************************************************/
 //tower class
+/************************************************************************************************************************************/
 export class Tower extends Phaser.GameObjects.Sprite{
 
 	constructor (scene, stats)
@@ -383,7 +407,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 	        FN.addAttack(this.x, this.y, angle, this.str, this.atkType);
 	        //this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make towers rotate to face enemy
 	    }
-		/* if(enemy && this.attack == 0)
+		 if(enemy && this.attack == 0)
 		{
 			this.anims.play(this.towerName.toLowerCase()+'_atk');
 			this.attack = 1;
@@ -392,7 +416,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 		{
 			this.anims.play(this.towerName.toLowerCase()+'_idle');
 			this.attack = 0;
-		} */
+		} 
 		
 	}
 	
@@ -571,8 +595,9 @@ export class Priestess extends Tower {
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
     }
 }
-
+/*********************************************************************************************************************************************************/
 //all other classes
+/**********************************************************************************************************************************************************/
 //HP class
 export class HealthBar {
 

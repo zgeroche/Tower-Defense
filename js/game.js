@@ -3,7 +3,6 @@ import {GameScene} from "./scenes/GameScene";
 import {GameScene2} from "./scenes/GameScene2";
 import {LoadScene} from "./scenes/LoadScene";
 import {GameOverScene} from "./scenes/GameOverScene";
-var FN = require('./scenes/Functions.js');
 
 //-------------------------------------------------------SETUP-----------------------------------------------------
 //master config for game
@@ -30,7 +29,7 @@ var config = {
 
 //begin game
 var game = new Phaser.Game(config);
-/* resize();
+ resize();
 window.addEventListener("resize", resize, false);
 
 function resize() {
@@ -47,4 +46,4 @@ function resize() {
         canvas.style.width = (windowHeight * gameRatio) + "px";
         canvas.style.height = windowHeight + "px";
     }
-} */
+} 
