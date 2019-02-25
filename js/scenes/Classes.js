@@ -150,8 +150,8 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			this.healthbar.destroy();
 			//this.walk.stop();												//sounds
 			this.destroy();
-			//this.camera.shake(150, .05, false);							//camera
-			//this.camera.flash(150,  200, 0, 0, false);					//camera
+			this.camera.shake(150, .05, false);							//camera
+			this.camera.flash(150,  200, 0, 0, false);					//camera
 			GV.PLAYER_HEALTH -= this.damage;
 		}
 		if (!this.flying)
@@ -739,7 +739,7 @@ export class HUD extends Phaser.Scene {
 		let sceneA = this.scene.get(CST.SCENES.GAME);
 	
         //setup HUD
-		var HUD = this.add.image(0,0, 'HUD').setOrigin(0);
+		/* var HUD = this.add.image(0,0, 'HUD').setOrigin(0);
 		this.playerHealth = this.add.text(125, 20, 'Health: ' + GV.PLAYER_HEALTH +'/100', {fontFamily: 'VT323', fontSize: 45, color: '#ff0000'});
 		var volume = this.add.image(1485,40, 'vol');
 		var volDown = this.add.image(1485,40, 'volDown');
@@ -749,7 +749,19 @@ export class HUD extends Phaser.Scene {
 		playDown.setVisible(false);
 		this.infoBar = this.add.text(675, 20, 'Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName + '\'s', { fontFamily: 'VT323', fontSize: 62, color: '#00ff00' });
 		this.goldBar = this.add.text(125, 93, 'Gold: '+GV.GOLD, { fontFamily: 'VT323', fontSize: 62, color: '#ffd700'});
-		
+		 */
+	    var HUD = this.add.image(0,0, 'HUD').setOrigin(0);
+		var volume = this.add.image(650,16, 'vol');
+		var volDown = this.add.image(650,16, 'volDown');
+		var play = this.add.image(614,16, 'play');
+		var playDown = this.add.image(614,16, 'playDown');
+		volDown.setVisible(false);
+		playDown.setVisible(false);
+		var hp = new HealthBar(sceneA, 50, 3, 100)
+		this.playerHealth = this.add.text(55, 3, 'Health: ' + GV.PLAYER_HEALTH +'/100', {fontFamily: 'VT323', fontSize: 26, color: '#ff0000'});
+		this.infoBar = this.add.text(275, 2, 'Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName, { fontFamily: 'VT323', fontSize: 30, color: '#00ff00' });
+		this.goldBar = this.add.text(55, 34, 'Gold: '+GV.GOLD, { fontFamily: 'VT323', fontSize: 26, color: '#ffd700'});
+		 
 		/* HUD.setDepth(1);
 		volume.setDepth(1);
 		volDown.setDepth(1);
@@ -792,12 +804,10 @@ export class HUD extends Phaser.Scene {
 			if(sceneA.scene.isActive())
 			{
 				sceneA.scene.pause();
-				sceneA.bgm.pause();
 			}
 			else
 			{
 				sceneA.scene.resume();
-				sceneA.bgm.resume();
 			}
 		});
     }

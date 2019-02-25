@@ -71,7 +71,7 @@ export class GameScene extends Phaser.Scene {
         //input related actions in userAction function
         this.input.on('pointerdown', function (pointer){FN.userAction(pointer, this)});
 
-        let nextScene = this.add.text(100, 280, 'Next Level', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
+        let nextScene = this.add.text(100, 580, 'Next Level', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
         nextScene.setInteractive();
         nextScene.on("pointerup", ()=>{
             this.scene.remove('HUD');
@@ -85,7 +85,7 @@ export class GameScene extends Phaser.Scene {
     //update function constantly refreshes so to progress game
     update(time, delta) {  
         //Check if player still alive
-        /*if (GV.PLAYER_HEALTH <= 0)
+        if (GV.PLAYER_HEALTH <= 0)
         {
             this.scene.remove('HUD');
             this.delay.destroy();
@@ -96,7 +96,7 @@ export class GameScene extends Phaser.Scene {
                 this.scene.start(CST.SCENES.GAMEOVER);
             }); 
         }
-        else {*/
+        else {
             this.delay.setText('Next wave in ' + Math.trunc((this.nextEnemy-time)/1000) + ' Seconds');
             if (time > this.nextEnemy && GV.SPAWNED < 10)
             {
@@ -122,6 +122,6 @@ export class GameScene extends Phaser.Scene {
                 GV.WAVE += 1;
                 this.nextEnemy = time + GV.WAVE_DELAY;
             }
-        //}
+        }
     }
 }

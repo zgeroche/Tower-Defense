@@ -18,7 +18,7 @@ export function buildMap(scene, mapBG){
     GV.WALKPATH.lineTo(1568, 544);
     GV.WALKPATH.lineTo(1568, 288);
     GV.WALKPATH.lineTo(1920, 288);
-    graphics.lineStyle(1, 0xffffff, 1);
+    graphics.lineStyle(0, 0xffffff, 1);
     GV.WALKPATH.draw(graphics);
 
     GV.FLYPATH = scene.add.path(0, 352);
@@ -35,7 +35,7 @@ export function buildMap(scene, mapBG){
 	//bgm.play();																//sounds
 	
 	//add HUD
-	scene.scene.add('HUD', CS.HUD, true, { x: 640, y: 66 });
+	scene.scene.add('HUD', CS.HUD, true, { x: 680, y: 66 });
 
 	//misc
 	scene.nextEnemy = 0;
