@@ -41,6 +41,7 @@ export class LoadScene extends Phaser.Scene{
 		this.load.audio('explosionSound', 'assets/Sounds/Explosions/Short/sfx_exp_short_hard2.wav');
 		
 		//load misc
+		this.load.image('towerbutton', './assets/buttons/blackbox.png');
 		this.load.image('placetowerbutton', './assets/buttons/placetower.png');
 		this.load.image('removetowerbutton', './assets/buttons/removetower.png');
 		this.load.image('upgradetowerbutton', './assets/buttons/upgradetower.png');

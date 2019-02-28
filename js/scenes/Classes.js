@@ -150,8 +150,8 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			this.healthbar.destroy();
 			//this.walk.stop();												//sounds
 			this.destroy();
-			this.camera.shake(150, .05, false);							//camera
-			this.camera.flash(150,  200, 0, 0, false);					//camera
+			//this.camera.shake(150, .05, false);							//camera
+			//this.camera.flash(150,  200, 0, 0, false);					//camera
 			GV.PLAYER_HEALTH -= this.damage;
 		}
 		if (!this.flying)
@@ -357,7 +357,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 		}
 		else
 		{
-			TOWER_GROUP[this.towerId].remove(this, true, true);		//tower is created before it's placed so removed if the place clicked on is  not avaialble
+			GV.TOWER_GROUP[this.towerId].remove(this, true, true);		//tower is created before it's placed so removed if the place clicked on is  not avaialble
 		}
 	}
 
@@ -824,18 +824,39 @@ export class TowerButton extends Phaser.GameObjects.Image {
 	constructor(scene)
 	{
 		super(scene);
+
 	}
-	
-	makeButton(pointer,scene) 
+/*  	placeTower(pointer, scene, currTower, newTower,i,j)
 	{
-		var i = Math.floor(pointer.y/64);
+		//var i = Math.floor(pointer.y/64);
+		//var j = Math.floor(pointer.x/64);
+		this.buttonImg = scene.scene.add.image(220,780, 'towerbutton').setDepth(1);
+		this.text = scene.scene.add.text(120, 780, newTower.towerName, { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
+		this.buttonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
+			if (currTower)
+				currTower.upgradeTower(i, j, newTower, scene);
+		});
+	} */
+	makeButton(pointer,scene, currTower, newTower, numOfUpgrades, upgradeID, i, j) 
+	{
+		/*var i = Math.floor(pointer.y/64);
 		var j = Math.floor(pointer.x/64);
 		if (this)
 		{
 			this.setActive(true);
 			this.setVisible(true);
-			this.setInteractive();
-		}   
+			this.setInteractive({ useHandCursor: true });
+		}    */
+		this.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
+			if (currTower)
+				currTower.upgradeTower(i, j, newTower, scene);
+			for (var k = 0; k < numOfUpgrades; k++) {
+				var CID = currTower.towerId;
+				var BID = GV.TOWER_ARRAY[CID].upgrades[k];
+				GV.BUTTON_GROUP[BID+2].clear(true, true);
+			}
+		});
+	
 	}
 };
 
@@ -876,6 +897,7 @@ export class SoldierButton extends TowerButton {
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'soldierbutton');
 		this.x = 120;
 		this.y = 982;
+		
 	}
 };
 

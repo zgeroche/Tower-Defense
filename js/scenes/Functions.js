@@ -97,10 +97,7 @@ export function createAnimations(scene, sprites, side) {
 export function highlightLoc(scene, i, j){
 
 	//checks if highlight box exists already, if so destroy before creating a new one.
-	if(typeof scene.lightBox === 'object')
-	{
-		scene.lightBox.destroy();
-	}
+	if(typeof scene.lightBox === 'object'){scene.lightBox.destroy();}
 	
 	//create a box at any clickable location on the map
 	if(GV.MAP[i][j] != -1)
@@ -122,6 +119,59 @@ export function highlightLoc(scene, i, j){
 	}
 }
 
+
+export function upgradeTowerAction(i, j, scene, pointer, id){
+	
+	//New code for remove and upgrade buttons
+	var removeButton = GV.BUTTON_GROUP[1].get();
+	removeButton.makeButton(pointer, scene);
+	
+	var upgradeButton = GV.BUTTON_GROUP[2].get();
+	upgradeButton.makeButton(pointer, scene);
+	
+	removeButton.on("pointerdown", ()=>{
+		var tower = GV.MAP[i][j];
+		if(typeof tower ==="object")
+		{
+			tower.removeTower(i, j, scene);
+		}
+		removeButton.destroy();
+		GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+		upgradeButton.destroy();
+		GV.BUTTON_GROUP[2].remove(removeButton, true, true);
+	});
+	
+	upgradeButton.on("pointerdown", ()=>{
+		//remove upgrade and remove buttons
+		removeButton.setActive(false);
+		removeButton.setVisible(false);
+		GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+		upgradeButton.setActive(false);
+		upgradeButton.setVisible(false);
+		GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+		
+		if(GV.TOWER_ARRAY[id].upgrades)
+		{
+			var numOfUpgrades = GV.TOWER_ARRAY[id].upgrades.length;
+			var currTower = GV.MAP[i][j];
+			
+			for (var count = 0; count < numOfUpgrades; count++) 
+			{
+				var upgradeID = GV.TOWER_ARRAY[id].upgrades[count];
+				var upgradedTower = GV.TOWER_ARRAY[upgradeID];
+				var newTower = GV.TOWER_GROUP[upgradeID].get(upgradedTower);
+				
+				/* var towerButton = new CS.TowerButton(scene.scene);
+				towerButton.placeTower(pointer,scene, currTower, newTower,i,j); */
+				
+				var towerButton = GV.BUTTON_GROUP[upgradeID+2].get();
+				towerButton.makeButton(pointer, scene, currTower, newTower, numOfUpgrades, upgradeID, i, j);
+			}
+		}
+		
+	});		
+}
+
 //user input related actions 
 export function userAction(pointer, scene){
 	var i = Math.floor(pointer.y/64);
@@ -130,6 +180,7 @@ export function userAction(pointer, scene){
     {
 		//highlight location clicked by user
 		highlightLoc(scene, i, j);
+		
 		for (var count = 0; count < 2; count++) {
 			GV.BUTTON_GROUP[count].clear(true, true);
 		}
@@ -148,10 +199,14 @@ export function userAction(pointer, scene){
 				GV.BUTTON_GROUP[0].remove(placeButton, true, true);
 			});
 		}
-		//if tower clicked on is a peasant
-		else if(GV.MAP[i][j].towerId == 0)
+		else if(typeof GV.MAP[i][j] ==="object")
 		{
-			//New code for remove and upgrade buttons
+			upgradeTowerAction(i, j, scene, pointer, GV.MAP[i][j].towerId);
+		}
+		//if tower clicked on is a peasant
+		/* else if(GV.MAP[i][j].towerId == 0)
+		{
+ 			//New code for remove and upgrade buttons
 			var removeButton = GV.BUTTON_GROUP[1].get();
 			removeButton.makeButton(pointer, scene);
 			
@@ -171,7 +226,6 @@ export function userAction(pointer, scene){
 				upgradeButton.setVisible(false);
 				GV.BUTTON_GROUP[2].remove(removeButton, true, true);
 			});
-
 			
 			upgradeButton.on("pointerdown", ()=>{
 				//remove upgrade and remove buttons
@@ -218,8 +272,7 @@ export function userAction(pointer, scene){
 						GV.BUTTON_GROUP[count].clear(true, true);
 					}
 				});
-			});		
-			
+			});
 		}
 
 		//if tower clicked on is a soldier
@@ -791,6 +844,7 @@ export function userAction(pointer, scene){
 		{
 			tower.removeTower(i, j, scene);
 		}
+	} */
 	}
 }
 
