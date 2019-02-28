@@ -13,6 +13,7 @@ export class GameScene extends Phaser.Scene {
     //Preload function loads assets before game starts
  
     init(data){
+        GV.PLAYER_HEALTH = 100; 
         //console.log(data);
     }
 
@@ -29,7 +30,7 @@ export class GameScene extends Phaser.Scene {
 		}
 
         //enemy group will be a loop similar to tower group
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < 5; i++) {
             var enemyClass = "CS."+GV.ENEMY_ARRAY[i].enemyName;
             GV.ENEMY_GROUP[GV.ENEMY_ARRAY[i].enemyId] = this.physics.add.group({classType: eval(enemyClass), runChildUpdate: true});
         }
@@ -56,10 +57,10 @@ export class GameScene extends Phaser.Scene {
 
         //Wave Management
         this.nextEnemy = GV.WAVE_DELAY;
-        this.complete = this.add.text(300,50, 'Wave Complete', {fontFamily: 'VT323', fontSize: 30, color: '#ff0000'}).setDepth(1);
+        this.complete = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2, 'Wave Complete', {fontFamily: 'VT323', fontSize: 50, color: '#ff0000'}).setDepth(1);
         this.complete.setVisible(false);
-        this.delay = this.add.text(240, 75, 'Next Level in ' + (GV.WAVE_DELAY/1000) + ' Seconds', {fontFamily: 'VT323', fontSize: 30, color: '#ff0000'}).setDepth(1);
-        this.skipWave = this.add.text(325,100, 'Skip Wait?', {fontFamily: 'VT323', fontSize: 30, color: '#ff0000'}).setDepth(1);
+        this.delay = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2 + 50, 'Next Level in ' + (GV.WAVE_DELAY/1000) + ' Seconds', {fontFamily: 'VT323', fontSize: 50, color: '#ff0000'}).setDepth(1);
+        this.skipWave = this.add.text(this.game.renderer.width / 2,this.game.renderer.height / 2 + 100, 'Skip Wait?', {fontFamily: 'VT323', fontSize: 50, color: '#ff0000'}).setDepth(1);
         this.skipWave.setInteractive();
         this.skipWave.on("pointerup", ()=>{
             this.nextEnemy = 0;
@@ -70,7 +71,7 @@ export class GameScene extends Phaser.Scene {
         //input related actions in userAction function
         this.input.on('pointerdown', function (pointer){FN.userAction(pointer, this)});
 
-        let nextScene = this.add.text(100, 280, 'Next Level', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
+        let nextScene = this.add.text(100, 580, 'Next Level', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
         nextScene.setInteractive();
         nextScene.on("pointerup", ()=>{
             this.scene.remove('HUD');
@@ -84,18 +85,18 @@ export class GameScene extends Phaser.Scene {
     //update function constantly refreshes so to progress game
     update(time, delta) {  
         //Check if player still alive
-        /*if (GV.PLAYER_HEALTH <= 0)
+/*         if (GV.PLAYER_HEALTH <= 0)
         {
             this.scene.remove('HUD');
             this.delay.destroy();
             this.complete.destroy();
             this.skipWave.destroy();
-             this.cameras.main.fade(2500,0,0,0, false);
+            this.cameras.main.fade(2500,0,0,0, false);
             this.cameras.main.once('camerafadeoutcomplete', ()=>{
                 this.scene.start(CST.SCENES.GAMEOVER);
             }); 
         }
-        else {*/
+        else { */
             this.delay.setText('Next wave in ' + Math.trunc((this.nextEnemy-time)/1000) + ' Seconds');
             if (time > this.nextEnemy && GV.SPAWNED < 10)
             {
@@ -112,7 +113,7 @@ export class GameScene extends Phaser.Scene {
                     GV.SPAWNED += 1;
                 }
             }
-            if (GV.SPAWNED == 10 && GV.WAVE < 4 && GV.ENEMY_GROUP[GV.WAVE-1].countActive(true) === 0)
+            if (GV.SPAWNED == 10 && GV.WAVE < 5 && GV.ENEMY_GROUP[GV.WAVE-1].countActive(true) === 0)
             {
                 this.complete.setVisible(true);
                 this.delay.setVisible(true);

@@ -6,21 +6,27 @@ export function buildMap(scene, mapBG){
 	//path to which enemey follows
     var graphics = scene.add.graphics();    
     drawLines(graphics);
-    GV.PATH = scene.add.path(0, 480);		//start point for path coords
-    GV.PATH.lineTo(352, 480);
-    GV.PATH.lineTo(352, 160);
-    GV.PATH.lineTo(608, 160);
-    GV.PATH.lineTo(608, 736);
-    GV.PATH.lineTo(480, 736);
-    GV.PATH.lineTo(480, 1056);
-    GV.PATH.lineTo(1120, 1056);
-    GV.PATH.lineTo(1120, 288);
-    GV.PATH.lineTo(1568, 288);
-    graphics.lineStyle(1, 0xffffff, 1);
-    GV.PATH.draw(graphics);
+    GV.WALKPATH = scene.add.path(0, 352);		//start point for path coords
+    GV.WALKPATH.lineTo(416, 352);
+    GV.WALKPATH.lineTo(416, 160);
+    GV.WALKPATH.lineTo(800, 160);
+    GV.WALKPATH.lineTo(800, 608);
+    GV.WALKPATH.lineTo(608, 608);
+    GV.WALKPATH.lineTo(608, 864);
+    GV.WALKPATH.lineTo(1248, 864);
+    GV.WALKPATH.lineTo(1248, 544);
+    GV.WALKPATH.lineTo(1568, 544);
+    GV.WALKPATH.lineTo(1568, 288);
+    GV.WALKPATH.lineTo(1920, 288);
+    graphics.lineStyle(0, 0xffffff, 1);
+    GV.WALKPATH.draw(graphics);
+
+    GV.FLYPATH = scene.add.path(0, 352);
+    GV.FLYPATH.lineTo(1920, 288);
+    GV.FLYPATH.draw(graphics);
     
 	//add map image
-	scene.add.image(800, 640, mapBG).setDepth(0);
+	scene.add.image(960, 512, mapBG).setDepth(0);
 
 	//add background music
 	scene.bgm = scene.sound.add('background');
@@ -29,7 +35,7 @@ export function buildMap(scene, mapBG){
 	//bgm.play();																//sounds
 	
 	//add HUD
-	scene.scene.add('HUD', CS.HUD, true, { x: 640, y: 66 });
+	scene.scene.add('HUD', CS.HUD, true, { x: 680, y: 66 });
 
 	//misc
 	scene.nextEnemy = 0;
@@ -59,6 +65,12 @@ export function createAnimations(scene, sprites, side) {
 				frameRate: 5,
 				repeat: -1
 			}); 
+			scene.anims.create({
+			    key: enemy + "_up",
+			    frames: scene.anims.generateFrameNames(enemy, { prefix: movement+'_up_', start: 1, end: frameEnd }),
+			    frameRate: 5,
+			    repeat: -1
+			}); 
 		}
 		if(side == 1)
 		{
@@ -85,10 +97,7 @@ export function createAnimations(scene, sprites, side) {
 export function highlightLoc(scene, i, j){
 
 	//checks if highlight box exists already, if so destroy before creating a new one.
-	if(typeof scene.lightBox === 'object')
-	{
-		scene.lightBox.destroy();
-	}
+	if(typeof scene.lightBox === 'object'){scene.lightBox.destroy();}
 	
 	//create a box at any clickable location on the map
 	if(GV.MAP[i][j] != -1)
@@ -110,6 +119,59 @@ export function highlightLoc(scene, i, j){
 	}
 }
 
+
+export function upgradeTowerAction(i, j, scene, pointer, id){
+	
+	//New code for remove and upgrade buttons
+	var removeButton = GV.BUTTON_GROUP[1].get();
+	removeButton.makeButton(pointer, scene);
+	
+	var upgradeButton = GV.BUTTON_GROUP[2].get();
+	upgradeButton.makeButton(pointer, scene);
+	
+	removeButton.on("pointerdown", ()=>{
+		var tower = GV.MAP[i][j];
+		if(typeof tower ==="object")
+		{
+			tower.removeTower(i, j, scene);
+		}
+		removeButton.destroy();
+		GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+		upgradeButton.destroy();
+		GV.BUTTON_GROUP[2].remove(removeButton, true, true);
+	});
+	
+	upgradeButton.on("pointerdown", ()=>{
+		//remove upgrade and remove buttons
+		removeButton.setActive(false);
+		removeButton.setVisible(false);
+		GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+		upgradeButton.setActive(false);
+		upgradeButton.setVisible(false);
+		GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+		
+		if(GV.TOWER_ARRAY[id].upgrades)
+		{
+			var numOfUpgrades = GV.TOWER_ARRAY[id].upgrades.length;
+			var currTower = GV.MAP[i][j];
+			
+			for (var count = 0; count < numOfUpgrades; count++) 
+			{
+				var upgradeID = GV.TOWER_ARRAY[id].upgrades[count];
+				var upgradedTower = GV.TOWER_ARRAY[upgradeID];
+				var newTower = GV.TOWER_GROUP[upgradeID].get(upgradedTower);
+				
+				/* var towerButton = new CS.TowerButton(scene.scene);
+				towerButton.placeTower(pointer,scene, currTower, newTower,i,j); */
+				
+				var towerButton = GV.BUTTON_GROUP[upgradeID+2].get();
+				towerButton.makeButton(pointer, scene, currTower, newTower, numOfUpgrades, upgradeID, i, j);
+			}
+		}
+		
+	});		
+}
+
 //user input related actions 
 export function userAction(pointer, scene){
 	var i = Math.floor(pointer.y/64);
@@ -118,6 +180,7 @@ export function userAction(pointer, scene){
     {
 		//highlight location clicked by user
 		highlightLoc(scene, i, j);
+		
 		for (var count = 0; count < 2; count++) {
 			GV.BUTTON_GROUP[count].clear(true, true);
 		}
@@ -136,10 +199,14 @@ export function userAction(pointer, scene){
 				GV.BUTTON_GROUP[0].remove(placeButton, true, true);
 			});
 		}
-		//if tower clicked on is a peasant
-		else if(GV.MAP[i][j].towerId == 0)
+		else if(typeof GV.MAP[i][j] ==="object")
 		{
-			//New code for remove and upgrade buttons
+			upgradeTowerAction(i, j, scene, pointer, GV.MAP[i][j].towerId);
+		}
+		//if tower clicked on is a peasant
+		/* else if(GV.MAP[i][j].towerId == 0)
+		{
+ 			//New code for remove and upgrade buttons
 			var removeButton = GV.BUTTON_GROUP[1].get();
 			removeButton.makeButton(pointer, scene);
 			
@@ -159,7 +226,6 @@ export function userAction(pointer, scene){
 				upgradeButton.setVisible(false);
 				GV.BUTTON_GROUP[2].remove(removeButton, true, true);
 			});
-
 			
 			upgradeButton.on("pointerdown", ()=>{
 				//remove upgrade and remove buttons
@@ -197,7 +263,7 @@ export function userAction(pointer, scene){
 					for (var count = 3; count < 6; count++) {
 						GV.BUTTON_GROUP[count].clear(true, true);
 					}
-				
+				});
 				apprenticeButton.on("pointerdown", ()=>{
 					var currTower = GV.MAP[i][j];
 					var newTower = GV.TOWER_GROUP[GV.APPRENTICE_STATS.towerId].get(GV.APPRENTICE_STATS);
@@ -206,9 +272,9 @@ export function userAction(pointer, scene){
 						GV.BUTTON_GROUP[count].clear(true, true);
 					}
 				});
-					
 			});
 		}
+
 		//if tower clicked on is a soldier
 		else if(GV.MAP[i][j].towerId == 1)
 		{
@@ -778,6 +844,7 @@ export function userAction(pointer, scene){
 		{
 			tower.removeTower(i, j, scene);
 		}
+	} */
 	}
 }
 
@@ -809,13 +876,13 @@ export function damageEnemy(enemy, attack) {
 
 export function drawLines(graphics) {
     graphics.lineStyle(1, 0x0000ff, 0.8);
-    for(var i = 0; i < 20; i++) {
+    for(var i = 0; i < 16; i++) {
         graphics.moveTo(0, i * 64);
-        graphics.lineTo(1600, i * 64);
+        graphics.lineTo(1920, i * 64);
     }
-    for(var j = 0; j < 25; j++) {
+    for(var j = 0; j < 30; j++) {
         graphics.moveTo(j * 64, 0);
-        graphics.lineTo(j * 64, 1280);
+        graphics.lineTo(j * 64, 1024);
     }
     graphics.strokePath();
 }	

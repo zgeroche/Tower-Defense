@@ -17,7 +17,8 @@ export class Enemy extends Phaser.GameObjects.Sprite {
         this.physicalArmor = stats.physicalArmor;
         this.flying = stats.flying;
         this.damage = stats.damage;
-        
+        this.enemyName = stats.enemyName.toLowerCase();
+
         this.turned = 0;
 
         this.camera = scene.cameras.main;
@@ -58,11 +59,12 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 	startOnPath ()
 	{
 		this.follower.t = 0;
-		//this.hp = ENEMY_HP;
 		
 		//this.walk.play();																//sounds
-		
-		GV.PATH.getPoint(this.follower.t, this.follower.vec);
+		if (!this.flying)
+		{GV.WALKPATH.getPoint(this.follower.t, this.follower.vec);}
+		else
+		{GV.FLYPATH.getPoint(this.follower.t, this.follower.vec);}
 		
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
 		
@@ -101,15 +103,41 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			GV.GOLD += this.value;
 		}
 	}
+
+	turnDown()
+	{
+	    let anim = this.enemyName + "_down";
+	    this.anims.play(anim);
+
+	}
+
+	turnRight()
+	{
+	    let anim = this.enemyName + "_right";
+	    this.anims.play(anim);
+	    this.flipX = false;
+	}
+	turnUp()
+	{
+	    let anim = this.enemyName + "_up";
+	    this.anims.play(anim);
+	}
+	turnLeft()
+	{
+	    let anim = this.enemyName + "_right";
+	    this.anims.play(anim);
+	    this.flipX = true;
+	}
 	
 	update (time, delta)
 	{
 		//ENEMY_SPEED = 1/Math.floor((Math.random() * (10000 - 5000)) + 5000);
 		this.follower.t += GV.ENEMY_SPEED * delta * this.speed;
-		
-		GV.PATH.getPoint(this.follower.t, this.follower.vec);
+		if (!this.flying){ GV.WALKPATH.getPoint(this.follower.t, this.follower.vec);}
+		else{ GV.FLYPATH.getPoint(this.follower.t, this.follower.vec)};
 		
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
+		//console.log(this.follower.vec.x);
 		this.text.setPosition(this.follower.vec.x, this.follower.vec.y);									//textHP
 		this.healthbar.setPosition(this.follower.vec.x - this.width, this.follower.vec.y - this.height);
 
@@ -126,15 +154,57 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			//this.camera.flash(150,  200, 0, 0, false);					//camera
 			GV.PLAYER_HEALTH -= this.damage;
 		}
-
-		if (this.follower.vec.y == 164 && this.turned==0){
-		    this.turnRight();
-		    this.turned = 1;
-		}
-		else if (this.follower.vec.y != 164 && this.turned ==1)
+		if (!this.flying)
 		{
-		    this.turnDown();
-		    this.turned = 2;
+		    if (this.follower.vec.x == 416 && this.turned==0){
+		        this.turnUp();
+		        this.turned += 1;
+		    }
+		    else if (this.follower.vec.y == 160 && this.turned ==1)
+		    {
+		        this.turnRight();
+		        this.turned += 1;
+		    }
+		    else if (this.follower.vec.x == 800 && this.turned == 2)
+		    {
+		        this.turnDown();
+		        this.turned += 1;
+		    }
+		    else if (this.follower.vec.y == 608 && this.turned == 3)
+		    {
+		        this.turnLeft();
+		        this.turned += 1;
+		    }
+		    else if (this.follower.vec.x == 608 && this.turned == 4)
+		    {
+		        this.turnDown();
+		        this.turned += 1;
+		    }
+		    else if (this.follower.vec.y == 864 && this.turned == 5)
+		    {
+		        this.turnRight();
+		        this.turned += 1;
+		    }
+		    else if (this.follower.vec.x == 1248 && this.turned == 6)
+		    {
+		        this.turnUp();
+		        this.turned += 1;
+		    }
+		    else if (this.follower.vec.y == 544 && this.turned == 7)
+		    {
+		        this.turnRight();
+		        this.turned += 1;
+		    }
+		    else if (this.follower.vec.x == 1568 && this.turned == 8)
+		    {
+		        this.turnUp();
+		        this.turned +=1;
+		    }
+		    else if (this.follower.vec.y == 288 && this.turned == 9)
+		    {
+		        this.turnRight();
+		        this.turned +=1;
+		    }
 		}
 	}
 };
@@ -145,7 +215,7 @@ export class Deathknight extends Enemy {
 		Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'deathknight');
 
 		
-        this.anims.play('deathknight_down');
+        this.anims.play('deathknight_right');
 		
 		//create sounds
 		this.death = scene.sound.add('dkDeath');
@@ -158,15 +228,6 @@ export class Deathknight extends Enemy {
 		this.walk.volume = 0.01;
 		this.walk.loop = true; */
 	}
-    turnDown()
-    {
-        this.anims.play('deathknight_down');
-    }
-
-    turnRight()
-    {
-        this.anims.play('deathknight_right');
-    }
 }
 
 export class Skeleton extends Enemy {
@@ -174,23 +235,13 @@ export class Skeleton extends Enemy {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'skeleton');
 
-        this.anims.play('skeleton_down');
+        this.anims.play('skeleton_right');
 		
 		//create sounds
 		this.death = scene.sound.add('dkDeath');
 		this.death.volume = 0.05;
 		this.death.loop = false;
 
-    }
-
-    turnDown()
-    {
-        this.anims.play('skeleton_down');
-    }
-
-    turnRight()
-    {
-        this.anims.play('skeleton_right');
     }
 }
 
@@ -199,23 +250,13 @@ export class Bat extends Enemy {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'bat');
 
-        this.anims.play('bat_down');
+        this.anims.play('bat_right');
 		
 		//create sounds
 		this.death = scene.sound.add('dkDeath');
 		this.death.volume = 0.05;
 		this.death.loop = false;
 
-    }
-
-    turnDown()
-    {
-        this.anims.play('bat_down');
-    }
-
-    turnRight()
-    {
-        this.anims.play('bat_right');
     }
 }
 
@@ -224,7 +265,7 @@ export class Ogre extends Enemy {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'ogre');
 
-        this.anims.play('ogre_down');
+        this.anims.play('ogre_right');
 		
 		//create sounds
 		this.death = scene.sound.add('dkDeath');
@@ -232,19 +273,24 @@ export class Ogre extends Enemy {
 		this.death.loop = false;
 
     }
-
-    turnDown()
-    {
-        this.anims.play('ogre_down');
-    }
-
-    turnRight()
-    {
-        this.anims.play('ogre_right');
-    }
 }
 
+export class Goblin extends Enemy {
+    constructor(scene, stats){
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'goblin');
+
+        this.anims.play('goblin_right');
+		
+        //create sounds
+        this.death = scene.sound.add('dkDeath');
+        this.death.volume = 0.05;
+        this.death.loop = false;
+    }
+}
+/************************************************************************************************************************************/
 //tower class
+/************************************************************************************************************************************/
 export class Tower extends Phaser.GameObjects.Sprite{
 
 	constructor (scene, stats)
@@ -280,31 +326,38 @@ export class Tower extends Phaser.GameObjects.Sprite{
 			//console.log(tower);
 			if (this)
 			{
-				this.text.y = (i+.50) * 64 + 64/2;
-				this.text.x = j * 64 + 64/2;
-				this.text.setOrigin(0.5);
-				this.setActive(true);
-				this.setVisible(true);
-				this.y = i * 64 + 64/2;
-				this.x = j * 64 + 64/2;
-				GV.MAP[i][j] = this;
-				this.setInteractive({ useHandCursor: true });
-				GV.GOLD -= this.cost;
-				this.upgradeSound.play();
+			    if (GV.GOLD - this.cost >= 0)
+			    {
+			        this.text.y = (i+.50) * 64 + 64/2;
+			        this.text.x = j * 64 + 64/2;
+			        this.text.setOrigin(0.5);
+			        this.setActive(true);
+			        this.setVisible(true);
+			        this.y = i * 64 + 64/2;
+			        this.x = j * 64 + 64/2;
+			        GV.MAP[i][j] = this;
+			        this.setInteractive({ useHandCursor: true });
+			        GV.GOLD -= this.cost;
+			        this.upgradeSound.play();
 				
-				scene.scene.tweens.add({
-					targets: this, // on the player 
-					duration: 200, // for 200ms 
-					scaleX: 1.2, // that scale vertically by 20% 
-					scaleY: 1.2, // and scale horizontally by 20% 
-					alpha: 0.2,
-					yoyo: true, // at the end, go back to original scale 
-				});
+			        scene.scene.tweens.add({
+			            targets: this, // on the player 
+			            duration: 200, // for 200ms 
+			            scaleX: 1.2, // that scale vertically by 20% 
+			            scaleY: 1.2, // and scale horizontally by 20% 
+			            alpha: 0.2,
+			            yoyo: true, // at the end, go back to original scale 
+			        });
+			    }
+			    else 
+			    {
+
+			    }
 			}   
 		}
 		else
 		{
-			TOWER_GROUP[this.towerId].remove(this, true, true);		//tower is created before it's placed so removed if the place clicked on is  not avaialble
+			GV.TOWER_GROUP[this.towerId].remove(this, true, true);		//tower is created before it's placed so removed if the place clicked on is  not avaialble
 		}
 	}
 
@@ -354,7 +407,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 	        FN.addAttack(this.x, this.y, angle, this.str, this.atkType);
 	        //this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make towers rotate to face enemy
 	    }
-		/* if(enemy && this.attack == 0)
+		 if(enemy && this.attack == 0)
 		{
 			this.anims.play(this.towerName.toLowerCase()+'_atk');
 			this.attack = 1;
@@ -363,7 +416,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 		{
 			this.anims.play(this.towerName.toLowerCase()+'_idle');
 			this.attack = 0;
-		} */
+		} 
 		
 	}
 	
@@ -542,8 +595,9 @@ export class Priestess extends Tower {
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
     }
 }
-
+/*********************************************************************************************************************************************************/
 //all other classes
+/**********************************************************************************************************************************************************/
 //HP class
 export class HealthBar {
 
@@ -685,17 +739,29 @@ export class HUD extends Phaser.Scene {
 		let sceneA = this.scene.get(CST.SCENES.GAME);
 	
         //setup HUD
-		var HUD = this.add.image(320,33, 'HUD');
-		this.playerHealth = this.add.text(50, 8, 'Health: ' + GV.PLAYER_HEALTH +'/100', {fontFamily: 'VT323', fontSize: 18, color: '#ff0000'});
-		var volume = this.add.image(594,16, 'vol');
-		var volDown = this.add.image(594,16, 'volDown');
-		var play = this.add.image(556,16, 'play');
-		var playDown = this.add.image(556,16, 'playDown');
+		/* var HUD = this.add.image(0,0, 'HUD').setOrigin(0);
+		this.playerHealth = this.add.text(125, 20, 'Health: ' + GV.PLAYER_HEALTH +'/100', {fontFamily: 'VT323', fontSize: 45, color: '#ff0000'});
+		var volume = this.add.image(1485,40, 'vol');
+		var volDown = this.add.image(1485,40, 'volDown');
+		var play = this.add.image(1390,40, 'play');
+		var playDown = this.add.image(1390,40, 'playDown');
 		volDown.setVisible(false);
 		playDown.setVisible(false);
-		this.infoBar = this.add.text(270, 8, 'Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName, { fontFamily: 'VT323', fontSize: 25, color: '#00ff00' });
-		this.goldBar = this.add.text(50, 37, 'Gold: '+GV.GOLD, { fontFamily: 'VT323', fontSize: 25, color: '#ffd700'});
-		
+		this.infoBar = this.add.text(675, 20, 'Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName + '\'s', { fontFamily: 'VT323', fontSize: 62, color: '#00ff00' });
+		this.goldBar = this.add.text(125, 93, 'Gold: '+GV.GOLD, { fontFamily: 'VT323', fontSize: 62, color: '#ffd700'});
+		 */
+	    var HUD = this.add.image(0,0, 'HUD').setOrigin(0);
+		var volume = this.add.image(650,16, 'vol');
+		var volDown = this.add.image(650,16, 'volDown');
+		var play = this.add.image(614,16, 'play');
+		var playDown = this.add.image(614,16, 'playDown');
+		volDown.setVisible(false);
+		playDown.setVisible(false);
+		var hp = new HealthBar(sceneA, 50, 3, 100)
+		this.playerHealth = this.add.text(55, 3, 'Health: ' + GV.PLAYER_HEALTH +'/100', {fontFamily: 'VT323', fontSize: 26, color: '#ff0000'});
+		this.infoBar = this.add.text(275, 2, 'Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName, { fontFamily: 'VT323', fontSize: 30, color: '#00ff00' });
+		this.goldBar = this.add.text(55, 34, 'Gold: '+GV.GOLD, { fontFamily: 'VT323', fontSize: 26, color: '#ffd700'});
+		 
 		/* HUD.setDepth(1);
 		volume.setDepth(1);
 		volDown.setDepth(1);
@@ -738,19 +804,17 @@ export class HUD extends Phaser.Scene {
 			if(sceneA.scene.isActive())
 			{
 				sceneA.scene.pause();
-				sceneA.bgm.pause();
 			}
 			else
 			{
 				sceneA.scene.resume();
-				sceneA.bgm.resume();
 			}
 		});
     }
 
     update() 
 	{
-        this.infoBar.setText('Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName);
+        this.infoBar.setText('Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName + '\'s');
         this.goldBar.setText('Gold: '+GV.GOLD);
         this.playerHealth.setText('Health: ' + GV.PLAYER_HEALTH +'/100');
     }
@@ -760,18 +824,39 @@ export class TowerButton extends Phaser.GameObjects.Image {
 	constructor(scene)
 	{
 		super(scene);
+
 	}
-	
-	makeButton(pointer,scene) 
+/*  	placeTower(pointer, scene, currTower, newTower,i,j)
 	{
-		var i = Math.floor(pointer.y/64);
+		//var i = Math.floor(pointer.y/64);
+		//var j = Math.floor(pointer.x/64);
+		this.buttonImg = scene.scene.add.image(220,780, 'towerbutton').setDepth(1);
+		this.text = scene.scene.add.text(120, 780, newTower.towerName, { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
+		this.buttonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
+			if (currTower)
+				currTower.upgradeTower(i, j, newTower, scene);
+		});
+	} */
+	makeButton(pointer,scene, currTower, newTower, numOfUpgrades, upgradeID, i, j) 
+	{
+		/*var i = Math.floor(pointer.y/64);
 		var j = Math.floor(pointer.x/64);
 		if (this)
 		{
 			this.setActive(true);
 			this.setVisible(true);
-			this.setInteractive();
-		}   
+			this.setInteractive({ useHandCursor: true });
+		}    */
+		this.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
+			if (currTower)
+				currTower.upgradeTower(i, j, newTower, scene);
+			for (var k = 0; k < numOfUpgrades; k++) {
+				var CID = currTower.towerId;
+				var BID = GV.TOWER_ARRAY[CID].upgrades[k];
+				GV.BUTTON_GROUP[BID+2].clear(true, true);
+			}
+		});
+	
 	}
 };
 
@@ -781,7 +866,7 @@ export class PlaceButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'placetowerbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -791,7 +876,7 @@ export class RemoveButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'removetowerbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -801,7 +886,7 @@ export class UpgradeButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'upgradetowerbutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -811,7 +896,8 @@ export class SoldierButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'soldierbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
+		
 	}
 };
 
@@ -821,7 +907,7 @@ export class ArcherButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'archerbutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -831,7 +917,7 @@ export class ApprenticeButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'apprenticebutton');
 		this.x = 120;
-		this.y = 362;
+		this.y = 862;
 	}
 };
 
@@ -841,7 +927,7 @@ export class KnightButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'knightbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -851,7 +937,7 @@ export class DuelistButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'duelistbutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -861,7 +947,7 @@ export class RiflemanButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'riflemanbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -871,7 +957,7 @@ export class RangerButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'rangerbutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -881,7 +967,7 @@ export class WizardButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'wizardbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -891,7 +977,7 @@ export class SorceressButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sorceressbutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -901,7 +987,7 @@ export class CommanderButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'commanderbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -911,7 +997,7 @@ export class PaladinButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'paladinbutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -921,7 +1007,7 @@ export class SwordmasterButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'swordmasterbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -931,7 +1017,7 @@ export class CutpurseButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cutpursebutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -941,7 +1027,7 @@ export class CannoneerButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cannoneerbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -951,7 +1037,7 @@ export class SharpshooterButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sharpshooterbutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -961,7 +1047,7 @@ export class BeastmasterButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'beastmasterbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -971,7 +1057,7 @@ export class AssassinButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'assassinbutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -981,7 +1067,7 @@ export class FireMageButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'firemagebutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -991,7 +1077,7 @@ export class IceMageButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'icemagebutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
 
@@ -1001,7 +1087,7 @@ export class LightningMageButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'lightningmagebutton');
 		this.x = 120;
-		this.y = 362;
+		this.y = 862;
 	}
 };
 
@@ -1011,7 +1097,7 @@ export class WarlockButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'warlockbutton');
 		this.x = 120;
-		this.y = 482;
+		this.y = 982;
 	}
 };
 
@@ -1021,6 +1107,6 @@ export class PriestessButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'priestessbutton');
 		this.x = 120;
-		this.y = 422;
+		this.y = 922;
 	}
 };
