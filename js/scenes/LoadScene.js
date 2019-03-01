@@ -45,39 +45,20 @@ export class LoadScene extends Phaser.Scene{
 		this.load.audio('background', 'assets/Sounds/random silly chip song.ogg');
 		this.load.audio('upgradeSound', 'assets/Sounds/General Sounds/Positive Sounds/sfx_sounds_powerup6.wav');
 		this.load.audio('explosionSound', 'assets/Sounds/Explosions/Short/sfx_exp_short_hard2.wav');
+		this.load.audio('menuSounds', 'assets/Sounds/Other/FFmenu.wav');
+		this.load.audio('mapSounds', 'assets/Sounds/Other/00029.wav');
+		this.load.audio('errorSounds', 'assets/Sounds/Other/Cursor No.wav');
 		
 		//load misc
-		this.load.image('towerbutton', './assets/buttons/blackbox.png');
-		this.load.image('placetowerbutton', './assets/buttons/placetower.png');
-		this.load.image('removetowerbutton', './assets/buttons/removetower.png');
-		this.load.image('upgradetowerbutton', './assets/buttons/upgradetower.png');
-		this.load.image('soldierbutton', './assets/buttons/Soldier.png');
-		this.load.image('archerbutton', './assets/buttons/Archer.png');
-		this.load.image('apprenticebutton', './assets/buttons/Apprentice.png');
-		this.load.image('knightbutton', './assets/buttons/Knight.png');
-		this.load.image('duelistbutton', './assets/buttons/Duelist.png');
-		this.load.image('riflemanbutton', './assets/buttons/Rifleman.png');
-		this.load.image('rangerbutton', './assets/buttons/Ranger.png');
-		this.load.image('wizardbutton', './assets/buttons/Wizard.png');
-		this.load.image('sorceressbutton', './assets/buttons/Sorceress.png');
-		this.load.image('commanderbutton', './assets/buttons/Commander.png');
-		this.load.image('paladinbutton', './assets/buttons/Paladin.png');
-		this.load.image('swordmasterbutton', './assets/buttons/Swordmaster.png');
-		this.load.image('cutpursebutton', './assets/buttons/Cutpurse.png');
-		this.load.image('cannoneerbutton', './assets/buttons/Cannoneer.png');
-		this.load.image('sharpshooterbutton', './assets/buttons/Sharpshooter.png');
-		this.load.image('beastmasterbutton', './assets/buttons/Beastmaster.png');
-		this.load.image('assassinbutton', './assets/buttons/Assassin.png');
-		this.load.image('firemagebutton', './assets/buttons/FireMage.png');
-		this.load.image('icemagebutton', './assets/buttons/IceMage.png');
-		this.load.image('lightningmagebutton', './assets/buttons/LightningMage.png');
-		this.load.image('warlockbutton', './assets/buttons/Warlock.png');
-		this.load.image('priestessbutton', './assets/buttons/Priestess.png');
+		//this.load.image('towerbutton', './assets/buttons/blackbox.png');
 		this.load.image('attack', 'assets/coin.png');
 		this.load.image('highlight', 'assets/blue.png');
 		this.load.image('explosion', 'assets/muzzleflash3.png');
 		this.load.image('menuscreen', 'assets/bg.png', { frameWidth: 1280, frameHeight: 1024 });
-        this.load.image('newgame', 'assets/new.png');
+		this.load.image('newgame', 'assets/new.png');
+        this.load.image('bottomHUD', 'assets/bottomHUD.png');
+        this.load.image('towerbutton', 'assets/menuBar.png');
+        this.load.image('cancel', 'assets/cancel.png');
     }
     create(){
         //Creating menu screen background layers
