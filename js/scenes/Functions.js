@@ -124,30 +124,30 @@ export function placeTowerAction(pointer, scene, i, j){
 	var bannerImg = scene.scene.add.image(120, 982, 'towerbutton').setDepth(1);
 	var bannerText = scene.scene.add.text(120/2, 982-15, "Place Tower", { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
 	
+	GV.BUTTON_GROUP.add(bannerImg);
+	GV.BUTTON_GROUP.add(bannerText);
+	
 	bannerImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
 		var buttonImg = scene.scene.add.image(120, 922, 'towerbutton').setDepth(1);
 		var buttonText = scene.scene.add.text(120/2, 922-15, "Peasant", { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
 		
+		GV.BUTTON_GROUP.add(buttonImg);
+		GV.BUTTON_GROUP.add(buttonText);
+		
 		buttonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
 			var newTower = GV.TOWER_GROUP[GV.PEASANT_STATS.towerId].get(GV.PEASANT_STATS);
 			newTower.placeTower(i, j, scene);
-			bannerImg.destroy();
-			bannerText.destroy();
-			buttonImg.destroy();
-			buttonText.destroy();
+			GV.BUTTON_GROUP.clear(true,true);
 		});
 	});
 }
 
-export function upgradeTowerAction(i, j, scene, pointer, id){
-	
-	//New code for remove and upgrade buttons
-	
+export function removeTowerAction(pointer, scene, i, j){
 	var removeButtonImg = scene.scene.add.image(120, 982, 'towerbutton').setDepth(1);
 	var removeButtonText = scene.scene.add.text(120/2, 982-15, "Remove tower", { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
 	
-	var upgradeButtonImg = scene.scene.add.image(120, 922, 'towerbutton').setDepth(1);
-	var upgradeButtonText = scene.scene.add.text(120/2, 922-15, "Upgrade tower", { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
+	GV.BUTTON_GROUP.add(removeButtonImg);
+	GV.BUTTON_GROUP.add(removeButtonText);
 	
 	removeButtonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
 		var tower = GV.MAP[i][j];
@@ -155,18 +155,24 @@ export function upgradeTowerAction(i, j, scene, pointer, id){
 		{
 			tower.removeTower(i, j, scene);
 		}
-		removeButtonImg.destroy();
-		removeButtonText.destroy();
-		upgradeButtonImg.destroy();
-		upgradeButtonText.destroy();
+		GV.BUTTON_GROUP.clear(true,true);
 		
 	});
+}
+
+export function upgradeTowerAction(i, j, scene, pointer, id){
+	
+	//New code for remove and upgrade buttons
+	removeTowerAction(pointer, scene, i, j);
+	
+	var upgradeButtonImg = scene.scene.add.image(120, 922, 'towerbutton').setDepth(1);
+	var upgradeButtonText = scene.scene.add.text(120/2, 922-15, "Upgrade tower", { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
+	
+	GV.BUTTON_GROUP.add(upgradeButtonImg);
+	GV.BUTTON_GROUP.add(upgradeButtonText);
 	
 	upgradeButtonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
-		removeButtonImg.destroy();
-		removeButtonText.destroy();
-		upgradeButtonImg.destroy();
-		upgradeButtonText.destroy();
+		GV.BUTTON_GROUP.clear(true,true);
 		
 		if(GV.TOWER_ARRAY[id].upgrades)
 		{
@@ -175,35 +181,28 @@ export function upgradeTowerAction(i, j, scene, pointer, id){
 			var y = 982;
 			//var buttonImgGroup = scene.scene.add.group();
 			//var buttonTextGroup = scene.scene.add.group();
-			var towerButtonGroup = scene.scene.add.group();
 			for (var count = 0; count < numOfUpgrades; count++) 
 			{
 				var upgradeID = GV.TOWER_ARRAY[id].upgrades[count];
 				var upgradedTower = GV.TOWER_ARRAY[upgradeID];
 				var newTower = GV.TOWER_GROUP[upgradeID].get(upgradedTower);
 				
-				//var buttonImg = scene.scene.add.image(120, y, 'towerbutton').setDepth(1);
-				//var buttontext = scene.scene.add.text(120/2, y-15, newTower.towerName, { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
-				
-				//var towerButton = new CS.XButton(scene.scene, y);
-				var towerButton = GV.BUTTON_GROUP.get();
-				//GV.BUTTON_GROUP.add(towerButton);
-				towerButton.placeTower(pointer,scene, currTower, newTower,i,j); 
-				
-				//buttonImgGroup.add(buttonImg);
-				//buttonTextGroup.add(buttontext);
-				
-/* 				console.log(newTower.towerName);
-				buttonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
-					newTower = GV.TOWER_GROUP[upgradeID].get(upgradedTower);
-					//currTower.upgradeTower(i, j, newTower, scene);
-					console.log(newTower.towerName);
-					//buttonImgGroup.clear(true,true);
-					//buttonTextGroup.clear(true,true);
-					
-				}); */
+				var towerButton = new CS.XButton(scene.scene, y);
+				towerButton.upgradeTowerButton(pointer,scene, currTower, newTower,i,j); 
+
 				y = y - 60;	
 			}
+		}
+		else
+		{
+			removeTowerAction(pointer, scene, i, j);
+			
+			var upgradeButtonImg = scene.scene.add.image(120, 922, 'towerbutton').setDepth(1);
+			var upgradeButtonText = scene.scene.add.text(120/2, 922-15, "No Upgrades", { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
+			
+			GV.BUTTON_GROUP.add(upgradeButtonImg);
+			GV.BUTTON_GROUP.add(upgradeButtonText);
+			
 		}
 		
 	});		
@@ -221,10 +220,12 @@ export function userAction(pointer, scene){
 		//if new tower
 		if(GV.MAP[i][j] == 0)
 		{	
+			GV.BUTTON_GROUP.clear(true,true);
 			placeTowerAction(pointer, scene, i, j);
 		}
 		else if(typeof GV.MAP[i][j] ==="object")
 		{
+			GV.BUTTON_GROUP.clear(true,true);
 			upgradeTowerAction(i, j, scene, pointer, GV.MAP[i][j].towerId);
 		}
 	}

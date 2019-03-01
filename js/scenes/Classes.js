@@ -401,7 +401,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 	}
 	
 	fire() {
-	    var enemy = FN.getEnemy(this.x, this.y, this.atkRange, this.hitFly);
+/* 	    var enemy = FN.getEnemy(this.x, this.y, this.atkRange, this.hitFly);
 	    if(enemy) {
 	        var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
 	        FN.addAttack(this.x, this.y, angle, this.str, this.atkType);
@@ -416,7 +416,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 		{
 			this.anims.play(this.towerName.toLowerCase()+'_idle');
 			this.attack = 0;
-		} 
+		}  */
 		
 	}
 	
@@ -872,15 +872,18 @@ export class XButton extends Phaser.GameObjects.Image {
 	{
 		super(scene,y);
 		this.x = 120;
-		this.y = y
+		this.y = y;
 	}
 	
-	placeTower(pointer, scene, currTower, newTower,i,j)
+	upgradeTowerButton(pointer, scene, currTower, newTower,i,j)
 	{
-		this.buttonImg = scene.scene.add.image(this.x,this.y, 'towerbutton').setDepth(1);
-		this.text = scene.scene.add.text((this.x)/2, (this.y)-15, newTower.towerName, { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
+		var buttonImg = this.scene.add.image(this.x,this.y, 'towerbutton').setDepth(1);
+		var buttontext = this.scene.add.text((this.x)/2, (this.y)-15, newTower.towerName, { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
 		
-		this.buttonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
+		GV.BUTTON_GROUP.add(buttonImg);
+		GV.BUTTON_GROUP.add(buttontext);
+		
+		buttonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
 			if (currTower){currTower.upgradeTower(i, j, newTower, scene)};
 			GV.BUTTON_GROUP.clear(true,true);
 		});

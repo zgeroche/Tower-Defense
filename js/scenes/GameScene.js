@@ -43,7 +43,7 @@ export class GameScene extends Phaser.Scene {
 			GV.BUTTON_GROUP[i] = this.add.group({ classType: eval(GV.BUTTON_ARRAY[i]), runChildUpdate: false});
 		} */
 
-		GV.BUTTON_GROUP = this.add.group({ classType: CS.XButton, runChildUpdate: false});
+		GV.BUTTON_GROUP = this.add.group();
 		
         //turned into attack group soon for different attack types
         GV.ATTACKS_GROUP = this.physics.add.group({ classType: CS.Attack, runChildUpdate: true });
