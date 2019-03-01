@@ -8,6 +8,25 @@ const client = Stitch.initializeDefaultAppClient('html-game-onuim');
 const db = client.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas');
 const collection = db.db('fantasyTD').collection('credentials');
 
+var express = require('express');
+
+var app = express();
+var path = require('path');
+
+app.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname + '../index.html'))
+});
+
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(express.static('public'));
+let port = process.env.PORT;
+if (port == null || port == "") {
+    port = 8000;
+}
+
 //Login button with verification
 loginButton = document.getElementById('Login');
 loginButton.addEventListener('click', function(event){
@@ -63,3 +82,5 @@ newUserButton.addEventListener('click', function(event){
     })
     .catch(err => console.error(`Failed to insert item: ${err}`))
 });
+
+app.listen(port);
