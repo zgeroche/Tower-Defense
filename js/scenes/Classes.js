@@ -785,16 +785,17 @@ export class HUD extends Phaser.Scene {
 		this.goldBar = this.add.text(125, 93, 'Gold: '+GV.GOLD, { fontFamily: 'VT323', fontSize: 62, color: '#ffd700'});
 		 */
 	    var HUD = this.add.image(0,0, 'HUD').setOrigin(0);
-		var volume = this.add.image(650,16, 'vol');
-		var volDown = this.add.image(650,16, 'volDown');
-		var play = this.add.image(614,16, 'play');
-		var playDown = this.add.image(614,16, 'playDown');
+		var volume = this.add.image(827,16, 'vol');
+		var volDown = this.add.image(827,16, 'volDown');
+		var play = this.add.image(789,16, 'play');
+		var playDown = this.add.image(789,16, 'playDown');
 		volDown.setVisible(false);
 		playDown.setVisible(false);
-		var hp = new HealthBar(sceneA, 50, 3, 100)
+        var hp = new HealthBar(sceneA, 50, 3, 100);
 		this.playerHealth = this.add.text(55, 3, 'Health: ' + GV.PLAYER_HEALTH +'/100', {fontFamily: 'VT323', fontSize: 26, color: '#ff0000'});
-		this.infoBar = this.add.text(275, 2, 'Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName, { fontFamily: 'VT323', fontSize: 30, color: '#00ff00' });
-		this.goldBar = this.add.text(55, 34, 'Gold: '+GV.GOLD, { fontFamily: 'VT323', fontSize: 26, color: '#ffd700'});
+		this.infoBar = this.add.text(275, 2, 'Wave 1: ' + GV.WAVE_DETAIL[0], { fontFamily: 'VT323', fontSize: 30, color: '#00ff00' });
+        this.goldBar = this.add.text(55, 34, 'Gold: ' + GV.GOLD, { fontFamily: 'VT323', fontSize: 26, color: '#ffd700' });
+        this.nextBar = this.add.text(875, 2, 'Next Wave: ' + GV.WAVE_DETAIL[1], { fontFamily: 'VT323', fontSize: 30, color: '#00ff00' });
 		 
 		/* HUD.setDepth(1);
 		volume.setDepth(1);
@@ -847,9 +848,20 @@ export class HUD extends Phaser.Scene {
     }
 
     update() 
-	{
-        this.infoBar.setText('Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName + '\'s');
-        this.goldBar.setText('Gold: '+GV.GOLD);
+    {
+        if (GV.WAVE == 10) {
+            this.infoBar.setText('Final Wave: ' + GV.WAVE_DETAIL[GV.WAVE - 1]);
+        }
+        else {
+            this.infoBar.setText('Wave ' + GV.WAVE + ': ' + GV.WAVE_DETAIL[GV.WAVE - 1]);
+        }
+        this.goldBar.setText('Gold: ' + GV.GOLD);
+        if (GV.WAVE_DETAIL[GV.WAVE] === undefined) {
+            this.nextBar.setText('');
+        }
+        else { 
+            this.nextBar.setText('Next Wave: ' + GV.WAVE_DETAIL[GV.WAVE]);
+        }
         this.playerHealth.setText('Health: ' + GV.PLAYER_HEALTH +'/100');
     }
 }
