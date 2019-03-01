@@ -103,7 +103,7 @@ export function createAnimations(scene, sprites, side) {
 			scene.anims.create({
 				key: tower + "_atk",
 				frames: scene.anims.generateFrameNames(tower, { prefix: 'atk_down_', start: 1, end: 5 }),
-				frameRate: 15,
+				frameRate: 15* 325/sprites[i].atkRate,
 				repeat: -1
 			}); 
 			
