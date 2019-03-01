@@ -1,1 +1,1 @@
-web: parcel index.html -p PORT
+web: node server.js
