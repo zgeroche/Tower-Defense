@@ -119,7 +119,34 @@ export function highlightLoc(scene, i, j){
 	}
 }
 
-export function placeTowerAction(){
+export function placeTowerAction(pointer, scene){
+	var placeButton = GV.BUTTON_GROUP[0].get();
+	placeButton.makeButton(pointer, scene);
+	
+	placeButton.on("pointerdown", ()=>{
+		var newTower = GV.TOWER_GROUP[GV.PEASANT_STATS.towerId].get(GV.PEASANT_STATS);
+		newTower.placeTower(i, j, scene);
+		placeButton.setActive(false);
+		placeButton.setVisible(false);
+		GV.BUTTON_GROUP[0].remove(placeButton, true, true);
+	});
+}
+
+export function removeTowerAction(pointer, scene){
+	var removeButton = GV.BUTTON_GROUP[1].get();
+	removeButton.makeButton(pointer, scene);
+	
+	removeButton.on("pointerdown", ()=>{
+		var tower = GV.MAP[i][j];
+		if(typeof tower ==="object")
+		{
+			tower.removeTower(i, j, scene);
+		}
+		removeButton.destroy();
+		GV.BUTTON_GROUP[1].remove(removeButton, true, true);
+		upgradeButton.destroy();
+		GV.BUTTON_GROUP[2].remove(removeButton, true, true);
+	});
 }
 
 
@@ -152,6 +179,7 @@ export function upgradeTowerAction(i, j, scene, pointer, id){
 		upgradeButton.setActive(false);
 		upgradeButton.setVisible(false);
 		GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
+		
 		if(GV.TOWER_ARRAY[id].upgrades)
 		{
 			var numOfUpgrades = GV.TOWER_ARRAY[id].upgrades.length;
