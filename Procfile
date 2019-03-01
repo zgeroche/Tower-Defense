@@ -1,1 +1,1 @@
-web: node js/login.js
+web: node server.js
