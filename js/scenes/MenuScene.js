@@ -20,7 +20,7 @@ export class MenuScene extends Phaser.Scene{
         console.log("In Menu Scene");
 
         newGame.setInteractive();
-        newGame.on("pointerdown", ()=>{
+        newGame.on("pointerdown", () => {
             this.scene.start(CST.SCENES.GAME);
         })
     }
