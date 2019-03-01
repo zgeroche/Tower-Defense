@@ -6,7 +6,7 @@ var ATTACKS_GROUP;
 var BUTTON_GROUP = [];
 var SPAWNED = 0;
 var WAVE = 1;
-var GOLD = 25000;
+var GOLD = 5;
 var WAVE_DELAY = 15000;
 var PLAYER_HEALTH = 100;
 
@@ -91,33 +91,6 @@ var ENEMY_ARRAY = [DEATHKNIGHT_STATS,
                 JACKO_STATS
 ];
 
-var BUTTON_ARRAY = ["CS.PlaceButton",//0
-				"CS.RemoveButton",//1
-				"CS.UpgradeButton",//2
-				"CS.SoldierButton",//3
-				"CS.ArcherButton",//4
-				"CS.ApprenticeButton",//5,
-				"CS.KnightButton",//6
-				"CS.DuelistButton",//7
-				"CS.RiflemanButton",//8
-				"CS.RangerButton",//9
-				"CS.WizardButton",//10
-				"CS.SorceressButton",//11
-				"CS.CommanderButton",//12
-				"CS.PaladinButton",//13
-				"CS.SwordmasterButton",//14
-				"CS.CutpurseButton",//15
-				"CS.CannoneerButton",//16
-				"CS.SharpshooterButton",//17
-				"CS.BeastmasterButton",//18
-				"CS.AssassinButton",//19
-				"CS.FireMageButton",//20
-				"CS.IceMageButton",//21
-				"CS.LightningMageButton",//22
-				"CS.WarlockButton",//23
-				"CS.PriestessButton"//24
-];
-
 //map for tower placement, 0=can place, -1=cannot place, towerObj=tower already occupying space
 var MAP =  [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -192,7 +165,6 @@ BOSSSKELETON_STATS,
 HORSEMAN_STATS,
 JACKO_STATS,
 ENEMY_ARRAY,
-BUTTON_ARRAY,
-    MAP,
+MAP,
 WAVE_DETAIL
 }
