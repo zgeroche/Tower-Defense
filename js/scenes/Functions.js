@@ -34,6 +34,18 @@ export function buildMap(scene, mapBG){
 	scene.bgm.loop = true;
 	//bgm.play();																//sounds
 	
+	//menu sounds
+	scene.menuSounds = scene.sound.add('menuSounds');
+	scene.menuSounds.volume = 0.04;
+	scene.menuSounds.loop = false;
+	//scene.menuSounds.play();
+	
+	//map sounds
+	scene.mapSounds = scene.sound.add('mapSounds');
+	scene.mapSounds.volume = 0.04;
+	scene.mapSounds.loop = false;
+	//scene.mapSounds.play();
+	
 	//add HUD
 	scene.scene.add('HUD', CS.HUD, true, { x: 680, y: 66 });
 
@@ -102,6 +114,7 @@ export function highlightLoc(scene, i, j){
 	//create a box at any clickable location on the map
 	if(GV.MAP[i][j] != -1)
 	{
+		scene.scene.mapSounds.play();
 		var x = j * 64 + 64/2;
 		var y = i * 64 + 64/2;
 		//var shape = new Phaser.Geom.Circle(0, 0, 20);
@@ -122,14 +135,15 @@ export function highlightLoc(scene, i, j){
 export function placeTowerAction(pointer, scene, i, j){
 	
 	var bannerImg = scene.scene.add.image(120, 982, 'towerbutton').setDepth(1);
-	var bannerText = scene.scene.add.text(120/2, 982-15, "Place Tower", { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
+	var bannerText = scene.scene.add.text(120/2, 982-15, "Place Tower", { fontFamily: 'VT323', fontSize: 30, color: '#ffffff' }).setDepth(2);
 	
 	GV.BUTTON_GROUP.add(bannerImg);
 	GV.BUTTON_GROUP.add(bannerText);
 	
 	bannerImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
+		scene.scene.menuSounds.play();
 		var buttonImg = scene.scene.add.image(120, 922, 'towerbutton').setDepth(1);
-		var buttonText = scene.scene.add.text(120/2, 922-15, "Peasant", { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
+		var buttonText = scene.scene.add.text(120/2, 922-15, "Peasant", { fontFamily: 'VT323', fontSize: 30, color: '#ffffff' }).setDepth(2);
 		
 		GV.BUTTON_GROUP.add(buttonImg);
 		GV.BUTTON_GROUP.add(buttonText);
@@ -144,12 +158,13 @@ export function placeTowerAction(pointer, scene, i, j){
 
 export function removeTowerAction(pointer, scene, i, j){
 	var removeButtonImg = scene.scene.add.image(120, 982, 'towerbutton').setDepth(1);
-	var removeButtonText = scene.scene.add.text(120/2, 982-15, "Remove tower", { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
+	var removeButtonText = scene.scene.add.text(120/2, 982-15, "Remove tower", { fontFamily: 'VT323', fontSize: 30, color: '#ffffff' }).setDepth(2);
 	
 	GV.BUTTON_GROUP.add(removeButtonImg);
 	GV.BUTTON_GROUP.add(removeButtonText);
 	
 	removeButtonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
+		scene.scene.menuSounds.play();
 		var tower = GV.MAP[i][j];
 		if(typeof tower ==="object")
 		{
@@ -166,12 +181,13 @@ export function upgradeTowerAction(i, j, scene, pointer, id){
 	removeTowerAction(pointer, scene, i, j);
 	
 	var upgradeButtonImg = scene.scene.add.image(120, 922, 'towerbutton').setDepth(1);
-	var upgradeButtonText = scene.scene.add.text(120/2, 922-15, "Upgrade tower", { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
+	var upgradeButtonText = scene.scene.add.text(120/2, 922-15, "Upgrade tower", { fontFamily: 'VT323', fontSize: 30, color: '#ffffff' }).setDepth(2);
 	
 	GV.BUTTON_GROUP.add(upgradeButtonImg);
 	GV.BUTTON_GROUP.add(upgradeButtonText);
 	
 	upgradeButtonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
+		scene.scene.menuSounds.play();
 		GV.BUTTON_GROUP.clear(true,true);
 		
 		if(GV.TOWER_ARRAY[id].upgrades)
@@ -179,15 +195,14 @@ export function upgradeTowerAction(i, j, scene, pointer, id){
 			var numOfUpgrades = GV.TOWER_ARRAY[id].upgrades.length;
 			var currTower = GV.MAP[i][j];
 			var y = 982;
-			//var buttonImgGroup = scene.scene.add.group();
-			//var buttonTextGroup = scene.scene.add.group();
+			
 			for (var count = 0; count < numOfUpgrades; count++) 
 			{
 				var upgradeID = GV.TOWER_ARRAY[id].upgrades[count];
 				var upgradedTower = GV.TOWER_ARRAY[upgradeID];
 				var newTower = GV.TOWER_GROUP[upgradeID].get(upgradedTower);
 				
-				var towerButton = new CS.XButton(scene.scene, y);
+				var towerButton = new CS.TowerButton(scene.scene, y);
 				towerButton.upgradeTowerButton(pointer,scene, currTower, newTower,i,j); 
 
 				y = y - 60;	
@@ -198,7 +213,7 @@ export function upgradeTowerAction(i, j, scene, pointer, id){
 			removeTowerAction(pointer, scene, i, j);
 			
 			var upgradeButtonImg = scene.scene.add.image(120, 922, 'towerbutton').setDepth(1);
-			var upgradeButtonText = scene.scene.add.text(120/2, 922-15, "No Upgrades", { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
+			var upgradeButtonText = scene.scene.add.text(120/2, 922-15, "No Upgrades", { fontFamily: 'VT323', fontSize: 30, color: '#ffffff' }).setDepth(2);
 			
 			GV.BUTTON_GROUP.add(upgradeButtonImg);
 			GV.BUTTON_GROUP.add(upgradeButtonText);
@@ -217,15 +232,15 @@ export function userAction(pointer, scene){
 		//highlight location clicked by user
 		highlightLoc(scene, i, j);
 		
+		if(GV.MAP[i][j] != -1){GV.BUTTON_GROUP.clear(true,true);}
+		
 		//if new tower
 		if(GV.MAP[i][j] == 0)
 		{	
-			GV.BUTTON_GROUP.clear(true,true);
 			placeTowerAction(pointer, scene, i, j);
 		}
 		else if(typeof GV.MAP[i][j] ==="object")
 		{
-			GV.BUTTON_GROUP.clear(true,true);
 			upgradeTowerAction(i, j, scene, pointer, GV.MAP[i][j].towerId);
 		}
 	}

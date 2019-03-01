@@ -401,7 +401,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 	}
 	
 	fire() {
-/* 	    var enemy = FN.getEnemy(this.x, this.y, this.atkRange, this.hitFly);
+	    var enemy = FN.getEnemy(this.x, this.y, this.atkRange, this.hitFly);
 	    if(enemy) {
 	        var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
 	        FN.addAttack(this.x, this.y, angle, this.str, this.atkType);
@@ -416,7 +416,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 		{
 			this.anims.play(this.towerName.toLowerCase()+'_idle');
 			this.attack = 0;
-		}  */
+		} 
 		
 	}
 	
@@ -548,6 +548,13 @@ export class Cannoneer extends Tower {
 }
 
 export class Sharpshooter extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+    }
+}
+
+export class Beastmaster extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
@@ -821,53 +828,6 @@ export class HUD extends Phaser.Scene {
 }
 
 export class TowerButton extends Phaser.GameObjects.Image {
-	constructor(scene, pointer, currTower, newTower, nupgradeID, i, j)
-	{
-		super(scene, pointer, currTower, newTower, numOfUpgrades, upgradeID, i, j);
-		this.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
-			if (currTower)
-			{
-				currTower.upgradeTower(i, j, newTower, scene);
-			}
-		});
-	}
-/*  	placeTower(pointer, scene, currTower, newTower,i,j)
-	{
-		//var i = Math.floor(pointer.y/64);
-		//var j = Math.floor(pointer.x/64);
-		this.buttonImg = scene.scene.add.image(220,780, 'towerbutton').setDepth(1);
-		this.text = scene.scene.add.text(120, 780, newTower.towerName, { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
-		this.buttonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
-			if (currTower)
-				currTower.upgradeTower(i, j, newTower, scene);
-		});
-	} */
-/* 	makeButton(pointer,scene, currTower, newTower, numOfUpgrades, upgradeID, i, j) 
-	{
-		var i = Math.floor(pointer.y/64);
-		var j = Math.floor(pointer.x/64);
-		if (this)
-		{
-			this.setActive(true);
-			this.setVisible(true);
-			this.setInteractive({ useHandCursor: true });
-		} 
-		this.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
-			if (currTower)
-			{
-				currTower.upgradeTower(i, j, newTower, scene);
-			}
-			for (var k = 0; k < numOfUpgrades; k++) {
-				var CID = currTower.towerId;
-				var BID = GV.TOWER_ARRAY[CID].upgrades[k];
-				GV.BUTTON_GROUP[BID+2].clear(true, true);
-			}
-		});
-	
-	} */
-};
-
-export class XButton extends Phaser.GameObjects.Image {
 	constructor(scene, y)
 	{
 		super(scene,y);
@@ -878,266 +838,16 @@ export class XButton extends Phaser.GameObjects.Image {
 	upgradeTowerButton(pointer, scene, currTower, newTower,i,j)
 	{
 		var buttonImg = this.scene.add.image(this.x,this.y, 'towerbutton').setDepth(1);
-		var buttontext = this.scene.add.text((this.x)/2, (this.y)-15, newTower.towerName, { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
+		var buttontext = this.scene.add.text((this.x)/2, (this.y)-15, newTower.towerName, { fontFamily: 'VT323', fontSize: 30, color: '#ffffff' }).setDepth(2);
 		
 		GV.BUTTON_GROUP.add(buttonImg);
 		GV.BUTTON_GROUP.add(buttontext);
 		
 		buttonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
+			scene.scene.menuSounds.play();
 			if (currTower){currTower.upgradeTower(i, j, newTower, scene)};
 			GV.BUTTON_GROUP.clear(true,true);
 		});
 		
-	}
-};
-
-export class PlaceButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'placetowerbutton');
-		this.x = 120;
-		this.y = 982;
-	}
-};
-
-export class RemoveButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'removetowerbutton');
-		this.x = 120;
-		this.y = 982;
-	}
-};
-
-export class UpgradeButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'upgradetowerbutton');
-		this.x = 120;
-		this.y = 922;
-	}
-};
-
-export class SoldierButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'soldierbutton');
-		this.x = 120;
-		this.y = 982;
-		
-	}
-};
-
-export class ArcherButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'archerbutton');
-		this.x = 120;
-		this.y = 962;
-	}
-};
-
-export class ApprenticeButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'apprenticebutton');
-		this.x = 120;
-		this.y = 822;
-	}
-};
-
-export class KnightButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'knightbutton');
-		this.x = 120;
-		this.y = 982;
-	}
-};
-
-export class DuelistButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'duelistbutton');
-		this.x = 120;
-		this.y = 922;
-	}
-};
-
-export class RiflemanButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'riflemanbutton');
-		this.x = 120;
-		this.y = 982;
-	}
-};
-
-export class RangerButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'rangerbutton');
-		this.x = 120;
-		this.y = 922;
-	}
-};
-
-export class WizardButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'wizardbutton');
-		this.x = 120;
-		this.y = 982;
-	}
-};
-
-export class SorceressButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sorceressbutton');
-		this.x = 120;
-		this.y = 922;
-	}
-};
-
-export class CommanderButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'commanderbutton');
-		this.x = 120;
-		this.y = 982;
-	}
-};
-
-export class PaladinButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'paladinbutton');
-		this.x = 120;
-		this.y = 922;
-	}
-};
-
-export class SwordmasterButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'swordmasterbutton');
-		this.x = 120;
-		this.y = 982;
-	}
-};
-
-export class CutpurseButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cutpursebutton');
-		this.x = 120;
-		this.y = 922;
-	}
-};
-
-export class CannoneerButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cannoneerbutton');
-		this.x = 120;
-		this.y = 982;
-	}
-};
-
-export class SharpshooterButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sharpshooterbutton');
-		this.x = 120;
-		this.y = 922;
-	}
-};
-
-export class BeastmasterButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'beastmasterbutton');
-		this.x = 120;
-		this.y = 982;
-	}
-};
-
-export class AssassinButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'assassinbutton');
-		this.x = 120;
-		this.y = 922;
-	}
-};
-
-export class FireMageButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'firemagebutton');
-		this.x = 120;
-		this.y = 982;
-	}
-};
-
-export class IceMageButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'icemagebutton');
-		this.x = 120;
-		this.y = 922;
-	}
-};
-
-export class LightningMageButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'lightningmagebutton');
-		this.x = 120;
-		this.y = 862;
-	}
-};
-
-export class WarlockButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'warlockbutton');
-		this.x = 120;
-		this.y = 982;
-	}
-};
-
-export class PriestessButton extends TowerButton {
-	constructor(scene)
-	{
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'priestessbutton');
-		this.x = 120;
-		this.y = 922;
 	}
 };

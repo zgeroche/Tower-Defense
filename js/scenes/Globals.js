@@ -18,7 +18,7 @@ var TOWER_FIRE_RATE = 300;
 
 //stats for each tower type loaded from file rather than defined here, but for now do this
 //objects to hold sounds and animation information as well?
-var PEASANT_STATS = 		 {towerId:0,  towerName:"Peasant", 		 cost:5,  str:50,  atkRange:150, atkType:"physical", atkRate:750,  hitFly:false, upgrades: [16]};
+var PEASANT_STATS = 		 {towerId:0,  towerName:"Peasant", 		 cost:5,  str:50,  atkRange:150, atkType:"physical", atkRate:750,  hitFly:false, upgrades: [1, 2, 3]};
 var SOLDIER_STATS = 		 {towerId:1,  towerName:"Soldier", 		 cost:10,  str:100, atkRange:200, atkType:"physical", atkRate:400,  hitFly:false, upgrades: [4, 5]};
 var ARCHER_STATS = 			 {towerId:2,  towerName:"Archer", 		 cost:20,  str:75,  atkRange:300, atkType:"physical", atkRate:600,  hitFly:true, upgrades: [6, 7]};
 var APPRENTICE_STATS = 		 {towerId:3,  towerName:"Apprentice", 	 cost:20,  str:80,  atkRange:250, atkType:"magical",  atkRate:500,  hitFly:false, upgrades: [8, 9]};
@@ -79,33 +79,6 @@ var ENEMY_ARRAY = [DEATHKNIGHT_STATS,
                 GOBLIN_STATS,
                 OGRE_STATS
                 
-];
-
-var BUTTON_ARRAY = ["CS.PlaceButton",//0
-				"CS.RemoveButton",//1
-				"CS.UpgradeButton",//2
-				"CS.SoldierButton",//3
-				"CS.ArcherButton",//4
-				"CS.ApprenticeButton",//5,
-				"CS.KnightButton",//6
-				"CS.DuelistButton",//7
-				"CS.RiflemanButton",//8
-				"CS.RangerButton",//9
-				"CS.WizardButton",//10
-				"CS.SorceressButton",//11
-				"CS.CommanderButton",//12
-				"CS.PaladinButton",//13
-				"CS.SwordmasterButton",//14
-				"CS.CutpurseButton",//15
-				"CS.CannoneerButton",//16
-				"CS.SharpshooterButton",//17
-				"CS.BeastmasterButton",//18
-				"CS.AssassinButton",//19
-				"CS.FireMageButton",//20
-				"CS.IceMageButton",//21
-				"CS.LightningMageButton",//22
-				"CS.WarlockButton",//23
-				"CS.PriestessButton"//24
 ];
 
 //map for tower placement, 0=can place, -1=cannot place, towerObj=tower already occupying space
@@ -175,6 +148,5 @@ OGRE_STATS,
 SPIDER_STATS,
 GOBLIN_STATS,
 ENEMY_ARRAY,
-BUTTON_ARRAY,
 MAP
 }
