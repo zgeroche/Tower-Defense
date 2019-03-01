@@ -63,7 +63,7 @@ export function createAnimations(scene, sprites, side) {
 				key: enemy + "_right",
 				frames: scene.anims.generateFrameNames(enemy, { prefix: movement+'_right_', start: 1, end: frameEnd }),
 				frameRate: 5,
-				repeat: -1
+                repeat: -1
 			}); 
 			scene.anims.create({
 			    key: enemy + "_up",

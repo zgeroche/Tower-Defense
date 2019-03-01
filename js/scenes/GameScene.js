@@ -30,7 +30,7 @@ export class GameScene extends Phaser.Scene {
 		}
 
         //enemy group will be a loop similar to tower group
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < 11; i++) {
             var enemyClass = "CS."+GV.ENEMY_ARRAY[i].enemyName;
             GV.ENEMY_GROUP[GV.ENEMY_ARRAY[i].enemyId] = this.physics.add.group({classType: eval(enemyClass), runChildUpdate: true});
         }
@@ -97,31 +97,256 @@ export class GameScene extends Phaser.Scene {
             }); 
         }
         else { */
-            this.delay.setText('Next wave in ' + Math.trunc((this.nextEnemy-time)/1000) + ' Seconds');
-            if (time > this.nextEnemy && GV.SPAWNED < 10)
-            {
-                this.complete.setVisible(false);
-                this.delay.setVisible(false);
-                this.skipWave.setVisible(false);
-                var enemy = GV.ENEMY_GROUP[GV.WAVE-1].get(GV.ENEMY_ARRAY[GV.WAVE-1]);
-                if (enemy)
-                {
-                    enemy.setActive(true);
-                    enemy.setVisible(true);
-                    enemy.startOnPath();
-                    this.nextEnemy = time + GV.ENEMY_SPAWN_RATE;
-                    GV.SPAWNED += 1;
-                }
+        this.delay.setText('Next wave in ' + Math.trunc((this.nextEnemy - time) / 1000) + ' Seconds');
+        if (time > this.nextEnemy) {
+            //Hide wave completion items
+            this.complete.setVisible(false);
+            this.delay.setVisible(false);
+            this.skipWave.setVisible(false);
+
+            switch (GV.WAVE) {
+                case 1: //Spawn 10 skeletons
+                    if (GV.SPAWNED < 10) {
+                        var enemy = GV.ENEMY_GROUP[1].get(GV.ENEMY_ARRAY[1]);
+                        if (enemy) {
+                            enemy.setActive(true);
+                            enemy.setVisible(true);
+                            enemy.startOnPath();
+                            this.nextEnemy = time + GV.ENEMY_SPAWN_RATE;
+                            GV.SPAWNED += 1;
+                        }
+                    }
+                    else if (GV.ENEMY_GROUP[1].countActive(true) === 0) {
+                        this.complete.setVisible(true);
+                        this.delay.setVisible(true);
+                        this.skipWave.setVisible(true);
+                        GV.SPAWNED = 0;
+                        GV.WAVE += 1;
+                        this.nextEnemy = time + GV.WAVE_DELAY;
+                    }
+                    break;
+                case 2: //10 Witches
+                    if (GV.SPAWNED < 10) {
+                        enemy = GV.ENEMY_GROUP[7].get(GV.ENEMY_ARRAY[7]);
+                        if (enemy) {
+                            enemy.setActive(true);
+                            enemy.setVisible(true);
+                            enemy.startOnPath();
+                            this.nextEnemy = time + GV.ENEMY_SPAWN_RATE;
+                            GV.SPAWNED += 1;
+                        }
+                    }
+                    else if (GV.ENEMY_GROUP[7].countActive(true) === 0) {
+                        this.complete.setVisible(true);
+                        this.delay.setVisible(true);
+                        this.skipWave.setVisible(true);
+                        GV.SPAWNED = 0;
+                        GV.WAVE += 1;
+                        this.nextEnemy = time + GV.WAVE_DELAY;
+                    }
+                    break;
+                case 3: //10 Goblins
+                    if (GV.SPAWNED < 10) {
+                        enemy = GV.ENEMY_GROUP[3].get(GV.ENEMY_ARRAY[3]);
+                        if (enemy) {
+                            enemy.setActive(true);
+                            enemy.setVisible(true);
+                            enemy.startOnPath();
+                            this.nextEnemy = time + GV.ENEMY_SPAWN_RATE;
+                            GV.SPAWNED += 1;
+                        }
+                    }
+                    else if (GV.ENEMY_GROUP[3].countActive(true) === 0) {
+                        this.complete.setVisible(true);
+                        this.delay.setVisible(true);
+                        this.skipWave.setVisible(true);
+                        GV.SPAWNED = 0;
+                        GV.WAVE += 1;
+                        this.nextEnemy = time + GV.WAVE_DELAY;
+                    }
+                    break;
+                case 4: //10 Bats
+                    if (GV.SPAWNED < 10) {
+                        enemy = GV.ENEMY_GROUP[2].get(GV.ENEMY_ARRAY[2]);
+                        if (enemy) {
+                            enemy.setActive(true);
+                            enemy.setVisible(true);
+                            enemy.startOnPath();
+                            this.nextEnemy = time + GV.ENEMY_SPAWN_RATE;
+                            GV.SPAWNED += 1;
+                        }
+                    }
+                    else if (GV.ENEMY_GROUP[2].countActive(true) === 0) {
+                        this.complete.setVisible(true);
+                        this.delay.setVisible(true);
+                        this.skipWave.setVisible(true);
+                        GV.SPAWNED = 0;
+                        GV.WAVE += 1;
+                        this.nextEnemy = time + GV.WAVE_DELAY;
+                    }
+                    break;
+                case 5: //skeletons + miniboss
+                    if (GV.SPAWNED < 10) {
+                        enemy = GV.ENEMY_GROUP[1].get(GV.ENEMY_ARRAY[1]);
+                        if (enemy) {
+                            enemy.setActive(true);
+                            enemy.setVisible(true);
+                            enemy.startOnPath();
+                            this.nextEnemy = time + GV.ENEMY_SPAWN_RATE;
+                            GV.SPAWNED += 1;
+                        }
+                        if (GV.SPAWNED == 5) {
+                            enemy = GV.ENEMY_GROUP[6].get(GV.ENEMY_ARRAY[6]);
+                            enemy.setActive(true);
+                            enemy.setVisible(true);
+                            enemy.startOnPath();
+                        }
+                    }
+                    else if (GV.ENEMY_GROUP[1].countActive(true) === 0 && GV.ENEMY_GROUP[6].countActive(true) === 0) {
+                        this.complete.setVisible(true);
+                        this.delay.setVisible(true);
+                        this.skipWave.setVisible(true);
+                        GV.SPAWNED = 0;
+                        GV.WAVE += 1;
+                        this.nextEnemy = time + GV.WAVE_DELAY;
+                    }
+                    break;
+                case 6: // 20 goblins spawned in a bunch
+                    if (GV.SPAWNED < 20) {
+                        enemy = GV.ENEMY_GROUP[3].get(GV.ENEMY_ARRAY[3]);
+                        if (enemy) {
+                            enemy.setActive(true);
+                            enemy.setVisible(true);
+                            enemy.startOnPath();
+                            this.nextEnemy = time + 250;
+                            GV.SPAWNED += 1;
+                        }
+                    }
+                    else if (GV.ENEMY_GROUP[3].countActive(true) === 0) {
+                        this.complete.setVisible(true);
+                        this.delay.setVisible(true);
+                        this.skipWave.setVisible(true);
+                        GV.SPAWNED = 0;
+                        GV.WAVE += 1;
+                        this.nextEnemy = time + GV.WAVE_DELAY;
+                    }
+                    break;
+                case 7:
+                    if (GV.SPAWNED < 20) {
+                        if (GV.SPAWNED % 2 === 0) {
+                            enemy = GV.ENEMY_GROUP[2].get(GV.ENEMY_ARRAY[2]);
+                            if (enemy) {
+                                enemy.setActive(true);
+                                enemy.setVisible(true);
+                                enemy.startOnPath();
+                                this.nextEnemy = time + GV.ENEMY_SPAWN_RATE / 2;
+                                GV.SPAWNED += 1;
+                            }
+                        }
+                        else {
+                            enemy = GV.ENEMY_GROUP[7].get(GV.ENEMY_ARRAY[7]);
+                            if (enemy) {
+                                enemy.setActive(true);
+                                enemy.setVisible(true);
+                                enemy.startOnPath();
+                                this.nextEnemy = time + GV.ENEMY_SPAWN_RATE / 2;
+                                GV.SPAWNED += 1;
+                            }
+                        }
+                    }
+                    else if (GV.ENEMY_GROUP[2].countActive(true) === 0 && GV.ENEMY_GROUP[7].countActive(true) === 0) {
+                        this.complete.setVisible(true);
+                        this.delay.setVisible(true);
+                        this.skipWave.setVisible(true);
+                        GV.SPAWNED = 0;
+                        GV.WAVE += 1;
+                        this.nextEnemy = time + GV.WAVE_DELAY;
+                    }
+                    break;
+                case 8:
+                    if (GV.SPAWNED < 25) {
+                        enemy = GV.ENEMY_GROUP[1].get(GV.ENEMY_ARRAY[1]);
+                        if (enemy) {
+                            enemy.setActive(true);
+                            enemy.setVisible(true);
+                            enemy.startOnPath();
+                            this.nextEnemy = time + 500;
+                            GV.SPAWNED += 1;
+                        }
+                    }
+                    else if (GV.ENEMY_GROUP[1].countActive(true) === 0) {
+                        this.complete.setVisible(true);
+                        this.delay.setVisible(true);
+                        this.skipWave.setVisible(true);
+                        GV.SPAWNED = 0;
+                        GV.WAVE += 1;
+                        this.nextEnemy = time + GV.WAVE_DELAY;
+                    }
+                    break;
+                case 9:
+                    if (GV.SPAWNED < 30) {
+                        if (GV.SPAWNED % 3 === 0) {
+                            enemy = GV.ENEMY_GROUP[3].get(GV.ENEMY_ARRAY[3]);
+                            if (enemy) {
+                                enemy.setActive(true);
+                                enemy.setVisible(true);
+                                enemy.startOnPath();
+                                this.nextEnemy = time + GV.ENEMY_SPAWN_RATE / 3;
+                                GV.SPAWNED += 1;
+                            }
+                        }
+                        else if (GV.SPAWNED % 2 === 0) {
+                            enemy = GV.ENEMY_GROUP[7].get(GV.ENEMY_ARRAY[7]);
+                            if (enemy) {
+                                enemy.setActive(true);
+                                enemy.setVisible(true);
+                                enemy.startOnPath();
+                                this.nextEnemy = time + GV.ENEMY_SPAWN_RATE / 3;
+                                GV.SPAWNED += 1;
+                            }
+                        }
+                        else {
+                            enemy = GV.ENEMY_GROUP[1].get(GV.ENEMY_ARRAY[1]);
+                            if (enemy) {
+                                enemy.setActive(true);
+                                enemy.setVisible(true);
+                                enemy.startOnPath();
+                                this.nextEnemy = time + GV.ENEMY_SPAWN_RATE / 3;
+                                GV.SPAWNED += 1;
+                            }
+                        }
+                    }
+                    else if (GV.ENEMY_GROUP[3].countActive(true) === 0 && GV.ENEMY_GROUP[1].countActive(true) === 0 && GV.ENEMY_GROUP[7].countActive(true) === 0) {
+                        this.complete.setVisible(true);
+                        this.delay.setVisible(true);
+                        this.skipWave.setVisible(true);
+                        GV.SPAWNED = 0;
+                        GV.WAVE += 1;
+                        this.nextEnemy = time + GV.WAVE_DELAY;
+                    }
+                    break;
+                case 10:
+                    if (GV.SPAWNED < 2) {
+                        enemy = GV.ENEMY_GROUP[4].get(GV.ENEMY_ARRAY[4]);
+                        if (enemy) {
+                            enemy.setActive(true);
+                            enemy.setVisible(true);
+                            enemy.startOnPath();
+                            this.nextEnemy = time + 5000;
+                            GV.SPAWNED += 1;
+                        }
+                    }
+                    else if (GV.ENEMY_GROUP[4].countActive(true) === 0) {
+                        this.complete.setVisible(true);
+                        this.delay.setVisible(true);
+                        this.skipWave.setVisible(true);
+                        GV.SPAWNED = 0;
+                        GV.WAVE += 1;
+                        this.nextEnemy = time + GV.WAVE_DELAY;
+                    }
+                    break;
             }
-            if (GV.SPAWNED == 10 && GV.WAVE < 5 && GV.ENEMY_GROUP[GV.WAVE-1].countActive(true) === 0)
-            {
-                this.complete.setVisible(true);
-                this.delay.setVisible(true);
-                this.skipWave.setVisible(true);
-                GV.SPAWNED = 0;
-                GV.WAVE += 1;
-                this.nextEnemy = time + GV.WAVE_DELAY;
-            }
-        //}
+
+        }
     }
 }

@@ -67,18 +67,28 @@ var TOWER_ARRAY = [PEASANT_STATS, //0
 			PRIESTESS_STATS];//22
 
 var DEATHKNIGHT_STATS =  {enemyId: 0,    enemyName: "Deathknight",   speed: 1,   hp: 500,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 1, frameEnd: 4, damage: 10};
-var SKELETON_STATS =     {enemyId: 1,    enemyName: "Skeleton",      speed: 1,   hp: 600,    magicArmor: 10,  physicalArmor: 0,  flying: false,  value: 2, frameEnd: 4, damage: 10};
+var SKELETON_STATS =     {enemyId: 1,    enemyName: "Skeleton",      speed: 1,   hp: 600,    magicArmor: 10, physicalArmor: 0,   flying: false,  value: 2, frameEnd: 4, damage: 10};
 var BAT_STATS =          {enemyId: 2,    enemyName: "Bat",           speed: 2,   hp: 300,    magicArmor: 0,  physicalArmor: 0,   flying: true,   value: 1, frameEnd: 5, damage: 7};
 var OGRE_STATS =         {enemyId: 4,    enemyName: "Ogre",          speed: .75, hp: 2000,   magicArmor: 10, physicalArmor: 10,  flying: false,  value: 5, frameEnd: 6, damage: 20};
 var GOBLIN_STATS =       {enemyId: 3,    enemyName: "Goblin",        speed: 1.5, hp: 400,    magicArmor: 0,  physicalArmor: 5,   flying: false,  value: 3, frameEnd: 3, damage:10};
-var SPIDER_STATS =       {enemyId: 5,    enemyName: "Spider",        speed: 1.5, hp: 450,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 1, frameEnd: 4, damage: 5};   
+var GHOST_STATS =       {enemyId: 5,   enemyName: "Ghost",          speed: 1.5, hp: 450,    magicArmor: 0,  physicalArmor: 0,   flying: true,   value: 1, frameEnd: 3, damage: 5 };
+var BOSSSKELETON_STATS = { enemyId: 6, enemyName: "BossSkeleton",   speed: .75,  hp: 2500,    magicArmor: 15, physicalArmor: 15, flying: false,  value: 10, frameEnd: 4, damage: 25 };
+var WITCH_STATS =       { enemyId: 7, enemyName: "Witch",           speed: 1,   hp: 450,     magicArmor: 0, physicalArmor: 0,  flying: false,  value: 1, frameEnd: 3, damage: 5 };
+var REAPER_STATS =       { enemyId: 8, enemyName: "Reaper",         speed: 1,   hp: 450,     magicArmor: 0, physicalArmor: 0, flying: false, value: 1, frameEnd: 3, damage: 5 };
+var HORSEMAN_STATS =    { enemyId: 9, enemyName: "Horseman",        speed: 2,    hp: 750,   magicArmor: 0,  physicalArmor: 0, flying: false, value: 1, frameEnd: 3, damage: 5 };
+var JACKO_STATS =       { enemyId: 10, enemyName: "Jacko",          speed: 1,    hp: 450,   magicArmor: 0,  physicalArmor: 0, flying: false, value: 1, frameEnd: 3, damage: 5 };
 
 var ENEMY_ARRAY = [DEATHKNIGHT_STATS,
                 SKELETON_STATS,
                 BAT_STATS,
                 GOBLIN_STATS,
-                OGRE_STATS
-                
+                OGRE_STATS,
+                GHOST_STATS,
+                BOSSSKELETON_STATS,            
+                WITCH_STATS,
+                REAPER_STATS,
+                HORSEMAN_STATS,
+                JACKO_STATS
 ];
 
 var BUTTON_ARRAY = ["CS.PlaceButton",//0
@@ -172,8 +182,13 @@ DEATHKNIGHT_STATS,
 SKELETON_STATS,
 BAT_STATS,
 OGRE_STATS,
-SPIDER_STATS,
+GHOST_STATS,
+WITCH_STATS,
+REAPER_STATS,
 GOBLIN_STATS,
+BOSSSKELETON_STATS,
+HORSEMAN_STATS,
+JACKO_STATS,
 ENEMY_ARRAY,
 BUTTON_ARRAY,
 MAP
