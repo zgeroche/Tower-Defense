@@ -12,8 +12,8 @@ export class GameScene extends Phaser.Scene {
     
     //Preload function loads assets before game starts
  
-    init(data){
-        GV.PLAYER_HEALTH = 100; 
+    init(data) {
+        GV.PLAYER_HEALTH = 100;
         //console.log(data);
     }
 
@@ -56,7 +56,7 @@ export class GameScene extends Phaser.Scene {
 		
 
         //Wave Management
-        this.nextEnemy = GV.WAVE_DELAY;
+        this.nextEnemy = this.sys.game.loop.time + GV.WAVE_DELAY;
         this.complete = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2, 'Wave Complete', {fontFamily: 'VT323', fontSize: 50, color: '#ff0000'}).setDepth(1);
         this.complete.setVisible(false);
         this.delay = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2 + 50, 'Next Level in ' + (GV.WAVE_DELAY/1000) + ' Seconds', {fontFamily: 'VT323', fontSize: 50, color: '#ff0000'}).setDepth(1);
