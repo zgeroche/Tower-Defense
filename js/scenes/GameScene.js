@@ -39,10 +39,11 @@ export class GameScene extends Phaser.Scene {
         GV.ATTACKS_GROUP = this.physics.add.group({ classType: CS.Attack, runChildUpdate: true });
 		
 		//test button group
-		for (var i = 0; i < 25; i++) {
+	/* 	for (var i = 0; i < 25; i++) {
 			GV.BUTTON_GROUP[i] = this.add.group({ classType: eval(GV.BUTTON_ARRAY[i]), runChildUpdate: false});
-		}
+		} */
 
+		GV.BUTTON_GROUP = this.add.group({ classType: CS.XButton, runChildUpdate: false});
 		
         //turned into attack group soon for different attack types
         GV.ATTACKS_GROUP = this.physics.add.group({ classType: CS.Attack, runChildUpdate: true });

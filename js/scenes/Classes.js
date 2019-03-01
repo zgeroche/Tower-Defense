@@ -821,9 +821,15 @@ export class HUD extends Phaser.Scene {
 }
 
 export class TowerButton extends Phaser.GameObjects.Image {
-	constructor(scene)
+	constructor(scene, pointer, currTower, newTower, nupgradeID, i, j)
 	{
-		super(scene);
+		super(scene, pointer, currTower, newTower, numOfUpgrades, upgradeID, i, j);
+		this.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
+			if (currTower)
+			{
+				currTower.upgradeTower(i, j, newTower, scene);
+			}
+		});
 	}
 /*  	placeTower(pointer, scene, currTower, newTower,i,j)
 	{
@@ -836,16 +842,16 @@ export class TowerButton extends Phaser.GameObjects.Image {
 				currTower.upgradeTower(i, j, newTower, scene);
 		});
 	} */
-	makeButton(pointer,scene, currTower, newTower, numOfUpgrades, upgradeID, i, j) 
+/* 	makeButton(pointer,scene, currTower, newTower, numOfUpgrades, upgradeID, i, j) 
 	{
-		/*var i = Math.floor(pointer.y/64);
+		var i = Math.floor(pointer.y/64);
 		var j = Math.floor(pointer.x/64);
 		if (this)
 		{
 			this.setActive(true);
 			this.setVisible(true);
 			this.setInteractive({ useHandCursor: true });
-		}    */
+		} 
 		this.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
 			if (currTower)
 			{
@@ -858,7 +864,7 @@ export class TowerButton extends Phaser.GameObjects.Image {
 			}
 		});
 	
-	}
+	} */
 };
 
 export class XButton extends Phaser.GameObjects.Image {
@@ -876,8 +882,7 @@ export class XButton extends Phaser.GameObjects.Image {
 		
 		this.buttonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
 			if (currTower){currTower.upgradeTower(i, j, newTower, scene)};
-			this.buttonImg.destroy();
-			this.text.destroy();
+			GV.BUTTON_GROUP.clear(true,true);
 		});
 		
 	}
@@ -930,7 +935,7 @@ export class ArcherButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'archerbutton');
 		this.x = 120;
-		this.y = 922;
+		this.y = 962;
 	}
 };
 
@@ -940,7 +945,7 @@ export class ApprenticeButton extends TowerButton {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'apprenticebutton');
 		this.x = 120;
-		this.y = 862;
+		this.y = 822;
 	}
 };
 
