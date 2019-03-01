@@ -47,14 +47,18 @@ export class LoadScene extends Phaser.Scene{
 		this.load.audio('explosionSound', 'assets/Sounds/Explosions/Short/sfx_exp_short_hard2.wav');
 		this.load.audio('menuSounds', 'assets/Sounds/Other/FFmenu.wav');
 		this.load.audio('mapSounds', 'assets/Sounds/Other/00029.wav');
+		this.load.audio('errorSounds', 'assets/Sounds/Other/Cursor No.wav');
 		
 		//load misc
-		this.load.image('towerbutton', './assets/buttons/blackbox.png');
+		//this.load.image('towerbutton', './assets/buttons/blackbox.png');
 		this.load.image('attack', 'assets/coin.png');
 		this.load.image('highlight', 'assets/blue.png');
 		this.load.image('explosion', 'assets/muzzleflash3.png');
 		this.load.image('menuscreen', 'assets/bg.png', { frameWidth: 1280, frameHeight: 1024 });
-        this.load.image('newgame', 'assets/new.png');
+		this.load.image('newgame', 'assets/new.png');
+        this.load.image('bottomHUD', 'assets/bottomHUD.png');
+        this.load.image('towerbutton', 'assets/menuBar.png');
+        this.load.image('cancel', 'assets/cancel.png');
     }
     create(){
         //Creating menu screen background layers

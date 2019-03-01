@@ -352,6 +352,13 @@ export class Tower extends Phaser.GameObjects.Sprite{
 		this.attack = 0;
 		
 	}
+	checkCost()
+	{
+		if (GV.GOLD - this.cost >= 0)
+			return true
+		else	
+			return false;
+	}	
 	
 	placeTower(i, j,scene) {
 		//var i = Math.floor(pointer.y/64);
@@ -360,33 +367,26 @@ export class Tower extends Phaser.GameObjects.Sprite{
 			//console.log(tower);
 			if (this)
 			{
-			    if (GV.GOLD - this.cost >= 0)
-			    {
-			        this.text.y = (i+.50) * 64 + 64/2;
-			        this.text.x = j * 64 + 64/2;
-			        this.text.setOrigin(0.5);
-			        this.setActive(true);
-			        this.setVisible(true);
-			        this.y = i * 64 + 64/2;
-			        this.x = j * 64 + 64/2;
-			        GV.MAP[i][j] = this;
-			        this.setInteractive({ useHandCursor: true });
-			        GV.GOLD -= this.cost;
-			        this.upgradeSound.play();
-				
-			        scene.scene.tweens.add({
-			            targets: this, // on the player 
-			            duration: 200, // for 200ms 
-			            scaleX: 1.2, // that scale vertically by 20% 
-			            scaleY: 1.2, // and scale horizontally by 20% 
-			            alpha: 0.2,
-			            yoyo: true, // at the end, go back to original scale 
-			        });
-			    }
-			    else 
-			    {
-
-			    }
+				this.text.y = (i+.50) * 64 + 64/2;
+				this.text.x = j * 64 + 64/2;
+				this.text.setOrigin(0.5);
+				this.setActive(true);
+				this.setVisible(true);
+				this.y = i * 64 + 64/2;
+				this.x = j * 64 + 64/2;
+				GV.MAP[i][j] = this;
+				this.setInteractive({ useHandCursor: true });
+				GV.GOLD -= this.cost;
+				this.upgradeSound.play();
+			
+				scene.scene.tweens.add({
+					targets: this, // on the player 
+					duration: 200, // for 200ms 
+					scaleX: 1.2, // that scale vertically by 20% 
+					scaleY: 1.2, // and scale horizontally by 20% 
+					alpha: 0.2,
+					yoyo: true, // at the end, go back to original scale 
+				});
 			}   
 		}
 		else
@@ -779,18 +779,6 @@ export class HUD extends Phaser.Scene {
 		//Get scene with game in it
 		let sceneA = this.scene.get(CST.SCENES.GAME);
 	
-        //setup HUD
-		/* var HUD = this.add.image(0,0, 'HUD').setOrigin(0);
-		this.playerHealth = this.add.text(125, 20, 'Health: ' + GV.PLAYER_HEALTH +'/100', {fontFamily: 'VT323', fontSize: 45, color: '#ff0000'});
-		var volume = this.add.image(1485,40, 'vol');
-		var volDown = this.add.image(1485,40, 'volDown');
-		var play = this.add.image(1390,40, 'play');
-		var playDown = this.add.image(1390,40, 'playDown');
-		volDown.setVisible(false);
-		playDown.setVisible(false);
-		this.infoBar = this.add.text(675, 20, 'Wave '+GV.WAVE+': 10 '+GV.ENEMY_ARRAY[GV.WAVE-1].enemyName + '\'s', { fontFamily: 'VT323', fontSize: 62, color: '#00ff00' });
-		this.goldBar = this.add.text(125, 93, 'Gold: '+GV.GOLD, { fontFamily: 'VT323', fontSize: 62, color: '#ffd700'});
-		 */
 	    var HUD = this.add.image(0,0, 'HUD').setOrigin(0);
 		var volume = this.add.image(827,16, 'vol');
 		var volDown = this.add.image(827,16, 'volDown');
@@ -803,7 +791,9 @@ export class HUD extends Phaser.Scene {
 		this.infoBar = this.add.text(275, 2, 'Wave 1: ' + GV.WAVE_DETAIL[0], { fontFamily: 'VT323', fontSize: 30, color: '#00ff00' });
         this.goldBar = this.add.text(55, 34, 'Gold: ' + GV.GOLD, { fontFamily: 'VT323', fontSize: 26, color: '#ffd700' });
         this.nextBar = this.add.text(875, 2, 'Next Wave: ' + GV.WAVE_DETAIL[1], { fontFamily: 'VT323', fontSize: 30, color: '#00ff00' });
-		 
+
+		var bottomHUD = this.add.image(1391,992, 'bottomHUD').setOrigin(0);
+		this.towerBar = this.add.text(1596, 992, "Tower Menu", { fontFamily: 'VT323', fontSize: 30, color: '#00ff00' }).setOrigin(0);
 		/* HUD.setDepth(1);
 		volume.setDepth(1);
 		volDown.setDepth(1);
@@ -874,25 +864,32 @@ export class HUD extends Phaser.Scene {
 }
 
 export class TowerButton extends Phaser.GameObjects.Image {
-	constructor(scene, y)
+	constructor(scene, z)
 	{
-		super(scene,y);
-		this.x = 120;
-		this.y = y;
+		super(scene,z);
+		this.z = z;
 	}
 	
 	upgradeTowerButton(pointer, scene, currTower, newTower,i,j)
-	{
-		var buttonImg = this.scene.add.image(this.x,this.y, 'towerbutton').setDepth(1);
-		var buttontext = this.scene.add.text((this.x)/2, (this.y)-15, newTower.towerName, { fontFamily: 'VT323', fontSize: 30, color: '#ffffff' }).setDepth(2);
-		
-		GV.BUTTON_GROUP.add(buttonImg);
-		GV.BUTTON_GROUP.add(buttontext);
+	{		
+		var buttonImg = FN.createButton(scene,1660, 1024, this.z, newTower.towerName+" | "+newTower.cost+ "g");
 		
 		buttonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
-			scene.scene.menuSounds.play();
-			if (currTower){currTower.upgradeTower(i, j, newTower, scene)};
-			GV.BUTTON_GROUP.clear(true,true);
+			
+				if (newTower.checkCost())
+				{
+					scene.scene.menuSounds.play();
+					if (currTower){currTower.upgradeTower(i, j, newTower, scene)};
+					GV.BUTTON_GROUP.clear(true,true);
+				}
+				else
+				{
+					scene.scene.errorSounds.play();
+					GV.BUTTON_GROUP.clear(true,true);
+					FN.createButton(scene,1660, 1024, 0, "Not Enough Gold");
+					FN.cancelAction(scene);
+				}
+			
 		});
 		
 	}

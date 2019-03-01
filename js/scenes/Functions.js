@@ -46,6 +46,12 @@ export function buildMap(scene, mapBG){
 	scene.mapSounds.loop = false;
 	//scene.mapSounds.play();
 	
+	//error sounds
+	scene.errorSounds = scene.sound.add('errorSounds');
+	scene.errorSounds.volume = 0.04;
+	scene.errorSounds.loop = false;
+	//scene.errorSounds.play();
+	
 	//add HUD
 	scene.scene.add('HUD', CS.HUD, true, { x: 680, y: 66 });
 
@@ -132,36 +138,57 @@ export function highlightLoc(scene, i, j){
 	}
 }
 
+export function createButton(scene, x, y, z, title){
+
+	var height = 965 - z;
+	var buttonImg = scene.scene.add.image(x, y, 'towerbutton').setDepth(1);
+	var buttonText = scene.scene.add.text(x, y, title, { fontFamily: 'VT323', fontSize: 30, color: '#ffffff' }).setDepth(2).setOrigin(0.5);
+	
+	GV.BUTTON_GROUP.add(buttonImg);
+	GV.BUTTON_GROUP.add(buttonText);
+
+	scene.scene.tweens.add({
+		targets: [buttonImg, buttonText],
+		y: height,
+		ease: 'Bounce.easeOut',
+		duration: 1000,
+		delay: 0,
+		repeat: 0
+	});
+	
+	return buttonImg;
+}
+
 export function placeTowerAction(pointer, scene, i, j){
 	
-	var bannerImg = scene.scene.add.image(120, 982, 'towerbutton').setDepth(1);
-	var bannerText = scene.scene.add.text(120/2, 982-15, "Place Tower", { fontFamily: 'VT323', fontSize: 30, color: '#ffffff' }).setDepth(2);
-	
-	GV.BUTTON_GROUP.add(bannerImg);
-	GV.BUTTON_GROUP.add(bannerText);
+	var bannerImg = createButton(scene,1660, 1024, 0, "Place Tower");
 	
 	bannerImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
 		scene.scene.menuSounds.play();
-		var buttonImg = scene.scene.add.image(120, 922, 'towerbutton').setDepth(1);
-		var buttonText = scene.scene.add.text(120/2, 922-15, "Peasant", { fontFamily: 'VT323', fontSize: 30, color: '#ffffff' }).setDepth(2);
-		
-		GV.BUTTON_GROUP.add(buttonImg);
-		GV.BUTTON_GROUP.add(buttonText);
+		var buttonImg = createButton(scene,1660, 1024, 54, "Peasant | 5g");
 		
 		buttonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
 			var newTower = GV.TOWER_GROUP[GV.PEASANT_STATS.towerId].get(GV.PEASANT_STATS);
-			newTower.placeTower(i, j, scene);
-			GV.BUTTON_GROUP.clear(true,true);
+			if (newTower.checkCost())
+			{
+				newTower.placeTower(i, j, scene);
+				GV.BUTTON_GROUP.clear(true,true);
+			}
+			else
+			{
+				scene.scene.errorSounds.play();
+				GV.BUTTON_GROUP.clear(true,true);
+				createButton(scene,1660, 1024, 0, "Not Enough Gold");
+				cancelAction(scene);
+			}
+			
 		});
 	});
 }
 
+
 export function removeTowerAction(pointer, scene, i, j){
-	var removeButtonImg = scene.scene.add.image(120, 982, 'towerbutton').setDepth(1);
-	var removeButtonText = scene.scene.add.text(120/2, 982-15, "Remove tower", { fontFamily: 'VT323', fontSize: 30, color: '#ffffff' }).setDepth(2);
-	
-	GV.BUTTON_GROUP.add(removeButtonImg);
-	GV.BUTTON_GROUP.add(removeButtonText);
+	var removeButtonImg = createButton(scene,1660, 1024, 0, "Remove Tower");
 	
 	removeButtonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
 		scene.scene.menuSounds.play();
@@ -170,31 +197,27 @@ export function removeTowerAction(pointer, scene, i, j){
 		{
 			tower.removeTower(i, j, scene);
 		}
+		
 		GV.BUTTON_GROUP.clear(true,true);
 		
 	});
 }
 
 export function upgradeTowerAction(i, j, scene, pointer, id){
-	
-	//New code for remove and upgrade buttons
+
 	removeTowerAction(pointer, scene, i, j);
-	
-	var upgradeButtonImg = scene.scene.add.image(120, 922, 'towerbutton').setDepth(1);
-	var upgradeButtonText = scene.scene.add.text(120/2, 922-15, "Upgrade tower", { fontFamily: 'VT323', fontSize: 30, color: '#ffffff' }).setDepth(2);
-	
-	GV.BUTTON_GROUP.add(upgradeButtonImg);
-	GV.BUTTON_GROUP.add(upgradeButtonText);
+
+	var upgradeButtonImg = createButton(scene,1660, 1024, 54, "Upgrade tower");
 	
 	upgradeButtonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
 		scene.scene.menuSounds.play();
 		GV.BUTTON_GROUP.clear(true,true);
-		
+		cancelAction(scene);
 		if(GV.TOWER_ARRAY[id].upgrades)
 		{
 			var numOfUpgrades = GV.TOWER_ARRAY[id].upgrades.length;
 			var currTower = GV.MAP[i][j];
-			var y = 982;
+			var z = 0;
 			
 			for (var count = 0; count < numOfUpgrades; count++) 
 			{
@@ -202,25 +225,38 @@ export function upgradeTowerAction(i, j, scene, pointer, id){
 				var upgradedTower = GV.TOWER_ARRAY[upgradeID];
 				var newTower = GV.TOWER_GROUP[upgradeID].get(upgradedTower);
 				
-				var towerButton = new CS.TowerButton(scene.scene, y);
+				var towerButton = new CS.TowerButton(scene.scene, z);
 				towerButton.upgradeTowerButton(pointer,scene, currTower, newTower,i,j); 
 
-				y = y - 60;	
+				z = z + 54;	
 			}
 		}
 		else
 		{
-			removeTowerAction(pointer, scene, i, j);
-			
-			var upgradeButtonImg = scene.scene.add.image(120, 922, 'towerbutton').setDepth(1);
-			var upgradeButtonText = scene.scene.add.text(120/2, 922-15, "No Upgrades", { fontFamily: 'VT323', fontSize: 30, color: '#ffffff' }).setDepth(2);
-			
-			GV.BUTTON_GROUP.add(upgradeButtonImg);
-			GV.BUTTON_GROUP.add(upgradeButtonText);
-			
+			//removeTowerAction(pointer, scene, i, j);
+			createButton(scene,1660, 1024, 0, "No Upgrades");
+
 		}
 		
 	});		
+}
+
+export function cancelAction(scene){
+	var cancelImg = scene.scene.add.image(1780, 1024, 'cancel').setDepth(1);
+	GV.BUTTON_GROUP.add(cancelImg);
+	
+	scene.scene.tweens.add({
+		targets: cancelImg,
+		y: 965,
+		ease: 'Bounce.easeOut',
+		duration: 1000,
+		delay: 0,
+		repeat: 0
+	});
+	
+	cancelImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
+		GV.BUTTON_GROUP.clear(true,true);
+	});
 }
 
 //user input related actions 
@@ -237,10 +273,12 @@ export function userAction(pointer, scene){
 		//if new tower
 		if(GV.MAP[i][j] == 0)
 		{	
+			cancelAction(scene)
 			placeTowerAction(pointer, scene, i, j);
 		}
 		else if(typeof GV.MAP[i][j] ==="object")
 		{
+			cancelAction(scene)
 			upgradeTowerAction(i, j, scene, pointer, GV.MAP[i][j].towerId);
 		}
 	}
