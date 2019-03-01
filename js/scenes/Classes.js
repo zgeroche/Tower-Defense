@@ -19,7 +19,10 @@ export class Enemy extends Phaser.GameObjects.Sprite {
         this.damage = stats.damage;
         this.enemyName = stats.enemyName.toLowerCase();
 
-        this.turned = 0;
+        this.facing = 'i';
+        this.prevx = 0;
+        this.prevy = 0;
+        //this.turned = 0;
 
         this.camera = scene.cameras.main;
         
@@ -106,40 +109,44 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 
 	turnDown()
 	{
-	    let anim = this.enemyName + "_down";
+	    let anim = this.enemyName.toLowerCase() + "_down";
 	    this.anims.play(anim);
-
+        this.facing = 'd';
 	}
 
 	turnRight()
 	{
-	    let anim = this.enemyName + "_right";
+	    let anim = this.enemyName.toLowerCase() + "_right";
 	    this.anims.play(anim);
-	    this.flipX = false;
+        this.flipX = false;
+        this.facing = 'r';
 	}
 	turnUp()
 	{
-	    let anim = this.enemyName + "_up";
-	    this.anims.play(anim);
+	    let anim = this.enemyName.toLowerCase() + "_up";
+        this.anims.play(anim);
+        this.facing = 'u';
 	}
 	turnLeft()
 	{
-	    let anim = this.enemyName + "_right";
+	    let anim = this.enemyName.toLowerCase() + "_right";
 	    this.anims.play(anim);
-	    this.flipX = true;
+        this.flipX = true;
+        this.facing = 'l';
 	}
 	
 	update (time, delta)
-	{
+    {
 		//ENEMY_SPEED = 1/Math.floor((Math.random() * (10000 - 5000)) + 5000);
+        this.prevx = this.follower.vec.x;
+        this.prevy = this.follower.vec.y;
 		this.follower.t += GV.ENEMY_SPEED * delta * this.speed;
 		if (!this.flying){ GV.WALKPATH.getPoint(this.follower.t, this.follower.vec);}
 		else{ GV.FLYPATH.getPoint(this.follower.t, this.follower.vec)};
 		
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
-		//console.log(this.follower.vec.x);
 		this.text.setPosition(this.follower.vec.x, this.follower.vec.y);									//textHP
-		this.healthbar.setPosition(this.follower.vec.x - this.width, this.follower.vec.y - this.height);
+        this.healthbar.setPosition(this.follower.vec.x - this.width, this.follower.vec.y - this.height);
 
 		if (this.follower.t >= 1)
 		{
@@ -154,58 +161,23 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			//this.camera.flash(150,  200, 0, 0, false);					//camera
 			GV.PLAYER_HEALTH -= this.damage;
 		}
-		if (!this.flying)
-		{
-		    if (this.follower.vec.x == 416 && this.turned==0){
-		        this.turnUp();
-		        this.turned += 1;
-		    }
-		    else if (this.follower.vec.y == 160 && this.turned ==1)
-		    {
-		        this.turnRight();
-		        this.turned += 1;
-		    }
-		    else if (this.follower.vec.x == 800 && this.turned == 2)
-		    {
-		        this.turnDown();
-		        this.turned += 1;
-		    }
-		    else if (this.follower.vec.y == 608 && this.turned == 3)
-		    {
-		        this.turnLeft();
-		        this.turned += 1;
-		    }
-		    else if (this.follower.vec.x == 608 && this.turned == 4)
-		    {
-		        this.turnDown();
-		        this.turned += 1;
-		    }
-		    else if (this.follower.vec.y == 864 && this.turned == 5)
-		    {
-		        this.turnRight();
-		        this.turned += 1;
-		    }
-		    else if (this.follower.vec.x == 1248 && this.turned == 6)
-		    {
-		        this.turnUp();
-		        this.turned += 1;
-		    }
-		    else if (this.follower.vec.y == 544 && this.turned == 7)
-		    {
-		        this.turnRight();
-		        this.turned += 1;
-		    }
-		    else if (this.follower.vec.x == 1568 && this.turned == 8)
-		    {
-		        this.turnUp();
-		        this.turned +=1;
-		    }
-		    else if (this.follower.vec.y == 288 && this.turned == 9)
-		    {
-		        this.turnRight();
-		        this.turned +=1;
-		    }
-		}
+        if (!this.flying) {
+            if (this.prevx < this.follower.vec.x && this.facing != 'r') {
+                this.turnRight();
+            }
+            else if (this.prevx > this.follower.vec.x && this.facing != 'l') {
+                this.turnLeft();
+            }
+            else if (this.prevy < this.follower.vec.y && this.facing != 'd') {
+                this.turnDown();
+            }
+            else if (this.prevy > this.follower.vec.y && this.facing != 'u') {
+                this.turnUp();
+            }
+        }
+        else if (this.facing != 'r'){
+            this.turnRight();
+        }
 	}
 };
 
@@ -213,9 +185,6 @@ export class Deathknight extends Enemy {
 	constructor(scene, stats) {
 		super(scene, stats);
 		Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'deathknight');
-
-		
-        this.anims.play('deathknight_right');
 		
 		//create sounds
 		this.death = scene.sound.add('dkDeath');
@@ -234,8 +203,6 @@ export class Skeleton extends Enemy {
     constructor(scene, stats){
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'skeleton');
-
-        this.anims.play('skeleton_right');
 		
 		//create sounds
 		this.death = scene.sound.add('dkDeath');
@@ -249,8 +216,6 @@ export class Bat extends Enemy {
     constructor(scene, stats){
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'bat');
-
-        this.anims.play('bat_right');
 		
 		//create sounds
 		this.death = scene.sound.add('dkDeath');
@@ -264,8 +229,6 @@ export class Ogre extends Enemy {
     constructor(scene, stats){
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'ogre');
-
-        this.anims.play('ogre_right');
 		
 		//create sounds
 		this.death = scene.sound.add('dkDeath');
@@ -279,8 +242,6 @@ export class Goblin extends Enemy {
     constructor(scene, stats){
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'goblin');
-
-        this.anims.play('goblin_right');
 		
         //create sounds
         this.death = scene.sound.add('dkDeath');
@@ -288,6 +249,79 @@ export class Goblin extends Enemy {
         this.death.loop = false;
     }
 }
+
+export class BossSkeleton extends Enemy {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'bossSkeleton');
+
+        //create sounds
+        this.death = scene.sound.add('dkDeath');
+        this.death.volume = 0.05;
+        this.death.loop = false;
+    }
+}
+
+export class Ghost extends Enemy {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'ghost');
+
+        //create sounds
+        this.death = scene.sound.add('dkDeath');
+        this.death.volume = 0.05;
+        this.death.loop = false;
+    }
+}
+
+export class Witch extends Enemy {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'witch');
+
+        //create sounds
+        this.death = scene.sound.add('dkDeath');
+        this.death.volume = 0.05;
+        this.death.loop = false;
+    }
+}
+
+export class Reaper extends Enemy {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'reaper');
+
+        //create sounds
+        this.death = scene.sound.add('dkDeath');
+        this.death.volume = 0.05;
+        this.death.loop = false;
+    }
+}
+
+export class Horseman extends Enemy {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'horseman');
+
+        //create sounds
+        this.death = scene.sound.add('dkDeath');
+        this.death.volume = 0.05;
+        this.death.loop = false;
+    }
+}
+
+export class Jacko extends Enemy {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'jacko');
+
+        //create sounds
+        this.death = scene.sound.add('dkDeath');
+        this.death.volume = 0.05;
+        this.death.loop = false;
+    }
+}
+
 /************************************************************************************************************************************/
 //tower class
 /************************************************************************************************************************************/
