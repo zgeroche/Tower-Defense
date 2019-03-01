@@ -824,7 +824,6 @@ export class TowerButton extends Phaser.GameObjects.Image {
 	constructor(scene)
 	{
 		super(scene);
-
 	}
 /*  	placeTower(pointer, scene, currTower, newTower,i,j)
 	{
@@ -849,7 +848,9 @@ export class TowerButton extends Phaser.GameObjects.Image {
 		}    */
 		this.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
 			if (currTower)
+			{
 				currTower.upgradeTower(i, j, newTower, scene);
+			}
 			for (var k = 0; k < numOfUpgrades; k++) {
 				var CID = currTower.towerId;
 				var BID = GV.TOWER_ARRAY[CID].upgrades[k];
@@ -857,6 +858,28 @@ export class TowerButton extends Phaser.GameObjects.Image {
 			}
 		});
 	
+	}
+};
+
+export class XButton extends Phaser.GameObjects.Image {
+	constructor(scene, y)
+	{
+		super(scene,y);
+		this.x = 120;
+		this.y = y
+	}
+	
+	placeTower(pointer, scene, currTower, newTower,i,j)
+	{
+		this.buttonImg = scene.scene.add.image(this.x,this.y, 'towerbutton').setDepth(1);
+		this.text = scene.scene.add.text((this.x)/2, (this.y)-15, newTower.towerName, { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
+		
+		this.buttonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
+			if (currTower){currTower.upgradeTower(i, j, newTower, scene)};
+			this.buttonImg.destroy();
+			this.text.destroy();
+		});
+		
 	}
 };
 

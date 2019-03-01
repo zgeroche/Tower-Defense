@@ -119,6 +119,9 @@ export function highlightLoc(scene, i, j){
 	}
 }
 
+export function placeTowerAction(){
+}
+
 
 export function upgradeTowerAction(i, j, scene, pointer, id){
 	
@@ -149,23 +152,39 @@ export function upgradeTowerAction(i, j, scene, pointer, id){
 		upgradeButton.setActive(false);
 		upgradeButton.setVisible(false);
 		GV.BUTTON_GROUP[2].remove(upgradeButton, true, true);
-		
 		if(GV.TOWER_ARRAY[id].upgrades)
 		{
 			var numOfUpgrades = GV.TOWER_ARRAY[id].upgrades.length;
 			var currTower = GV.MAP[i][j];
-			
+			var y = 982;
+			var buttonImgGroup = scene.scene.add.group();
+			var buttonTextGroup = scene.scene.add.group();
 			for (var count = 0; count < numOfUpgrades; count++) 
 			{
 				var upgradeID = GV.TOWER_ARRAY[id].upgrades[count];
 				var upgradedTower = GV.TOWER_ARRAY[upgradeID];
 				var newTower = GV.TOWER_GROUP[upgradeID].get(upgradedTower);
 				
-				/* var towerButton = new CS.TowerButton(scene.scene);
-				towerButton.placeTower(pointer,scene, currTower, newTower,i,j); */
+				var buttonImg = scene.scene.add.image(120, y, 'towerbutton').setDepth(1);
+				var buttontext = scene.scene.add.text(120/2, y-15, newTower.towerName, { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(2);
 				
-				var towerButton = GV.BUTTON_GROUP[upgradeID+2].get();
-				towerButton.makeButton(pointer, scene, currTower, newTower, numOfUpgrades, upgradeID, i, j);
+				buttonImgGroup.add(buttonImg);
+				buttonTextGroup.add(buttontext);
+				
+				buttonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
+					if (currTower){currTower.upgradeTower(i, j, newTower, scene)};
+					buttonImgGroup.clear(true,true);
+					buttonTextGroup.clear(true,true);
+					
+				});
+				y = y - 60;
+				
+
+				/* var towerButton = new CS.XButton(scene.scene, y);
+				towerButton.placeTower(pointer,scene, currTower, newTower,i,j); */
+				/* var towerButton = GV.BUTTON_GROUP[upgradeID+2].get(y);
+				towerButton.makeButton(pointer, scene, currTower, newTower, numOfUpgrades, upgradeID, i, j); */
+				
 			}
 		}
 		
