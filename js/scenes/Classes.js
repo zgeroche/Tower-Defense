@@ -340,6 +340,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 		this.atkType = stats.atkType;
 		this.atkRate = stats.atkRate; 
 		this.hitFly = stats.hitFly; //true = can hit flying enemeies, false = cannot hit flying enemies
+		//this.attackImage = stats.attackimage
 		//this.aoeRange = aoeRange; //area of effect range
 		//this.spc = spc; //has special attack, each value represents special type, 0 = none, 1 = chance to stun, etc.
 		
@@ -438,10 +439,10 @@ export class Tower extends Phaser.GameObjects.Sprite{
 	    var enemy = FN.getEnemy(this.x, this.y, this.atkRange, this.hitFly);
 	    if(enemy) {
 	        var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-	        FN.addAttack(this.x, this.y, angle, this.str, this.atkType);
+	        FN.addAttack(this.x, this.y, angle, this.str, this.atkType, this.towerId);
 	        //this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make towers rotate to face enemy
 	    }
-		 if(enemy && this.attack == 0)
+		/*  if(enemy && this.attack == 0)
 		{
 			this.anims.play(this.towerName.toLowerCase()+'_atk');
 			this.attack = 1;
@@ -450,7 +451,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 		{
 			this.anims.play(this.towerName.toLowerCase()+'_idle');
 			this.attack = 0;
-		} 
+		}  */
 		
 	}
 	
@@ -712,13 +713,13 @@ export class Attack extends Phaser.GameObjects.Image {
 	constructor(scene)
 	{
 		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'attack');
+		//Phaser.GameObjects.Image.call(this, scene, 0, 0, imagekey);
 
 		this.incX = 0;
 		this.incY = 0;
 		this.lifespan = 0;
 
-		this.speed = Phaser.Math.GetSpeed(600, 1);
+		//this.speed = Phaser.Math.GetSpeed(600, 1);
 
     	this.particles = scene.add.particles('attack');
 
@@ -741,7 +742,7 @@ export class Attack extends Phaser.GameObjects.Image {
         this.setPosition(x, y);
 		
         //  we don't need to rotate the attacks as they are round
-        //    this.setRotation(angle);
+        this.setRotation(angle);
 
         this.dx = Math.cos(angle);
         this.dy = Math.sin(angle);
@@ -761,9 +762,40 @@ export class Attack extends Phaser.GameObjects.Image {
 		if (this.lifespan <= 0)
 		{
 			this.setActive(false);
-			this.setVisible(false);
-            
+			this.setVisible(false);  
 		}
+	}
+};
+
+export class Tomato extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'tomato');
+		this.speed = Phaser.Math.GetSpeed(400, 1);
+	}
+};
+
+export class Sword extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sword');
+		this.speed = Phaser.Math.GetSpeed(600, 1);
+	}
+};
+
+export class Arrow extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'arrow');
+		this.speed = Phaser.Math.GetSpeed(1200,1);
+	}
+};
+
+export class WhiteMagic extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'whitemagic');
+		this.speed = Phaser.Math.GetSpeed(600,1);
 	}
 };
 

@@ -2,11 +2,11 @@ var WALKPATH;
 var FLYPATH;
 var TOWER_GROUP = [];
 var ENEMY_GROUP = [];
-var ATTACKS_GROUP;
+var ATTACK_GROUP = [];
 var BUTTON_GROUP = [];
 var SPAWNED = 0;
 var WAVE = 1;
-var GOLD = 5;
+var GOLD = 100;
 var WAVE_DELAY = 15000;
 var PLAYER_HEALTH = 100;
 
@@ -66,6 +66,16 @@ var TOWER_ARRAY = [PEASANT_STATS, //0
 			WARLOCK_STATS,//21
 			PRIESTESS_STATS];//22
 
+var PEASANT_ATTACK = {attackId:0, attackName:"Tomato"};
+var SOLDIER_ATTACK = {attackId:1, attackName:"Sword"};
+var ARCHER_ATTACK =  {attackId:2, attackName:"Arrow"};
+var APPRENTICE_ATTACK =  {attackId:3, attackName:"WhiteMagic"};
+			
+var ATTACK_ARRAY = [PEASANT_ATTACK, //0
+			SOLDIER_ATTACK, //1
+			ARCHER_ATTACK,
+			APPRENTICE_ATTACK]; //2
+
 var DEATHKNIGHT_STATS =  {enemyId: 0,    enemyName: "Deathknight",   speed: 1,   hp: 500,    magicArmor: 0,  physicalArmor: 0,   flying: false,  value: 1, frameEnd: 4, damage: 10};
 var SKELETON_STATS =     {enemyId: 1,    enemyName: "Skeleton",      speed: 1,   hp: 600,    magicArmor: 10, physicalArmor: 0,   flying: false,  value: 2, frameEnd: 4, damage: 10};
 var BAT_STATS =          {enemyId: 2,    enemyName: "Bat",           speed: 2,   hp: 300,    magicArmor: 0,  physicalArmor: 0,   flying: true,   value: 1, frameEnd: 5, damage: 7};
@@ -110,6 +120,7 @@ var MAP =  [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]];
 
 var WAVE_DETAIL = ['10 Skeletons', '10 Witches', '10 Goblins (fast)', '10 bats (flying)', '10 Skeletons + Boss', '20 Goblins (mass, fast)', '10 witches + 10 bats (flying)', '25 Skeletons (mass)' , '10 Skeletons, Witches & Goblins', '2 Ogre Boss'];
+
 			
 			
 export{
@@ -117,7 +128,7 @@ WALKPATH,
 FLYPATH,
 TOWER_GROUP,
 ENEMY_GROUP,
-ATTACKS_GROUP,
+ATTACK_GROUP,
 BUTTON_GROUP,
 SPAWNED,
 WAVE,
@@ -153,6 +164,11 @@ LIGHTNINGMAGE_STATS,
 WARLOCK_STATS,
 PRIESTESS_STATS,
 TOWER_ARRAY,
+PEASANT_ATTACK,
+SOLDIER_ATTACK,
+ARCHER_ATTACK,
+APPRENTICE_ATTACK,
+ATTACK_ARRAY,
 DEATHKNIGHT_STATS,
 SKELETON_STATS,
 BAT_STATS,
