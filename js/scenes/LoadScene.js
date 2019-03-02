@@ -55,6 +55,8 @@ export class LoadScene extends Phaser.Scene{
 		this.load.image('arrow', 'assets/attacks/Arrow.png');
 		this.load.image('sword', 'assets/attacks/Sword.png');
 		this.load.image('whitemagic', 'assets/attacks/WhiteMagic.png');
+		this.load.image('bluemagic', 'assets/attacks/BlueMagic.png');
+		this.load.image('pinkmagic', 'assets/attacks/PinkMagic.png');
 		this.load.image('coin', 'assets/attacks/coin.png');
 		this.load.image('highlight', 'assets/blue.png');
 		this.load.image('explosion', 'assets/muzzleflash3.png');

@@ -799,15 +799,157 @@ export class WhiteMagic extends Attack {
 	}
 };
 
-
-
-export class Coin extends Attack {
+export class Test extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
 		this.speed = Phaser.Math.GetSpeed(800, 1);
 	}
 };
+
+export class DuelistAttack extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+};
+
+export class RiflemanAttack extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+};
+
+export class RangerAttack extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+};
+
+export class BlueMagic extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bluemagic');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+};
+
+export class PinkMagic extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'pinkmagic');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+};
+/*
+export class CommanderAttack extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+};
+
+export class PaladinAttack extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+};
+
+export class SwordmasterAttack extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+};
+
+export class CutpurseAttack extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+};
+
+export class CannoneerAttack extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+};
+
+export class SharpshooterAttack extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+};
+
+export class BeastmasterAttack extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+};
+
+export class AssassinAttack extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+};
+
+export class FireMageAttack extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+};
+
+export class IceMageAttack extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+};
+
+export class LightningMageAttack extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+};
+
+export class WarlockAttack extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+};
+
+export class PriestessAttack extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+}; */
 
 export class HUD extends Phaser.Scene {
 
