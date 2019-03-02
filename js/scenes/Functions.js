@@ -57,7 +57,7 @@ export function buildMap(scene, mapBG){
 
 	//misc
 	scene.nextEnemy = 0;
-	scene.physics.add.overlap(GV.ENEMY_GROUP, GV.ATTACKS_GROUP, damageEnemy);
+	scene.physics.add.overlap(GV.ENEMY_GROUP, GV.ATTACK_GROUP, damageEnemy);
     scene.input.mouse.disableContextMenu();
 }
 
@@ -131,10 +131,22 @@ export function highlightLoc(scene, i, j){
 			y: y,
 			//tint: 0xff00ff,
 			scale: { start: 0.3, end: 0 },
-			frequency: 35,
+			frequency: 15,
 			blendMode: 'SCREEN',
 			emitZone: { type: 'edge', source: shape, quantity: 30, yoyo: false}
 		});
+	}
+}
+
+export function showTowerRange(scene, i, j) {
+	
+	if(typeof scene.rangeCircle ==='object'){scene.rangeCircle.destroy();}
+	
+	if(typeof GV.MAP[i][j] === 'object') {
+		var x = j * 64 + 64/2;
+		var y = i * 64 + 64/2;
+		var shape = new Phaser.Geom.Circle(i, j, GV.MAP[i][j].atkRange);
+		scene.rangeCircle = scene.scene.add.circle(x, y, GV.MAP[i][j].atkRange, 0x0099ff, 127);
 	}
 }
 
@@ -268,6 +280,8 @@ export function userAction(pointer, scene){
 		//highlight location clicked by user
 		highlightLoc(scene, i, j);
 		
+		showTowerRange(scene, i , j);
+		
 		if(GV.MAP[i][j] != -1){GV.BUTTON_GROUP.clear(true,true);}
 		
 		//if new tower
@@ -323,8 +337,8 @@ export function drawLines(graphics) {
     graphics.strokePath();
 }	
 
-export function addAttack(x, y, angle, damage, type) {
-    var attack = GV.ATTACKS_GROUP.get();
+export function addAttack(x, y, angle, damage, type, towerID) {
+    var attack = GV.ATTACK_GROUP[towerID].get();
     if (attack)
     {
         attack.fire(x, y, angle, damage, type);

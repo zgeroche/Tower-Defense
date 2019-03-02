@@ -32,17 +32,17 @@ export class GameScene extends Phaser.Scene {
         //enemy group will be a loop similar to tower group
         for (var i = 0; i < 11; i++) {
             var enemyClass = "CS."+GV.ENEMY_ARRAY[i].enemyName;
-            GV.ENEMY_GROUP[GV.ENEMY_ARRAY[i].enemyId] = this.physics.add.group({classType: eval(enemyClass), runChildUpdate: true});
+            GV.ENEMY_GROUP[GV.ENEMY_ARRAY[i].enemyId] = this.physics.add.group({ classType: eval(enemyClass), runChildUpdate: true});
         }
 		
         //turned into attack group soon for different attack types
-        GV.ATTACKS_GROUP = this.physics.add.group({ classType: CS.Attack, runChildUpdate: true });
+		for (var i = 0; i < 4; i++) {
+			var attackClass = "CS."+GV.ATTACK_ARRAY[i].attackName;
+			GV.ATTACK_GROUP[GV.ATTACK_ARRAY[i].attackId] = this.physics.add.group({ classType: eval(attackClass), runChildUpdate: true});
+		}
 		
 		//button group
 		GV.BUTTON_GROUP = this.add.group();
-		
-        //turned into attack group soon for different attack types
-        GV.ATTACKS_GROUP = this.physics.add.group({ classType: CS.Attack, runChildUpdate: true });
 		
         //build the game map, this includes pathing, map image, animations, background sounds, and general game assets
         FN.buildMap(this, 'map');
