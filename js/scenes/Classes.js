@@ -771,7 +771,7 @@ export class Tomato extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'tomato');
-		this.speed = Phaser.Math.GetSpeed(400, 1);
+		this.speed = Phaser.Math.GetSpeed(600, 1);
 	}
 };
 
@@ -779,7 +779,7 @@ export class Sword extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sword');
-		this.speed = Phaser.Math.GetSpeed(600, 1);
+		this.speed = Phaser.Math.GetSpeed(800, 1);
 	}
 };
 
@@ -787,7 +787,7 @@ export class Arrow extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'arrow');
-		this.speed = Phaser.Math.GetSpeed(1200,1);
+		this.speed = Phaser.Math.GetSpeed(1200, 1);
 	}
 };
 
@@ -795,7 +795,17 @@ export class WhiteMagic extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'whitemagic');
-		this.speed = Phaser.Math.GetSpeed(600,1);
+		this.speed = Phaser.Math.GetSpeed(1000, 1);
+	}
+};
+
+
+
+export class Coin extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
 	}
 };
 
