@@ -18,6 +18,7 @@ export class LoadScene extends Phaser.Scene{
         this.load.atlas('soldier', 'assets/soldier.png', 'assets/soldier.json');
         this.load.atlas('peasant', 'assets/peasant.png', 'assets/peasant.json');
         this.load.atlas('archer', 'assets/archer.png', 'assets/archer.json');
+        this.load.atlas('knight', 'assets/knight.png', 'assets/knight.json');
 		this.load.image('placeholder', 'assets/placeholder.png');
 		
 		//load enemy sprites, will be a loop like load tower sprites

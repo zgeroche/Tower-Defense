@@ -507,7 +507,9 @@ export class Apprentice extends Tower {
 export class Knight extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'knight');
+		
+		this.anims.play('knight_idle');
     }
 }
 
