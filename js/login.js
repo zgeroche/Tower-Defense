@@ -1,13 +1,15 @@
 // Instantiate MongoDB instance
-const {
+/*const {
     Stitch,
     RemoteMongoClient,
     } = require('mongodb-stitch-browser-sdk');
 
 const client = Stitch.initializeDefaultAppClient('html-game-onuim');
 const db = client.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas');
-const collection = db.db('fantasyTD').collection('credentials');
+const collection = db.db('fantasyTD').collection('credentials');*/
 
+
+/*
 //Login button with verification
 loginButton = document.getElementById('Login');
 loginButton.addEventListener('click', function(event){
@@ -63,3 +65,5 @@ newUserButton.addEventListener('click', function(event){
     })
     .catch(err => console.error(`Failed to insert item: ${err}`))
 });
+*/
+app.listen(port);

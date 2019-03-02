@@ -103,7 +103,7 @@ export function createAnimations(scene, sprites, side) {
 			scene.anims.create({
 				key: tower + "_atk",
 				frames: scene.anims.generateFrameNames(tower, { prefix: 'atk_down_', start: 1, end: 5 }),
-				frameRate: 15,
+				frameRate: 15* 325/sprites[i].atkRate,
 				repeat: -1
 			}); 
 			
@@ -154,7 +154,7 @@ export function createButton(scene, x, y, z, title){
 
 	var height = 965 - z;
 	var buttonImg = scene.scene.add.image(x, y, 'towerbutton').setDepth(1);
-	var buttonText = scene.scene.add.text(x, y, title, { fontFamily: 'VT323', fontSize: 30, color: '#ffffff' }).setDepth(2).setOrigin(0.5);
+    var buttonText = scene.scene.add.text(x, y, title, { fontFamily: 'VT323', fontSize: 30, color: '#ffffff' }).setDepth(2).setOrigin(0.5);
 	
 	GV.BUTTON_GROUP.add(buttonImg);
 	GV.BUTTON_GROUP.add(buttonText);
@@ -173,13 +173,15 @@ export function createButton(scene, x, y, z, title){
 
 export function placeTowerAction(pointer, scene, i, j){
 	
-	var bannerImg = createButton(scene,1660, 1024, 0, "Place Tower");
+    var bannerImg = createButton(scene, 1660, 1024, 0, "Place Tower");
 	
-	bannerImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
+    bannerImg.setInteractive({ useHandCursor: true }).on('pointerdown', ()=> {
+        
 		scene.scene.menuSounds.play();
 		var buttonImg = createButton(scene,1660, 1024, 54, "Peasant | 5g");
 		
-		buttonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
+        buttonImg.setInteractive({ useHandCursor: true }).on('pointerdown', function (event) {
+            var hud = this.scene.get('HUD');
 			var newTower = GV.TOWER_GROUP[GV.PEASANT_STATS.towerId].get(GV.PEASANT_STATS);
 			if (newTower.checkCost())
 			{
@@ -188,14 +190,40 @@ export function placeTowerAction(pointer, scene, i, j){
 			}
 			else
 			{
-				scene.scene.errorSounds.play();
+				this.scene.errorSounds.play();
 				GV.BUTTON_GROUP.clear(true,true);
 				createButton(scene,1660, 1024, 0, "Not Enough Gold");
 				cancelAction(scene);
-			}
-			
-		});
-	});
+            }
+
+            hud.tooltipText.setVisible(false);
+            hud.tooltip.setVisible(false);
+        }, scene.scene);
+
+        buttonImg.on('pointerover', function (event) {
+            var hud = this.scene.get('HUD');
+            hud.tooltip.setVisible(true);
+            var towerInfo = [
+                GV.PEASANT_STATS.towerName,
+                "Attack Speed:  " + GV.PEASANT_STATS.atkRate,
+                "Attack Range:  " + GV.PEASANT_STATS.atkRange,
+                "Damage:        " + GV.PEASANT_STATS.str,
+                "Damage Type:   " + GV.PEASANT_STATS.atkType,
+                "Hit Flying:    " + GV.PEASANT_STATS.hitFly,
+                ];
+
+            hud.tooltipText.setText(towerInfo);
+            hud.tooltipText.setVisible(true);
+        }, scene.scene);
+
+        buttonImg.on('pointerout', function(event) {
+            var hud = this.scene.get('HUD');
+            hud.tooltip.setVisible(false);
+            hud.tooltipText.setVisible(false);
+        }, scene.scene);
+    });
+
+  
 }
 
 
@@ -216,8 +244,7 @@ export function removeTowerAction(pointer, scene, i, j){
 }
 
 export function upgradeTowerAction(i, j, scene, pointer, id){
-
-	removeTowerAction(pointer, scene, i, j);
+    removeTowerAction(pointer, scene, i, j);
 
 	var upgradeButtonImg = createButton(scene,1660, 1024, 54, "Upgrade tower");
 	
@@ -240,7 +267,7 @@ export function upgradeTowerAction(i, j, scene, pointer, id){
 				var towerButton = new CS.TowerButton(scene.scene, z);
 				towerButton.upgradeTowerButton(pointer,scene, currTower, newTower,i,j); 
 
-				z = z + 54;	
+               	z = z + 54;	
 			}
 		}
 		else
@@ -287,12 +314,12 @@ export function userAction(pointer, scene){
 		//if new tower
 		if(GV.MAP[i][j] == 0)
 		{	
-			cancelAction(scene)
+            cancelAction(scene);
 			placeTowerAction(pointer, scene, i, j);
 		}
 		else if(typeof GV.MAP[i][j] ==="object")
 		{
-			cancelAction(scene)
+            cancelAction(scene);
 			upgradeTowerAction(i, j, scene, pointer, GV.MAP[i][j].towerId);
 		}
 	}

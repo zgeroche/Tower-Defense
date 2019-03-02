@@ -825,7 +825,16 @@ export class HUD extends Phaser.Scene {
         this.nextBar = this.add.text(875, 2, 'Next Wave: ' + GV.WAVE_DETAIL[1], { fontFamily: 'VT323', fontSize: 30, color: '#00ff00' });
 
 		var bottomHUD = this.add.image(1391,992, 'bottomHUD').setOrigin(0);
-		this.towerBar = this.add.text(1596, 992, "Tower Menu", { fontFamily: 'VT323', fontSize: 30, color: '#00ff00' }).setOrigin(0);
+        this.towerBar = this.add.text(1596, 992, "Tower Menu", { fontFamily: 'VT323', fontSize: 30, color: '#00ff00' }).setOrigin(0);
+
+        this.tooltip = this.add.graphics();
+        this.tooltip.fillStyle(0x2f4f4f, .75);
+        this.tooltip.fillRoundedRect(1325, 792, 200, 200, 12);
+        this.tooltip.setVisible(false);
+
+        this.tooltipText = this.add.text(1326, 793, "", { fontFamily: 'VT323', fontSize: 18, color: '#00ff00' });
+        this.tooltipText.setVisible(false);
+ 
 		/* HUD.setDepth(1);
 		volume.setDepth(1);
 		volDown.setDepth(1);
@@ -899,7 +908,8 @@ export class TowerButton extends Phaser.GameObjects.Image {
 	constructor(scene, z)
 	{
 		super(scene,z);
-		this.z = z;
+        this.z = z;
+        this.hud = scene.scene.get('HUD');
 	}
 	
 	upgradeTowerButton(pointer, scene, currTower, newTower,i,j)
@@ -921,8 +931,28 @@ export class TowerButton extends Phaser.GameObjects.Image {
 					FN.createButton(scene,1660, 1024, 0, "Not Enough Gold");
 					FN.cancelAction(scene);
 				}
-			
-		});
+            this.hud.tooltip.setVisible(false);
+            this.hud.tooltipText.setVisible(false);
+        });
+
+        buttonImg.on('pointerover', () => {
+            this.hud.tooltip.setVisible(true);
+            var towerInfo = [
+                newTower.towerName,
+                "Attack Speed:  " + newTower.atkRate,
+                "Attack Range:  " + newTower.atkRange,    
+                "Damage:        " + newTower.str,
+                "Damage Type:   " + newTower.atkType,
+                "Hit Flying:    " + newTower.hitFly];
+
+            this.hud.tooltipText.setText(towerInfo);
+            this.hud.tooltipText.setVisible(true);
+        });
+
+        buttonImg.on('pointerout', () => {
+            this.hud.tooltip.setVisible(false);
+            this.hud.tooltipText.setVisible(false);
+        });
 		
 	}
 };
