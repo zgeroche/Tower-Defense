@@ -57,6 +57,7 @@ export class LoadScene extends Phaser.Scene{
 		this.load.image('menuscreen', 'assets/bg.png', { frameWidth: 1280, frameHeight: 1024 });
 		this.load.image('newgame', 'assets/new.png');
         this.load.image('bottomHUD', 'assets/bottomHUD.png');
+        this.load.image('waveHUD', 'assets/waveHUD.png');
         this.load.image('towerbutton', 'assets/menuBar.png');
         this.load.image('cancel', 'assets/cancel.png');
     }

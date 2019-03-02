@@ -51,9 +51,22 @@ export class GameScene extends Phaser.Scene {
         FN.createAnimations(this, GV.ENEMY_ARRAY, 0);
         FN.createAnimations(this, GV.TOWER_ARRAY, 1);
 		
-
-        //Wave Management
-        this.nextEnemy = this.sys.game.loop.time + GV.WAVE_DELAY;
+		//wave management
+		this.buttonImg = this.add.image(1660, 1008, 'waveHUD').setDepth(1);
+		this.nextEnemy = this.sys.game.loop.time + GV.WAVE_DELAY;
+        this.complete = this.add.text(1660, 1008, 'Wave Complete', {fontFamily: 'VT323', fontSize: 30, color: '#ff0000'}).setDepth(1).setOrigin(0.5);
+        this.complete.setVisible(false);
+        this.delay = this.add.text(1660, 1008, 'Next Level in ' + (GV.WAVE_DELAY/1000) + ' Seconds', {fontFamily: 'VT323', fontSize: 30, color: '#ff0000'}).setDepth(1).setOrigin(0.5);
+        this.skipWave = this.add.text(1660,1008, 'Skip Wait?', {fontFamily: 'VT323', fontSize: 30, color: '#ff0000'}).setDepth(1).setOrigin(0.5);
+        this.skipWave.setInteractive();
+        this.skipWave.on("pointerup", ()=>{
+            this.nextEnemy = 0;
+            this.skipWave.setVisible(false);
+        })
+		
+		FN.waveHUD(this, this.buttonImg, this.delay, this.skipWave);
+		
+/*      this.nextEnemy = this.sys.game.loop.time + GV.WAVE_DELAY;
         this.complete = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2, 'Wave Complete', {fontFamily: 'VT323', fontSize: 50, color: '#ff0000'}).setDepth(1);
         this.complete.setVisible(false);
         this.delay = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2 + 50, 'Next Level in ' + (GV.WAVE_DELAY/1000) + ' Seconds', {fontFamily: 'VT323', fontSize: 50, color: '#ff0000'}).setDepth(1);
@@ -62,7 +75,7 @@ export class GameScene extends Phaser.Scene {
         this.skipWave.on("pointerup", ()=>{
             this.nextEnemy = 0;
             this.skipWave.setVisible(false);
-        })
+        }) */
 
 
         //input related actions in userAction function
@@ -100,7 +113,8 @@ export class GameScene extends Phaser.Scene {
             this.complete.setVisible(false);
             this.delay.setVisible(false);
             this.skipWave.setVisible(false);
-
+			this.buttonImg.setVisible(false);
+			
             switch (GV.WAVE) {
                 case 1: //Spawn 10 skeletons
                     if (GV.SPAWNED < 10) {
@@ -117,6 +131,8 @@ export class GameScene extends Phaser.Scene {
                         this.complete.setVisible(true);
                         this.delay.setVisible(true);
                         this.skipWave.setVisible(true);
+						this.buttonImg.setVisible(true);
+						FN.waveHUD(this, this.buttonImg, this.delay, this.skipWave);
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -137,6 +153,8 @@ export class GameScene extends Phaser.Scene {
                         this.complete.setVisible(true);
                         this.delay.setVisible(true);
                         this.skipWave.setVisible(true);
+						this.buttonImg.setVisible(true);
+						FN.waveHUD(this, this.buttonImg, this.delay, this.skipWave);
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -157,6 +175,8 @@ export class GameScene extends Phaser.Scene {
                         this.complete.setVisible(true);
                         this.delay.setVisible(true);
                         this.skipWave.setVisible(true);
+						this.buttonImg.setVisible(true);
+						FN.waveHUD(this, this.buttonImg, this.delay, this.skipWave);
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -177,6 +197,8 @@ export class GameScene extends Phaser.Scene {
                         this.complete.setVisible(true);
                         this.delay.setVisible(true);
                         this.skipWave.setVisible(true);
+						this.buttonImg.setVisible(true);
+						FN.waveHUD(this, this.buttonImg, this.delay, this.skipWave);
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -203,6 +225,8 @@ export class GameScene extends Phaser.Scene {
                         this.complete.setVisible(true);
                         this.delay.setVisible(true);
                         this.skipWave.setVisible(true);
+						this.buttonImg.setVisible(true);
+						FN.waveHUD(this, this.buttonImg, this.delay, this.skipWave);
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -223,6 +247,8 @@ export class GameScene extends Phaser.Scene {
                         this.complete.setVisible(true);
                         this.delay.setVisible(true);
                         this.skipWave.setVisible(true);
+						this.buttonImg.setVisible(true);
+						FN.waveHUD(this, this.buttonImg, this.delay, this.skipWave);
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -255,6 +281,8 @@ export class GameScene extends Phaser.Scene {
                         this.complete.setVisible(true);
                         this.delay.setVisible(true);
                         this.skipWave.setVisible(true);
+						this.buttonImg.setVisible(true);
+						FN.waveHUD(this, this.buttonImg, this.delay, this.skipWave);
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -275,6 +303,8 @@ export class GameScene extends Phaser.Scene {
                         this.complete.setVisible(true);
                         this.delay.setVisible(true);
                         this.skipWave.setVisible(true);
+						this.buttonImg.setVisible(true);
+						FN.waveHUD(this, this.buttonImg, this.delay, this.skipWave);
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -317,6 +347,8 @@ export class GameScene extends Phaser.Scene {
                         this.complete.setVisible(true);
                         this.delay.setVisible(true);
                         this.skipWave.setVisible(true);
+						this.buttonImg.setVisible(true);
+						FN.waveHUD(this, this.buttonImg, this.delay, this.skipWave);
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -337,6 +369,8 @@ export class GameScene extends Phaser.Scene {
                         this.complete.setVisible(true);
                         this.delay.setVisible(true);
                         this.skipWave.setVisible(true);
+						this.buttonImg.setVisible(true);
+						FN.waveHUD(this, this.buttonImg, this.delay, this.skipWave);
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;

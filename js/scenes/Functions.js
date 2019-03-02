@@ -138,6 +138,19 @@ export function highlightLoc(scene, i, j){
 	}
 }
 
+export function waveHUD(scene, buttonImg, delay, skipWave, complete){
+
+	scene.tweens.add({
+		targets: [buttonImg, delay],
+		x: 1150,
+		ease: 'Bounce.easeOut',
+		duration: 1000,
+		delay: 0,
+		repeat: 0
+	});
+	
+}
+
 export function createButton(scene, x, y, z, title){
 
 	var height = 965 - z;
