@@ -38,12 +38,12 @@ export class GameScene extends Phaser.Scene {
         //turned into attack group soon for different attack types
 		for (var i = 0; i < 10; i++) {
 			var attackClass = "CS."+GV.ATTACK_ARRAY[i].attackName;
-			console.log(GV.ATTACK_ARRAY[i]);
+			/* console.log(GV.ATTACK_ARRAY[i]);
 			console.log(GV.ATTACK_ARRAY[i].attackId);
 			console.log(GV.ATTACK_ARRAY[i].attackName);
-			console.log(attackClass);
+			console.log(attackClass); */
 			GV.ATTACK_GROUP[GV.ATTACK_ARRAY[i].attackId] = this.physics.add.group({ classType: eval(attackClass), runChildUpdate: true});
-			console.log(GV.ATTACK_GROUP[GV.ATTACK_ARRAY[i].attackId]);
+			//console.log(GV.ATTACK_GROUP[GV.ATTACK_ARRAY[i].attackId]);
 		}
 		
 		//button group
@@ -67,6 +67,8 @@ export class GameScene extends Phaser.Scene {
         this.skipWave.on("pointerup", ()=>{
             this.nextEnemy = 0;
             this.skipWave.setVisible(false);
+			this.delay.setVisible(false);
+			this.buttonImg.setVisible(false);
         });
 		
 /*      this.nextEnemy = this.sys.game.loop.time + GV.WAVE_DELAY;
@@ -98,6 +100,7 @@ export class GameScene extends Phaser.Scene {
 
     //update function constantly refreshes so to progress game
     update(time, delta) {  
+		//Wave timer and skip in bottom HUD
 		FN.waveHUD(this, Math.trunc((this.nextEnemy - time) / 1000));
 
         //Check if player still alive

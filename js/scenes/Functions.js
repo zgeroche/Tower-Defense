@@ -156,9 +156,7 @@ export function showTowerRange(scene, i, j) {
 	}
 }
 
-//export function waveHUD(scene, buttonImg, delay, skipWave, complete){
 export function waveHUD(scene, t){
-
 	if(t == 0)
 	{		
 		function onCompleteHandler (tween, targets, myImage)
@@ -168,6 +166,7 @@ export function waveHUD(scene, t){
 			scene.skipWave.setVisible(false);
 			scene.buttonImg.setVisible(false);
 			
+			scene.complete.setPosition(1660, 1008);
 			scene.buttonImg.setPosition(1660, 1008);
 			scene.delay.setPosition(1660, 1008);
 			scene.skipWave.setPosition(1660, 1008);
@@ -185,7 +184,7 @@ export function waveHUD(scene, t){
 		
 
 	}
-	else if(t > 1)
+	else if(t == (GV.WAVE_DELAY/1000) || t == (GV.WAVE_DELAY/1000)-1)
 	{
 		scene.complete.setVisible(true);
 		scene.delay.setVisible(true);
@@ -425,7 +424,14 @@ export function drawLines(graphics) {
 }	
 
 export function addAttack(x, y, angle, damage, type, towerID) {
-    var attack = GV.ATTACK_GROUP[towerID].get();
+	//REMOVE try/catch once all attack classes are finished.
+	try {
+		 var attack = GV.ATTACK_GROUP[towerID].get();
+	}
+	catch(err) {
+		 var attack = GV.ATTACK_GROUP[0].get();
+	}
+   
     if (attack)
     {
         attack.fire(x, y, angle, damage, type);

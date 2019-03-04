@@ -442,7 +442,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 	        FN.addAttack(this.x, this.y, angle, this.str, this.atkType, this.towerId);
 	        //this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make towers rotate to face enemy
 	    }
-		/*  if(enemy && this.attack == 0)
+		 if(enemy && this.attack == 0)
 		{
 			this.anims.play(this.towerName.toLowerCase()+'_atk');
 			this.attack = 1;
@@ -451,7 +451,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 		{
 			this.anims.play(this.towerName.toLowerCase()+'_idle');
 			this.attack = 0;
-		}  */
+		} 
 		
 	}
 	
@@ -761,7 +761,7 @@ export class Attack extends Phaser.GameObjects.Image {
 
 		//this.speed = Phaser.Math.GetSpeed(600, 1);
 
-    	this.particles = scene.add.particles('attack');
+    	this.particles = scene.add.particles('coin');
 
         this.emitter = this.particles.createEmitter({
             speed: 75,
