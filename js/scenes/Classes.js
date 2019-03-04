@@ -501,140 +501,180 @@ export class Archer extends Tower {
 export class Apprentice extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'apprentice');
+		
+		this.anims.play('apprentice_idle');
     }
 }
 
 export class Knight extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'knight');
+		
+		this.anims.play('knight_idle');
     }
 }
 
 export class Duelist extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'duelist');
+		
+		this.anims.play('duelist_idle');
     }
 }
 
 export class Rifleman extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'rifleman');
+		
+		this.anims.play('rifleman_idle');
     }
 }
 
 export class Ranger extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'ranger');
+		
+		this.anims.play('ranger_idle');
     }
 }
 
 export class Wizard extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'wizard');
+		
+		this.anims.play('wizard_idle');
     }
 }
 
 export class Sorceress extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'sorceress');
+		
+		this.anims.play('sorceress_idle');
     }
 }
 
 export class Commander extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'commander');
+		
+		this.anims.play('commander_idle');
     }
 }
 
 export class Paladin extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'paladin');
+		
+		this.anims.play('paladin_idle');
     }
 }
 
 export class Swordmaster extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'swordmaster');
+		
+		this.anims.play('swordmaster_idle');
     }
 }
 
 export class Cutpurse extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'cutpurse');
+		
+		this.anims.play('cutpurse_idle');
     }
 }
 
 export class Cannoneer extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'cannoneer');
+		
+		this.anims.play('cannoneer_idle');
     }
 }
 
 export class Sharpshooter extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'sharpshooter');
+		
+		this.anims.play('sharpshooter_idle');
     }
 }
 
 export class Beastmaster extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'beastmaster');
+		
+		this.anims.play('beastmaster_idle');
     }
 }
 
 export class Assassin extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'assassin');
+		
+		this.anims.play('assassin_idle');
     }
 }
 
 export class FireMage extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'firemage');
+		
+		this.anims.play('firemage_idle');
     }
 }
 
 export class IceMage extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'icemage');
+		
+		this.anims.play('icemage_idle');
     }
 }
 
 export class LightningMage extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'lightningmage');
+		
+		this.anims.play('lightningmage_idle');
     }
 }
 
 export class Warlock extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'warlock');
+		
+		this.anims.play('warlock_idle');
     }
 }
 
 export class Priestess extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'placeholder');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'priestess');
+		
+		this.anims.play('priestess_idle');
     }
 }
 /*********************************************************************************************************************************************************/

@@ -6,7 +6,7 @@ var ATTACK_GROUP = [];
 var BUTTON_GROUP = [];
 var SPAWNED = 0;
 var WAVE = 1;
-var GOLD = 100;
+var GOLD = 2500;
 var WAVE_DELAY = 15000;
 var PLAYER_HEALTH = 100;
 
