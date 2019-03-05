@@ -30,7 +30,7 @@ export class GameScene extends Phaser.Scene {
 		}
 
         //enemy group will be a loop similar to tower group
-        for (var i = 0; i < 11; i++) {
+        for (var i = 0; i < 18; i++) {
             var enemyClass = "CS."+GV.ENEMY_ARRAY[i].enemyName;
             GV.ENEMY_GROUP[GV.ENEMY_ARRAY[i].enemyId] = this.physics.add.group({ classType: eval(enemyClass), runChildUpdate: true});
         }
@@ -213,7 +213,7 @@ export class GameScene extends Phaser.Scene {
                         this.nextEnemy = time + GV.WAVE_DELAY;
                     }
                     break;
-                case 6: // 20 goblins spawned in a bunch
+                case 6: // 20 goblins spawned in a bunch (3)
                     if (GV.SPAWNED < 20) {
                         enemy = GV.ENEMY_GROUP[3].get(GV.ENEMY_ARRAY[3]);
                         if (enemy) {
@@ -233,7 +233,7 @@ export class GameScene extends Phaser.Scene {
                         this.nextEnemy = time + GV.WAVE_DELAY;
                     }
                     break;
-                case 7:
+                case 7: //Witches(7) + Bats(2) spawn together
                     if (GV.SPAWNED < 20) {
                         if (GV.SPAWNED % 2 === 0) {
                             enemy = GV.ENEMY_GROUP[2].get(GV.ENEMY_ARRAY[2]);
@@ -265,7 +265,7 @@ export class GameScene extends Phaser.Scene {
                         this.nextEnemy = time + GV.WAVE_DELAY;
                     }
                     break;
-                case 8:
+                case 8: //Mass spawn of skeletons
                     if (GV.SPAWNED < 25) {
                         enemy = GV.ENEMY_GROUP[1].get(GV.ENEMY_ARRAY[1]);
                         if (enemy) {
@@ -285,7 +285,7 @@ export class GameScene extends Phaser.Scene {
                         this.nextEnemy = time + GV.WAVE_DELAY;
                     }
                     break;
-                case 9:
+                case 9: //Spawn skeletons, witches and goblins
                     if (GV.SPAWNED < 30) {
                         if (GV.SPAWNED % 3 === 0) {
                             enemy = GV.ENEMY_GROUP[3].get(GV.ENEMY_ARRAY[3]);
@@ -327,7 +327,7 @@ export class GameScene extends Phaser.Scene {
                         this.nextEnemy = time + GV.WAVE_DELAY;
                     }
                     break;
-                case 10:
+                case 10: //Ogre Boss
                     if (GV.SPAWNED < 2) {
                         enemy = GV.ENEMY_GROUP[4].get(GV.ENEMY_ARRAY[4]);
                         if (enemy) {
@@ -347,6 +347,7 @@ export class GameScene extends Phaser.Scene {
                         this.nextEnemy = time + GV.WAVE_DELAY;
                     }
                     break;
+
             }
 
         }

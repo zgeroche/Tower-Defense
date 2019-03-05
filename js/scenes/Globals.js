@@ -124,7 +124,14 @@ var BOSSSKELETON_STATS = { enemyId: 6, enemyName: "BossSkeleton",   speed: .75, 
 var WITCH_STATS =       { enemyId: 7, enemyName: "Witch",           speed: 1,   hp: 450,     magicArmor: 0, physicalArmor: 0,  flying: false,  value: 1, frameEnd: 3, damage: 5 };
 var REAPER_STATS =       { enemyId: 8, enemyName: "Reaper",         speed: 1,   hp: 450,     magicArmor: 0, physicalArmor: 0, flying: false, value: 1, frameEnd: 3, damage: 5 };
 var HORSEMAN_STATS =    { enemyId: 9, enemyName: "Horseman",        speed: 2,    hp: 750,   magicArmor: 0,  physicalArmor: 0, flying: false, value: 1, frameEnd: 3, damage: 5 };
-var JACKO_STATS =       { enemyId: 10, enemyName: "Jacko",          speed: 1,    hp: 450,   magicArmor: 0,  physicalArmor: 0, flying: false, value: 1, frameEnd: 3, damage: 5 };
+var JACKO_STATS =       { enemyId: 10, enemyName: "Jacko",          speed: 1,   hp: 450,    magicArmor: 0, physicalArmor: 0, flying: false, value: 1, frameEnd: 3, damage: 5 };
+var DRAGON_STATS =      { enemyId: 11, enemyName: "Dragon",         speed: 1,   hp: 450,    magicArmor: 30, physicalArmor: 30, flying: true, value: 1, frameEnd: 3, damage: 5 };
+var GOLEM_STATS =       { enemyId: 12, enemyName: "Golem",          speed: 1,   hp: 450,    magicArmor: 0, physicalArmor: 0, flying: false, value: 1, frameEnd: 7, damage: 5 };
+var IMP_STATS =         { enemyId: 13, enemyName: "Imp",            speed: 1,   hp: 450,    magicArmor: 0, physicalArmor: 0, flying: false, value: 1, frameEnd: 4, damage: 5 };
+var ZOMBIE_STATS =      { enemyId: 14, enemyName: "Zombie",         speed: 1,   hp: 450,    magicArmor: 0, physicalArmor: 0, flying: false, value: 1, frameEnd: 9, damage: 5 };
+var VAMPIRE_STATS =     { enemyId: 15, enemyName: "Vampire",        speed: 1,   hp: 450,    magicArmor: 0, physicalArmor: 0, flying: false, value: 1, frameEnd: 3, damage: 5 };
+var SLIME_STATS =       { enemyId: 16, enemyName: "Slime",          speed: 1,   hp: 450,    magicArmor: 0, physicalArmor: 0, flying: false, value: 1, frameEnd: 3, damage: 5 };
+var MINOTAUR_STATS =    { enemyId: 17, enemyName: "Minotaur",       speed: 1,   hp: 450,    magicArmor: 0, physicalArmor: 0, flying: false, value: 1, frameEnd: 3, damage: 5 };
 
 var ENEMY_ARRAY = [DEATHKNIGHT_STATS,
                 SKELETON_STATS,
@@ -136,7 +143,14 @@ var ENEMY_ARRAY = [DEATHKNIGHT_STATS,
                 WITCH_STATS,
                 REAPER_STATS,
                 HORSEMAN_STATS,
-                JACKO_STATS
+                JACKO_STATS,
+                DRAGON_STATS,
+                GOLEM_STATS,
+                IMP_STATS,
+                ZOMBIE_STATS,
+                VAMPIRE_STATS,
+                SLIME_STATS,
+                MINOTAUR_STATS
 ];
 
 //map for tower placement, 0=can place, -1=cannot place, towerObj=tower already occupying space
@@ -237,6 +251,13 @@ GOBLIN_STATS,
 BOSSSKELETON_STATS,
 HORSEMAN_STATS,
 JACKO_STATS,
+DRAGON_STATS,
+GOLEM_STATS,
+IMP_STATS,
+ZOMBIE_STATS,
+VAMPIRE_STATS,
+SLIME_STATS,
+MINOTAUR_STATS,
 ENEMY_ARRAY,
 MAP,
 WAVE_DETAIL
