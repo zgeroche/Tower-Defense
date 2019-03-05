@@ -322,6 +322,89 @@ export class Jacko extends Enemy {
     }
 }
 
+export class Dragon extends Enemy {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'dragon');
+
+        //create sounds
+        this.death = scene.sound.add('dkDeath');
+        this.death.volume = 0.05;
+        this.death.loop = false;
+    }
+}
+
+export class Golem extends Enemy {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'golem');
+
+        //create sounds
+        this.death = scene.sound.add('dkDeath');
+        this.death.volume = 0.05;
+        this.death.loop = false;
+    }
+}
+
+export class Imp extends Enemy {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'imp');
+
+        //create sounds
+        this.death = scene.sound.add('dkDeath');
+        this.death.volume = 0.05;
+        this.death.loop = false;
+    }
+}
+
+export class Zombie extends Enemy {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'zombie');
+
+        //create sounds
+        this.death = scene.sound.add('dkDeath');
+        this.death.volume = 0.05;
+        this.death.loop = false;
+    }
+}
+
+export class Vampire extends Enemy {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'vampire');
+
+        //create sounds
+        this.death = scene.sound.add('dkDeath');
+        this.death.volume = 0.05;
+        this.death.loop = false;
+    }
+}
+
+export class Slime extends Enemy {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'slime');
+
+        //create sounds
+        this.death = scene.sound.add('dkDeath');
+        this.death.volume = 0.05;
+        this.death.loop = false;
+    }
+}
+
+export class Minotaur extends Enemy {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'minotaur');
+
+        //create sounds
+        this.death = scene.sound.add('dkDeath');
+        this.death.volume = 0.05;
+        this.death.loop = false;
+    }
+}
 /************************************************************************************************************************************/
 //tower class
 /************************************************************************************************************************************/
