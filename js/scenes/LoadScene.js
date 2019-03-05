@@ -14,12 +14,32 @@ export class LoadScene extends Phaser.Scene{
 		this.load.image('play', 'assets/play.png');
 		this.load.image('playDown', 'assets/playDown.png');
 		this.add.text(230, 230, 'Loading', { font: '50px Arial', fill: '#fff' });
-        this.load.atlas('deathknight', 'assets/deathknight.png', 'assets/deathknight.json');
-        this.load.atlas('soldier', 'assets/soldier.png', 'assets/soldier.json');
-        this.load.atlas('peasant', 'assets/peasant.png', 'assets/peasant.json');
-        this.load.atlas('archer', 'assets/archer.png', 'assets/archer.json');
-		this.load.image('placeholder', 'assets/placeholder.png');
-		
+		 
+        this.load.atlas('apprentice', 'assets/towers/apprentice.png', 'assets/towers/towers.json');
+		this.load.atlas('archer', 'assets/towers/archer.png', 'assets/towers/towers.json');
+		this.load.atlas('assassin', 'assets/towers/assassin.png', 'assets/towers/towers.json');
+		this.load.atlas('beastmaster', 'assets/towers/beastmaster.png', 'assets/towers/towers.json');
+		this.load.atlas('cannoneer', 'assets/towers/cannoneer.png', 'assets/towers/towers.json');
+        this.load.atlas('commander', 'assets/towers/commander.png', 'assets/towers/towers.json');
+        this.load.atlas('cutpurse', 'assets/towers/cutpurse.png', 'assets/towers/towers.json');
+        this.load.atlas('duelist', 'assets/towers/duelist.png', 'assets/towers/towers.json');
+        this.load.atlas('firemage', 'assets/towers/firemage.png', 'assets/towers/towers.json');
+		this.load.atlas('priestess', 'assets/towers/highpriestess.png', 'assets/towers/towers.json');
+		this.load.atlas('icemage', 'assets/towers/icemage.png', 'assets/towers/towers.json');
+        this.load.atlas('knight', 'assets/towers/knight.png', 'assets/towers/towers.json');
+        this.load.atlas('lightningmage', 'assets/towers/lightningmage.png', 'assets/towers/towers.json');
+        this.load.atlas('paladin', 'assets/towers/paladin.png', 'assets/towers/towers.json');
+		this.load.atlas('peasant', 'assets/towers/peasant.png', 'assets/towers/towers.json');
+		this.load.image('placeholder', 'assets/towers/placeholder.png');
+		this.load.atlas('ranger', 'assets/towers/ranger.png', 'assets/towers/towers.json');
+        this.load.atlas('rifleman', 'assets/towers/rifleman.png', 'assets/towers/towers.json');
+        this.load.atlas('sharpshooter', 'assets/towers/sharpshooter.png', 'assets/towers/towers.json');
+		this.load.atlas('soldier', 'assets/towers/soldier.png', 'assets/towers/towers.json');
+		this.load.atlas('sorceress', 'assets/towers/sorceress.png', 'assets/towers/towers.json');
+		this.load.atlas('swordmaster', 'assets/towers/swordmaster.png', 'assets/towers/towers.json');
+		this.load.atlas('warlock', 'assets/towers/warlock.png', 'assets/towers/towers.json');
+        this.load.atlas('wizard', 'assets/towers/wizard.png', 'assets/towers/towers.json');
+
 		//load enemy sprites, will be a loop like load tower sprites
         this.load.atlas('deathknight', 'assets/deathknight.png', 'assets/deathknight.json');
         this.load.atlas('skeleton', 'assets/skeleton.png', 'assets/skeleton.json');
@@ -48,6 +68,7 @@ export class LoadScene extends Phaser.Scene{
 		this.load.audio('menuSounds', 'assets/Sounds/Other/FFmenu.wav');
 		this.load.audio('mapSounds', 'assets/Sounds/Other/00029.wav');
 		this.load.audio('errorSounds', 'assets/Sounds/Other/Cursor No.wav');
+		this.load.audio('cancelSounds', 'assets/Sounds/Other/Cursor Cancel.wav');
 		
 		//load misc
 		//this.load.image('towerbutton', './assets/buttons/blackbox.png');
@@ -63,8 +84,10 @@ export class LoadScene extends Phaser.Scene{
 		this.load.image('menuscreen', 'assets/bg.png', { frameWidth: 1280, frameHeight: 1024 });
 		this.load.image('newgame', 'assets/new.png');
         this.load.image('bottomHUD', 'assets/bottomHUD.png');
+        this.load.image('waveHUD', 'assets/waveHUD.png');
         this.load.image('towerbutton', 'assets/menuBar.png');
         this.load.image('cancel', 'assets/cancel.png');
+        this.load.image('towerButtonBG', 'assets/towerButtonBG.png');
     }
     create(){
         //Creating menu screen background layers
