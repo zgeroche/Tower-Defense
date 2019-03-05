@@ -52,6 +52,12 @@ export function buildMap(scene, mapBG){
 	scene.errorSounds.loop = false;
 	//scene.errorSounds.play();
 	
+	//error sounds
+	scene.cancelSounds = scene.sound.add('cancelSounds');
+	scene.cancelSounds.volume = 0.04;
+	scene.cancelSounds.loop = false;
+	//scene.cancelSounds.play();
+	
 	//add HUD
 	scene.scene.add('HUD', CS.HUD, true, { x: 680, y: 66 });
 
@@ -150,20 +156,68 @@ export function showTowerRange(scene, i, j) {
 	}
 }
 
+export function waveHUD(scene, t){
+	if(t == 0)
+	{		
+		function onCompleteHandler (tween, targets, myImage)
+		{
+			scene.complete.setVisible(false);
+			scene.delay.setVisible(false);
+			scene.skipWave.setVisible(false);
+			scene.buttonImg.setVisible(false);
+			
+			scene.complete.setPosition(1660, 1008);
+			scene.buttonImg.setPosition(1660, 1008);
+			scene.delay.setPosition(1660, 1008);
+			scene.skipWave.setPosition(1660, 1008);
+		}
+		
+		scene.tweens.add({
+			targets: [scene.buttonImg, scene.delay, scene.skipWave],
+			x: -1150,
+			ease: 'Linear',
+			duration: 200,
+			delay: 0,
+			repeat: 0,
+			onComplete: onCompleteHandler
+		});
+		
+
+	}
+	else if(t == (GV.WAVE_DELAY/1000) || t == (GV.WAVE_DELAY/1000)-1)
+	{
+		scene.complete.setVisible(true);
+		scene.delay.setVisible(true);
+		scene.skipWave.setVisible(true);
+		scene.buttonImg.setVisible(true);
+		
+		scene.tweens.add({
+			targets: [scene.buttonImg, scene.delay, scene.skipWave],
+			x: 1150,
+			ease: 'Linear',
+			duration: 200,
+			delay: 0,
+			repeat: 0
+		});
+	}
+}
+
 export function createButton(scene, x, y, z, title){
 
 	var height = 965 - z;
 	var buttonImg = scene.scene.add.image(x, y, 'towerbutton').setDepth(1);
     var buttonText = scene.scene.add.text(x, y, title, { fontFamily: 'VT323', fontSize: 30, color: '#ffffff' }).setDepth(2).setOrigin(0.5);
+	var buttonBG = scene.scene.add.image(x, y, 'towerButtonBG').setDepth(0);
 	
 	GV.BUTTON_GROUP.add(buttonImg);
 	GV.BUTTON_GROUP.add(buttonText);
+	GV.BUTTON_GROUP.add(buttonBG);
 
 	scene.scene.tweens.add({
-		targets: [buttonImg, buttonText],
+		targets: [buttonImg, buttonText,buttonBG],
 		y: height,
-		ease: 'Bounce.easeOut',
-		duration: 1000,
+		ease: 'Linear',
+		duration: 200,
 		delay: 0,
 		repeat: 0
 	});
@@ -263,6 +317,10 @@ export function upgradeTowerAction(i, j, scene, pointer, id){
 				var upgradeID = GV.TOWER_ARRAY[id].upgrades[count];
 				var upgradedTower = GV.TOWER_ARRAY[upgradeID];
 				var newTower = GV.TOWER_GROUP[upgradeID].get(upgradedTower);
+				//have to set new tower to false for active and visible because it was placing
+				//the tower while the menu was open before actually selecting an upgrade
+				newTower.setActive(false);
+				newTower.setVisible(false);
 				
 				var towerButton = new CS.TowerButton(scene.scene, z);
 				towerButton.upgradeTowerButton(pointer,scene, currTower, newTower,i,j); 
@@ -287,14 +345,15 @@ export function cancelAction(scene){
 	scene.scene.tweens.add({
 		targets: cancelImg,
 		y: 965,
-		ease: 'Bounce.easeOut',
-		duration: 1000,
+		ease: 'Linear',
+		duration: 200,
 		delay: 0,
 		repeat: 0
 	});
 	
 	cancelImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
 		GV.BUTTON_GROUP.clear(true,true);
+		scene.scene.cancelSounds.play();
 	});
 }
 
@@ -365,7 +424,14 @@ export function drawLines(graphics) {
 }	
 
 export function addAttack(x, y, angle, damage, type, towerID) {
-    var attack = GV.ATTACK_GROUP[towerID].get();
+	//REMOVE try/catch once all attack classes are finished.
+	try {
+		 var attack = GV.ATTACK_GROUP[towerID].get();
+	}
+	catch(err) {
+		 var attack = GV.ATTACK_GROUP[0].get();
+	}
+   
     if (attack)
     {
         attack.fire(x, y, angle, damage, type);
