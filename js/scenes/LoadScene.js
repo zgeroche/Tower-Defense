@@ -100,5 +100,6 @@ export class LoadScene extends Phaser.Scene{
     create(){
         //Creating menu screen background layers
         this.scene.start(CST.SCENES.MENU, "Loading complete");
+        //this.scene.start(CST.SCENES.GAME2, "Loading complete");
         }
 }

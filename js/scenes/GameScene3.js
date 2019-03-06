@@ -18,6 +18,11 @@ export class GameScene3 extends Phaser.Scene {
         GV.GOLD = 25;
         GV.SPAWNED = 0;
 		
+		GV.TOWER_GROUP = [];
+		GV.ENEMY_GROUP = [];
+		GV.ATTACK_GROUP = [];
+		GV.BUTTON_GROUP = [];
+		
 		var graphics = this.add.graphics();    
 		FN.drawLines(graphics);
 		
