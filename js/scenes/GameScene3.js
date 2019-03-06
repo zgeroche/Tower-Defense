@@ -3,37 +3,38 @@ var GV = require('./Globals.js');
 var FN = require('./Functions.js');
 var CS = require('./Classes.js');
 
-export class GameScene extends Phaser.Scene {
+export class GameScene3 extends Phaser.Scene {
     constructor(){
         super({
-            key: CST.SCENES.GAME
+            key: CST.SCENES.GAME3
         })
     }
     
     //Preload function loads assets before game starts
  
-    init(data) {
-        GV.PLAYER_HEALTH = 100;
+    init(data){
+        //console.log(data);
+        GV.WAVE = 1;
+        GV.GOLD = 25;
+        GV.SPAWNED = 0;
+		
 		var graphics = this.add.graphics();    
 		FN.drawLines(graphics);
 		
-		this.add.image(960, 512, 'map').setDepth(0);
-
+		//this.add.image(960, 512, 'map').setDepth(0);
+		
 		var coords = [
-			[ -1, 6, 6,12,12, 9, 9,19,19,24,24,30], //x
-			[ 5, 5, 2, 2, 9, 9,13,13, 8, 8, 4, 4]  //y
+			[ -1, 10,10, 6,6,17,17], //x path 1
+			[12, 12, 7, 7, 2, 2, 0],  //y path 1
+			[30,18,18,26,26,17,17], //x path 2
+			[11,11, 7, 7, 5, 5, 2],  //y path 2
 		];
-
+		
 		for(var i = 0; i < coords[0].length; i++ )
 		{
 			if(i == 0)
 			{
 				GV.WALKPATH = this.add.path((coords[0][i]+0.5)*64, (coords[1][i]+0.5)*64);		//start point for path coords
-				//GV.MAP[coords[1][i]-1][coords[0][i]-1] = 0
-			}
-			else if(i == coords[0].length-1)
-			{
-				GV.WALKPATH.lineTo((coords[0][i]+0.5)*64, (coords[1][i]+0.5)*64);
 				//GV.MAP[coords[1][i]-1][coords[0][i]-1] = 0
 			}
 			else
@@ -43,31 +44,49 @@ export class GameScene extends Phaser.Scene {
 			}
 		}
 		
+		for(var i = 0; i < coords[2].length; i++ )
+		{
+			if(i == 0)
+			{
+				GV.WALKPATH2 = this.add.path((coords[2][i]+0.5)*64, (coords[3][i]+0.5)*64);		//start point for path coords
+			}
+			else
+			{
+				GV.WALKPATH2.lineTo((coords[2][i]+0.5)*64, (coords[3][i]+0.5)*64);
+			}
+		}
+		
 		graphics.lineStyle(1, 0xffffff, 1);
 		GV.WALKPATH.draw(graphics);
+		GV.WALKPATH2.draw(graphics);
 		
-		GV.FLYPATH = this.add.path(-1, 352);
-		GV.FLYPATH.lineTo(1920, 288);
+		GV.FLYPATH = this.add.path(-1.5*64, 12.5*64);
+		GV.FLYPATH.lineTo(20.5*64, 0.5*64);
 		GV.FLYPATH.draw(graphics);
 		
+		GV.FLYPATH2 = this.add.path(30.5*64, 11.5*64);
+		GV.FLYPATH2.lineTo(20.5*64, 0.5*64);
+		GV.FLYPATH2.draw(graphics);
+		
 		GV.MAP = [
-		[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-		[-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-		[-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-		[-1,-1,-1,-1,-1, 0,-1, 0, 0, 0, 0, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0],
-		[ 0, 0, 0, 0, 0, 0,-1, 0,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1],
-		[-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1, 0, 0, 0, 0, 0],
-		[ 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1],
-		[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0,-1, 0,-1,-1,-1,-1],
-		[-1,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0,-1, 0,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1],
-		[-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1, 0,-1,-1,-1,-1, 0,-1, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1],
-		[-1,-1,-1,-1,-1,-1,-1,-1, 0,-1, 0, 0, 0, 0,-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-		[-1,-1,-1,-1,-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-		[-1,-1,-1,-1,-1,-1,-1,-1, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-		[-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-		[-1,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-		[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
-		];
+			[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [-1,-1,-1,-1,-1, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [-1,-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1],
+            [-1,-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1],
+            [-1,-1,-1,-1,-1, 0,-1, 0, 0, 0, 0, 0,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0,-1,-1],
+            [-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1],
+			[-1,-1,-1,-1,-1, 0, 0, 0, 0, 0,-1, 0,-1,-1,-1,-1,-1, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1],
+			[-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+			[-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1,-1, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+			[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+			[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+			];
+
     }
 
     //create function initializes and adds assets to game
@@ -103,7 +122,7 @@ export class GameScene extends Phaser.Scene {
 		GV.BUTTON_GROUP = this.add.group();
 		
         //build the game map, this includes pathing, map image, animations, background sounds, and general game assets
-        FN.buildMap(this, 'map');
+        FN.buildMap(this, 'map2');
 		
         //create animations
         FN.createAnimations(this, GV.ENEMY_ARRAY, 0);
@@ -136,16 +155,17 @@ export class GameScene extends Phaser.Scene {
             this.skipWave.setVisible(false);
         }); */
 
+
         //input related actions in userAction function
         this.input.on('pointerdown', function (pointer){FN.userAction(pointer, this)});
 
-        let nextScene = this.add.text(30, 990, 'Next Level', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
+/*         let nextScene = this.add.text(30, 990, 'Next Level', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
         nextScene.setInteractive();
         nextScene.on("pointerup", ()=>{
             this.scene.remove('HUD');
             //this.scene.restart();
-            this.scene.start(CST.SCENES.GAME2);
-        });		
+            this.scene.start(CST.SCENES.GAME3);
+        });	 */	
 
 		
     }
