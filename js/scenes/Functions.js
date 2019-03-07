@@ -151,7 +151,6 @@ export function showTowerRange(scene, i, j) {
 	if(typeof GV.MAP[i][j] === 'object') {
 		var x = j * 64 + 64/2;
 		var y = i * 64 + 64/2;
-		var shape = new Phaser.Geom.Circle(i, j, GV.MAP[i][j].atkRange);
 		scene.rangeCircle = scene.scene.add.circle(x, y, GV.MAP[i][j].atkRange, 0x0099ff, 127);
 	}
 }
@@ -256,6 +255,7 @@ export function placeTowerAction(pointer, scene, i, j){
 
             hud.tooltipText.setVisible(false);
             hud.tooltip.setVisible(false);
+            scene.upgradeCircle.destroy();
         }, scene.scene);
 
         peasantImg.on('pointerover', function (event) {
@@ -270,6 +270,11 @@ export function placeTowerAction(pointer, scene, i, j){
                 "Hit Flying:    " + GV.PEASANT_STATS.hitFly,
                 ];
 
+            //Add Attack Range Visibly
+            var x = j * 64 + 64 / 2;
+            var y = i * 64 + 64 / 2;
+            scene.upgradeCircle = scene.scene.add.circle(x, y, GV.PEASANT_STATS.atkRange, 0xffffff, 0.25);
+
             hud.tooltipText.setText(towerInfo);
             hud.tooltipText.setVisible(true);
         }, scene.scene);
@@ -278,6 +283,7 @@ export function placeTowerAction(pointer, scene, i, j){
             var hud = this.scene.get('HUD');
             hud.tooltip.setVisible(false);
             hud.tooltipText.setVisible(false);
+            scene.upgradeCircle.destroy();
         }, scene.scene);
     });
 
@@ -297,7 +303,6 @@ export function removeTowerAction(pointer, scene, i, j){
 		}
 		
 		GV.BUTTON_GROUP.clear(true,true);
-		
 	});
 }
 
@@ -309,7 +314,8 @@ export function upgradeTowerAction(i, j, scene, pointer, id){
 	upgradeButtonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
 		scene.scene.menuSounds.play();
 		GV.BUTTON_GROUP.clear(true,true);
-		cancelAction(scene);
+        cancelAction(scene);
+        
 		if(GV.TOWER_ARRAY[id].upgrades)
 		{
 			var numOfUpgrades = GV.TOWER_ARRAY[id].upgrades.length;
@@ -357,7 +363,7 @@ export function cancelAction(scene){
 	
 	cancelImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
 		GV.BUTTON_GROUP.clear(true,true);
-		scene.scene.cancelSounds.play();
+        scene.scene.cancelSounds.play();
 	});
 }
 

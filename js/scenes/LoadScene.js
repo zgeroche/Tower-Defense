@@ -89,9 +89,11 @@ export class LoadScene extends Phaser.Scene{
 		this.load.image('coin', 'assets/attacks/coin.png');
 		this.load.image('highlight', 'assets/blue.png');
 		this.load.image('explosion', 'assets/muzzleflash3.png');
-		this.load.image('menuscreen', 'assets/bg.png', { frameWidth: 1280, frameHeight: 1024 });
+        this.load.image('menuscreen', 'assets/bg.png', { frameWidth: 1920, frameHeight: 1024 });
+        this.load.image('introscreen', 'assets/fortress.png', { frameWidth: 1920, frameHeight: 1024 });
+        this.load.image('transition', 'assets/gate.png', { frameWidth: 1920, frameHeight: 1024 });
 		this.load.image('newgame', 'assets/new.png');
-        this.load.image('bottomHUD', 'assets/bottomHUD.png');
+        this.load.image('bottomHUD', 'assets/BottomHUD.png');
         this.load.image('waveHUD', 'assets/waveHUD.png');
         this.load.image('towerbutton', 'assets/menuBar.png');
         this.load.image('cancel', 'assets/cancel.png');
