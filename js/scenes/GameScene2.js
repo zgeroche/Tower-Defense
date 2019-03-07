@@ -26,7 +26,7 @@ export class GameScene2 extends Phaser.Scene {
 		var graphics = this.add.graphics();    
 		FN.drawLines(graphics);
 		
-		this.add.image(960, 512, 'map2').setDepth(0);
+		//this.add.image(960, 512, 'map2').setDepth(0);
 		
 		var coords = [
 			[ 3, 3, 6, 6,11,11,21,21,27,27,30], //x path 1
