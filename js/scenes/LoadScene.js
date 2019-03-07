@@ -63,7 +63,8 @@ export class LoadScene extends Phaser.Scene{
 		//load map
 		//this.load.image('map', 'assets/castle-gates.png', { frameWidth: 640, frameHeight: 512 });
 		this.load.image('map', 'assets/castle gates - big.png', { frameWidth: 1920, frameHeight: 1024 });
-		this.load.image('map2', 'assets/map2.png', { frameWidth: 1920, frameHeight: 1024 });
+		//this.load.image('map2', 'assets/armory - big.png', { frameWidth: 1920, frameHeight: 1024 });
+		this.load.image('map3', 'assets/throne - big.png', { frameWidth: 1920, frameHeight: 1024 });
 		//this.load.image('map2', 'assets/armory.png', { frameWidth: 640, frameHeight: 512 });
 		
 		//load sounds
