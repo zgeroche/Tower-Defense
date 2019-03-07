@@ -59,16 +59,18 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 
     }
 
-	startOnPath ()
+	startOnPath (path)
 	{
 		this.follower.t = 0;
-		
+        this.path = path;
 		//this.walk.play();																//sounds
+        this.path.getPoint(this.follower.t, this.follower.vec);
+        /*
 		if (!this.flying)
 		{GV.WALKPATH.getPoint(this.follower.t, this.follower.vec);}
 		else
 		{GV.FLYPATH.getPoint(this.follower.t, this.follower.vec);}
-		
+		*/
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
 		
 		//this.text.setPosition(this.follower.vec.x, this.follower.vec.y);
@@ -140,10 +142,13 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		//ENEMY_SPEED = 1/Math.floor((Math.random() * (10000 - 5000)) + 5000);
         this.prevx = this.follower.vec.x;
         this.prevy = this.follower.vec.y;
-		this.follower.t += GV.ENEMY_SPEED * delta * this.speed;
+        this.follower.t += GV.ENEMY_SPEED * delta * this.speed;
+
+        this.path.getPoint(this.follower.t, this.follower.vec);
+        /*
 		if (!this.flying){ GV.WALKPATH.getPoint(this.follower.t, this.follower.vec);}
 		else{ GV.FLYPATH.getPoint(this.follower.t, this.follower.vec)};
-		
+		*/
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
 		this.text.setPosition(this.follower.vec.x, this.follower.vec.y);									//textHP
         this.healthbar.setPosition(this.follower.vec.x - this.width, this.follower.vec.y - this.height);
@@ -1208,6 +1213,7 @@ export class TowerButton extends Phaser.GameObjects.Image {
 				}
             this.hud.tooltip.setVisible(false);
             this.hud.tooltipText.setVisible(false);
+            scene.upgradeCircle.destroy();
         });
 
         buttonImg.on('pointerover', () => {
@@ -1222,11 +1228,19 @@ export class TowerButton extends Phaser.GameObjects.Image {
 
             this.hud.tooltipText.setText(towerInfo);
             this.hud.tooltipText.setVisible(true);
+
+            //Show Tower Attack Range
+            var x = j * 64 + 64 / 2;
+            var y = i * 64 + 64 / 2;
+            scene.upgradeCircle = scene.scene.add.circle(x, y, newTower.atkRange, 0xffffff, 0.25);
+            FN.showTowerRange(scene, i, j); 
         });
 
         buttonImg.on('pointerout', () => {
             this.hud.tooltip.setVisible(false);
             this.hud.tooltipText.setVisible(false);
+            scene.upgradeCircle.destroy();
+            scene.rangeCircle.destroy();
         });
 		
 	}
