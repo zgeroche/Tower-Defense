@@ -19,7 +19,7 @@ var TOWER_FIRE_RATE = 300;
 //stats for each tower type loaded from file rather than defined here, but for now do this
 //objects to hold sounds and animation information as well?
 var PEASANT_STATS = 		 {towerId:0,  towerName:"Peasant", 		 cost:5,  str:50,  atkRange:150, atkType:"physical", atkRate:750,  hitFly:false, upgrades: [1, 2, 3]};
-var SOLDIER_STATS = 		 {towerId:1,  towerName:"Soldier", 		 cost:0,  str:100, atkRange:200, atkType:"physical", atkRate:400,  hitFly:false, upgrades: [4, 5]};
+var SOLDIER_STATS = 		 {towerId:1,  towerName:"Soldier", 		 cost:20,  str:100, atkRange:200, atkType:"physical", atkRate:400,  hitFly:false, upgrades: [4, 5]};
 var ARCHER_STATS = 			 {towerId:2,  towerName:"Archer", 		 cost:20,  str:75,  atkRange:300, atkType:"physical", atkRate:600,  hitFly:true, upgrades: [6, 7]};
 var APPRENTICE_STATS = 		 {towerId:3,  towerName:"Apprentice", 	 cost:20,  str:80,  atkRange:250, atkType:"magical",  atkRate:500,  hitFly:false, upgrades: [8, 9]};
 var KNIGHT_STATS = 			 {towerId:4,  towerName:"Knight", 		 cost:3,  str:200, atkRange:200, atkType:"physical", atkRate:600,  hitFly:false, upgrades: [10, 11]};
@@ -124,7 +124,14 @@ var BOSSSKELETON_STATS = { enemyId: 6, enemyName: "BossSkeleton",   speed: .75, 
 var WITCH_STATS =       { enemyId: 7, enemyName: "Witch",           speed: 1,   hp: 450,     magicArmor: 0, physicalArmor: 0,  flying: false,  value: 1, frameEnd: 3, damage: 5 };
 var REAPER_STATS =       { enemyId: 8, enemyName: "Reaper",         speed: 1,   hp: 450,     magicArmor: 0, physicalArmor: 0, flying: false, value: 1, frameEnd: 3, damage: 5 };
 var HORSEMAN_STATS =    { enemyId: 9, enemyName: "Horseman",        speed: 2,    hp: 750,   magicArmor: 0,  physicalArmor: 0, flying: false, value: 1, frameEnd: 3, damage: 5 };
-var JACKO_STATS =       { enemyId: 10, enemyName: "Jacko",          speed: 1,    hp: 450,   magicArmor: 0,  physicalArmor: 0, flying: false, value: 1, frameEnd: 3, damage: 5 };
+var JACKO_STATS =       { enemyId: 10, enemyName: "Jacko",          speed: 1,   hp: 450,    magicArmor: 0, physicalArmor: 0, flying: false, value: 1, frameEnd: 3, damage: 5 };
+var DRAGON_STATS =      { enemyId: 11, enemyName: "Dragon",         speed: 1,   hp: 450,    magicArmor: 30, physicalArmor: 30, flying: true, value: 1, frameEnd: 3, damage: 5 };
+var GOLEM_STATS =       { enemyId: 12, enemyName: "Golem",          speed: 1,   hp: 450,    magicArmor: 0, physicalArmor: 0, flying: false, value: 1, frameEnd: 7, damage: 5 };
+var IMP_STATS =         { enemyId: 13, enemyName: "Imp",            speed: 1,   hp: 450,    magicArmor: 0, physicalArmor: 0, flying: false, value: 1, frameEnd: 4, damage: 5 };
+var ZOMBIE_STATS =      { enemyId: 14, enemyName: "Zombie",         speed: 1,   hp: 450,    magicArmor: 0, physicalArmor: 0, flying: false, value: 1, frameEnd: 9, damage: 5 };
+var VAMPIRE_STATS =     { enemyId: 15, enemyName: "Vampire",        speed: 1,   hp: 450,    magicArmor: 0, physicalArmor: 0, flying: false, value: 1, frameEnd: 3, damage: 5 };
+var SLIME_STATS =       { enemyId: 16, enemyName: "Slime",          speed: 1,   hp: 450,    magicArmor: 0, physicalArmor: 0, flying: false, value: 1, frameEnd: 3, damage: 5 };
+var MINOTAUR_STATS =    { enemyId: 17, enemyName: "Minotaur",       speed: 1,   hp: 450,    magicArmor: 0, physicalArmor: 0, flying: false, value: 1, frameEnd: 3, damage: 5 };
 
 var ENEMY_ARRAY = [DEATHKNIGHT_STATS,
                 SKELETON_STATS,
@@ -136,31 +143,21 @@ var ENEMY_ARRAY = [DEATHKNIGHT_STATS,
                 WITCH_STATS,
                 REAPER_STATS,
                 HORSEMAN_STATS,
-                JACKO_STATS
+                JACKO_STATS,
+                DRAGON_STATS,
+                GOLEM_STATS,
+                IMP_STATS,
+                ZOMBIE_STATS,
+                VAMPIRE_STATS,
+                SLIME_STATS,
+                MINOTAUR_STATS
 ];
 
 //map for tower placement, 0=can place, -1=cannot place, towerObj=tower already occupying space
-var MAP =  [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-            [-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-            [-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-            [-1,-1,-1,-1,-1, 0,-1, 0, 0, 0, 0, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0],
-            [ 0, 0, 0, 0, 0, 0,-1, 0,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1],
-            [-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1, 0, 0, 0, 0, 0],
-            [ 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1],
-            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0,-1, 0,-1,-1,-1,-1],
-			[-1,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0,-1, 0,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1],
-			[-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1, 0,-1,-1,-1,-1, 0,-1, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1],
-			[-1,-1,-1,-1,-1,-1,-1,-1, 0,-1, 0, 0, 0, 0,-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-			[-1,-1,-1,-1,-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-			[-1,-1,-1,-1,-1,-1,-1,-1, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-			[-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-			[-1,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]];
-
+var MAP;
+		
 var WAVE_DETAIL = ['10 Skeletons', '10 Witches', '10 Goblins (fast)', '10 bats (flying)', '10 Skeletons + Boss', '20 Goblins (mass, fast)', '10 witches + 10 bats (flying)', '25 Skeletons (mass)' , '10 Skeletons, Witches & Goblins', '2 Ogre Boss'];
 
-			
-			
 export{
 WALKPATH,
 FLYPATH,
@@ -237,6 +234,13 @@ GOBLIN_STATS,
 BOSSSKELETON_STATS,
 HORSEMAN_STATS,
 JACKO_STATS,
+DRAGON_STATS,
+GOLEM_STATS,
+IMP_STATS,
+ZOMBIE_STATS,
+VAMPIRE_STATS,
+SLIME_STATS,
+MINOTAUR_STATS,
 ENEMY_ARRAY,
 MAP,
 WAVE_DETAIL

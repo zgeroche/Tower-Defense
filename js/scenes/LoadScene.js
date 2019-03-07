@@ -13,7 +13,7 @@ export class LoadScene extends Phaser.Scene{
 		this.load.image('volDown', 'assets/volDown.png');
 		this.load.image('play', 'assets/play.png');
 		this.load.image('playDown', 'assets/playDown.png');
-		this.add.text(230, 230, 'Loading', { font: '50px Arial', fill: '#fff' });
+		this.add.text(960, 512, 'Loading', { font: '50px Arial', fill: '#fff' }).setOrigin(0.5);
 		 
         this.load.atlas('apprentice', 'assets/towers/apprentice.png', 'assets/towers/towers.json');
 		this.load.atlas('archer', 'assets/towers/archer.png', 'assets/towers/towers.json');
@@ -52,11 +52,19 @@ export class LoadScene extends Phaser.Scene{
         this.load.atlas('ghost', 'assets/ghost.png', 'assets/ghost.json');
         this.load.atlas('jacko', 'assets/jacko.png', 'assets/jacko.json');
         this.load.atlas('horseman', 'assets/horseman.png', 'assets/horseman.json');
+        this.load.atlas('dragon', 'assets/dragon.png', 'assets/dragon.json');
+        this.load.atlas('golem', 'assets/golem.png', 'assets/golem.json');
+        this.load.atlas('imp', 'assets/imp.png', 'assets/imp.json');
+        this.load.atlas('minotaur', 'assets/minotaur.png', 'assets/minotaur.json');
+        this.load.atlas('slime', 'assets/slime.png', 'assets/slime.json');
+        this.load.atlas('vampire', 'assets/vampire.png', 'assets/vampire.json');
+        this.load.atlas('zombie', 'assets/zombie.png', 'assets/zombie.json');
 		
 		//load map
 		//this.load.image('map', 'assets/castle-gates.png', { frameWidth: 640, frameHeight: 512 });
 		this.load.image('map', 'assets/castle gates - big.png', { frameWidth: 1920, frameHeight: 1024 });
-		this.load.image('map2', 'assets/armory.png', { frameWidth: 640, frameHeight: 512 });
+		this.load.image('map2', 'assets/map2.png', { frameWidth: 1920, frameHeight: 1024 });
+		//this.load.image('map2', 'assets/armory.png', { frameWidth: 640, frameHeight: 512 });
 		
 		//load sounds
 		this.load.audio('dkDeath', 'assets/Sounds/Death Screams/Human/sfx_deathscream_human5.wav');
@@ -91,7 +99,7 @@ export class LoadScene extends Phaser.Scene{
     }
     create(){
         //Creating menu screen background layers
-
         this.scene.start(CST.SCENES.MENU, "Loading complete");
+        //this.scene.start(CST.SCENES.GAME2, "Loading complete");
         }
 }
