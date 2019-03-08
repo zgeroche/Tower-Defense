@@ -39,6 +39,8 @@ export class LoadScene extends Phaser.Scene{
 		this.load.atlas('swordmaster', 'assets/towers/swordmaster.png', 'assets/towers/towers.json');
 		this.load.atlas('warlock', 'assets/towers/warlock.png', 'assets/towers/towers.json');
         this.load.atlas('wizard', 'assets/towers/wizard.png', 'assets/towers/towers.json');
+        this.load.atlas('headhunter', 'assets/towers/headhunter.png', 'assets/towers/towers.json');
+        this.load.atlas('berserker', 'assets/towers/berserker.png', 'assets/towers/towers.json');
 
 		//load enemy sprites, will be a loop like load tower sprites
         this.load.atlas('deathknight', 'assets/deathknight.png', 'assets/deathknight.json');
@@ -63,7 +65,8 @@ export class LoadScene extends Phaser.Scene{
 		//load map
 		//this.load.image('map', 'assets/castle-gates.png', { frameWidth: 640, frameHeight: 512 });
 		this.load.image('map', 'assets/castle gates - big.png', { frameWidth: 1920, frameHeight: 1024 });
-		this.load.image('map2', 'assets/map2.png', { frameWidth: 1920, frameHeight: 1024 });
+		this.load.image('map2', 'assets/armory - big.png', { frameWidth: 1920, frameHeight: 1024 });
+		this.load.image('map3', 'assets/throne - big.png', { frameWidth: 1920, frameHeight: 1024 });
 		//this.load.image('map2', 'assets/armory.png', { frameWidth: 640, frameHeight: 512 });
 		
 		//load sounds
@@ -99,9 +102,11 @@ export class LoadScene extends Phaser.Scene{
 		this.load.image('coin', 'assets/attacks/coin.png');
 		this.load.image('highlight', 'assets/blue.png');
 		this.load.image('explosion', 'assets/muzzleflash3.png');
-		this.load.image('menuscreen', 'assets/bg.png', { frameWidth: 1280, frameHeight: 1024 });
+        this.load.image('menuscreen', 'assets/bg.png', { frameWidth: 1920, frameHeight: 1024 });
+        this.load.image('introscreen', 'assets/fortress.png', { frameWidth: 1920, frameHeight: 1024 });
+        this.load.image('transition', 'assets/gate.png', { frameWidth: 1920, frameHeight: 1024 });
 		this.load.image('newgame', 'assets/new.png');
-        this.load.image('bottomHUD', 'assets/bottomHUD.png');
+        this.load.image('bottomHUD', 'assets/BottomHUD.png');
         this.load.image('waveHUD', 'assets/waveHUD.png');
         this.load.image('towerbutton', 'assets/menuBar.png');
         this.load.image('cancel', 'assets/cancel.png');

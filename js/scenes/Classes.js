@@ -59,16 +59,18 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 
     }
 
-	startOnPath ()
+	startOnPath (path)
 	{
 		this.follower.t = 0;
-		
+        this.path = path;
 		//this.walk.play();																//sounds
+        this.path.getPoint(this.follower.t, this.follower.vec);
+        /*
 		if (!this.flying)
 		{GV.WALKPATH.getPoint(this.follower.t, this.follower.vec);}
 		else
 		{GV.FLYPATH.getPoint(this.follower.t, this.follower.vec);}
-		
+		*/
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
 		
 		//this.text.setPosition(this.follower.vec.x, this.follower.vec.y);
@@ -140,10 +142,13 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		//ENEMY_SPEED = 1/Math.floor((Math.random() * (10000 - 5000)) + 5000);
         this.prevx = this.follower.vec.x;
         this.prevy = this.follower.vec.y;
-		this.follower.t += GV.ENEMY_SPEED * delta * this.speed;
+        this.follower.t += GV.ENEMY_SPEED * delta * this.speed;
+
+        this.path.getPoint(this.follower.t, this.follower.vec);
+        /*
 		if (!this.flying){ GV.WALKPATH.getPoint(this.follower.t, this.follower.vec);}
 		else{ GV.FLYPATH.getPoint(this.follower.t, this.follower.vec)};
-		
+		*/
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
 		this.text.setPosition(this.follower.vec.x, this.follower.vec.y);									//textHP
         this.healthbar.setPosition(this.follower.vec.x - this.width, this.follower.vec.y - this.height);
@@ -653,12 +658,21 @@ export class Commander extends Tower {
     }
 }
 
-export class Paladin extends Tower {
+/* export class Paladin extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'paladin');
 		
 		this.anims.play('paladin_idle');
+    }
+} */
+
+export class Headhunter extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'headhunter');
+		
+		this.anims.play('headhunter_idle');
     }
 }
 
@@ -707,12 +721,21 @@ export class Beastmaster extends Tower {
     }
 }
 
-export class Assassin extends Tower {
+/* export class Assassin extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'assassin');
 		
 		this.anims.play('assassin_idle');
+    }
+} */
+
+export class Berserker extends Tower {
+    constructor(scene, stats) {
+        super(scene, stats);
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'berserker');
+		
+		this.anims.play('berserker_idle');
     }
 }
 
@@ -990,7 +1013,16 @@ export class CommanderSword extends Attack {
 };
 
 //PALADIN ATTACK
-export class PaladinAttack extends Attack {
+/* export class PaladinAttack extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+}; */
+
+//HEADHUNTER ATTACK
+export class HeadhunterAttack extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
@@ -1043,8 +1075,18 @@ export class BeastmasterAttack extends Attack {
 	}
 };
 
-//ASSASSIN ATTACK
+/* //ASSASSIN ATTACK
 export class AssassinAttack extends Attack {
+	constructor(scene) {
+		super(scene);
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		this.speed = Phaser.Math.GetSpeed(800, 1);
+	}
+}; */
+
+
+//BERSERKER ATTACK
+export class BerserkerAttack extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
@@ -1231,6 +1273,7 @@ export class TowerButton extends Phaser.GameObjects.Image {
 				}
             this.hud.tooltip.setVisible(false);
             this.hud.tooltipText.setVisible(false);
+            scene.upgradeCircle.destroy();
         });
 
         buttonImg.on('pointerover', () => {
@@ -1245,11 +1288,19 @@ export class TowerButton extends Phaser.GameObjects.Image {
 
             this.hud.tooltipText.setText(towerInfo);
             this.hud.tooltipText.setVisible(true);
+
+            //Show Tower Attack Range
+            var x = j * 64 + 64 / 2;
+            var y = i * 64 + 64 / 2;
+            scene.upgradeCircle = scene.scene.add.circle(x, y, newTower.atkRange, 0xffffff, 0.25);
+            FN.showTowerRange(scene, i, j); 
         });
 
         buttonImg.on('pointerout', () => {
             this.hud.tooltip.setVisible(false);
             this.hud.tooltipText.setVisible(false);
+            scene.upgradeCircle.destroy();
+            scene.rangeCircle.destroy();
         });
 		
 	}

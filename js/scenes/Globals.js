@@ -22,20 +22,22 @@ var PEASANT_STATS = 		 {towerId:0,  towerName:"Peasant", 		 cost:5,   str:50,  a
 var SOLDIER_STATS = 		 {towerId:1,  towerName:"Soldier", 		 cost:20,  str:100, atkRange:200, atkType:"physical", atkRate:400,  hitFly:false, upgrades: [4, 5]};
 var ARCHER_STATS = 			 {towerId:2,  towerName:"Archer", 		 cost:20,  str:75,  atkRange:300, atkType:"physical", atkRate:600,  hitFly:true, upgrades: [6, 7]};
 var APPRENTICE_STATS = 		 {towerId:3,  towerName:"Apprentice", 	 cost:20,  str:80,  atkRange:250, atkType:"magical",  atkRate:500,  hitFly:false, upgrades: [8, 9]};
-var KNIGHT_STATS = 			 {towerId:4,  towerName:"Knight", 		 cost:3,   str:200, atkRange:200, atkType:"physical", atkRate:600,  hitFly:false, upgrades: [10, 11]};
+var KNIGHT_STATS = 			 {towerId:4,  towerName:"Knight", 		 cost:3,   str:200, atkRange:200, atkType:"physical", atkRate:600,  hitFly:false, upgrades: [10, 17]};
 var DUELIST_STATS = 		 {towerId:5,  towerName:"Duelist", 		 cost:3,   str:125, atkRange:225, atkType:"physical", atkRate:400,  hitFly:false, upgrades: [12, 13]};
 var RIFLEMAN_STATS =	 	 {towerId:6,  towerName:"Rifleman", 	 cost:3,   str:150, atkRange:350, atkType:"physical", atkRate:650,  hitFly:true, upgrades: [14, 15]};
-var RANGER_STATS = 			 {towerId:7,  towerName:"Ranger", 		 cost:3,   str:100, atkRange:300, atkType:"physical", atkRate:500,  hitFly:true, upgrades: [16, 17]};
+var RANGER_STATS = 			 {towerId:7,  towerName:"Ranger", 		 cost:3,   str:100, atkRange:300, atkType:"physical", atkRate:500,  hitFly:true, upgrades: [16, 11]};
 var WIZARD_STATS = 			 {towerId:8,  towerName:"Wizard", 		 cost:3,   str:100, atkRange:250, atkType:"magical",  atkRate:500,  hitFly:true, upgrades: [18, 19, 20]};
 var SORCERESS_STATS = 		 {towerId:9,  towerName:"Sorceress", 	 cost:3,   str:120, atkRange:275, atkType:"magical",  atkRate:600,  hitFly:true, upgrades: [21, 22]};
 var COMMANDER_STATS = 		 {towerId:10, towerName:"Commander", 	 cost:4,   str:300, atkRange:200, atkType:"physical", atkRate:550,  hitFly:false, upgrades: null};
-var PALADIN_STATS = 		 {towerId:11, towerName:"Paladin", 		 cost:4,   str:250, atkRange:225, atkType:"physical", atkRate:450,  hitFly:true, upgrades: null};
+//var PALADIN_STATS = 		 {towerId:11, towerName:"Paladin", 		 cost:4,   str:250, atkRange:225, atkType:"physical", atkRate:450,  hitFly:true, upgrades: null};
+var HEADHUNTER_STATS = 		 {towerId:11, towerName:"Headhunter", 		 cost:4,   str:250, atkRange:225, atkType:"physical", atkRate:450,  hitFly:true, upgrades: null};
 var SWORDMASTER_STATS = 	 {towerId:12, towerName:"Swordmaster", 	 cost:4,   str:140, atkRange:225, atkType:"physical", atkRate:350,  hitFly:false, upgrades: null};
 var CUTPURSE_STATS = 		 {towerId:13, towerName:"Cutpurse", 	 cost:4,   str:50 , atkRange:100, atkType:"physical", atkRate:100,  hitFly:false, upgrades: null};
 var CANNONEER_STATS = 		 {towerId:14, towerName:"Cannoneer", 	 cost:4,   str:250, atkRange:400, atkType:"physical", atkRate:1000, hitFly:false, upgrades: null};
 var SHARPSHOOTER_STATS = 	 {towerId:15, towerName:"Sharpshooter",  cost:4,   str:200, atkRange:500, atkType:"physical", atkRate:750,  hitFly:true, upgrades: null};
 var BEASTMASTER_STATS = 	 {towerId:16, towerName:"Beastmaster", 	 cost:4,   str:150, atkRange:350, atkType:"physical", atkRate:500,  hitFly:true, upgrades: null};
-var ASSASSIN_STATS = 		 {towerId:17, towerName:"Assassin", 	 cost:4,   str:120, atkRange:350, atkType:"magical",  atkRate:350,  hitFly:true, upgrades: null};
+//var ASSASSIN_STATS = 		 {towerId:17, towerName:"Assassin", 	 cost:4,   str:120, atkRange:350, atkType:"magical",  atkRate:350,  hitFly:true, upgrades: null};
+var BERSERKER_STATS = 		 {towerId:17, towerName:"Berserker", 	 cost:4,   str:120, atkRange:350, atkType:"magical",  atkRate:350,  hitFly:true, upgrades: null};
 var FIREMAGE_STATS = 		 {towerId:18, towerName:"FireMage", 	 cost:4,   str:200, atkRange:250, atkType:"magical",  atkRate:475,  hitFly:true, upgrades: null};
 var ICEMAGE_STATS = 		 {towerId:19, towerName:"IceMage", 		 cost:4,   str:130, atkRange:300, atkType:"magical",  atkRate:450,  hitFly:true, upgrades: null};
 var LIGHTNINGMAGE_STATS =	 {towerId:20, towerName:"LightningMage", cost:4,   str:175, atkRange:225, atkType:"magical",  atkRate:500,  hitFly:true, upgrades: null};
@@ -53,13 +55,15 @@ var TOWER_ARRAY = [PEASANT_STATS, //0
 			WIZARD_STATS,//8
 			SORCERESS_STATS,//9
 			COMMANDER_STATS,//10
-			PALADIN_STATS,//11
+			//PALADIN_STATS,//11
+			HEADHUNTER_STATS,//11
 			SWORDMASTER_STATS,//12
 			CUTPURSE_STATS,//13
 			CANNONEER_STATS,//14
 			SHARPSHOOTER_STATS,//15
 			BEASTMASTER_STATS,//16
-			ASSASSIN_STATS,//17
+			//ASSASSIN_STATS,//17
+			BERSERKER_STATS,//17
 			FIREMAGE_STATS,//18
 			ICEMAGE_STATS,//19
 			LIGHTNINGMAGE_STATS,//20
@@ -77,13 +81,15 @@ var RANGER_ATTACK =  		{attackId:7,  attackName:"RangerArrow"};
 var WIZARD_ATTACK =  		{attackId:8,  attackName:"BlueMagic"};
 var SORCERESS_ATTACK =   	{attackId:9,  attackName:"PinkMagic"};
 var COMMANDER_ATTACK =  	{attackId:10, attackName:"CommanderSword"};
-var PALADIN_ATTACK =     	{attackId:11, attackName:"PaladinAttack"};
+//var PALADIN_ATTACK =     	{attackId:11, attackName:"PaladinAttack"};
+var HEADHUNTER_ATTACK =     	{attackId:11, attackName:"HeadhunterAttack"};
 var SWORDMASTER_ATTACK =    {attackId:12, attackName:"BlackSword"};
 var CUTPURSE_ATTACK =  		{attackId:13, attackName:"Knife"};
 var CANNONEER_ATTACK =  	{attackId:14, attackName:"Cannonball"};
 var SHARPSHOOTER_ATTACK =   {attackId:15, attackName:"SilverBullet"};
 var BEASTMASTER_ATTACK =    {attackId:16, attackName:"BeastmasterAttack"};
-var ASSASSIN_ATTACK = 		{attackId:17, attackName:"AssassinAttack"};
+//var ASSASSIN_ATTACK = 		{attackId:17, attackName:"AssassinAttack"};
+var BERSERKER_ATTACK = 		{attackId:17, attackName:"BerserkerAttack"};
 var FIREMAGE_ATTACK =  		{attackId:18, attackName:"Fireball"};
 var ICEMAGE_ATTACK =  		{attackId:19, attackName:"Icicle"};
 var LIGHTNINGMAGE_ATTACK =  {attackId:20, attackName:"Lightning"};
@@ -101,13 +107,15 @@ var ATTACK_ARRAY = [PEASANT_ATTACK, //0
 			WIZARD_ATTACK, //8
 			SORCERESS_ATTACK, //9
 			COMMANDER_ATTACK, //10
-			PALADIN_ATTACK, //11
+			//PALADIN_ATTACK, //11
+			HEADHUNTER_ATTACK, //11
 			SWORDMASTER_ATTACK, //12
 			CUTPURSE_ATTACK, //13
 			CANNONEER_ATTACK, //14
 			SHARPSHOOTER_ATTACK, //15
 			BEASTMASTER_ATTACK, //16
-			ASSASSIN_ATTACK, //17
+			//ASSASSIN_ATTACK, //17
+			BERSERKER_ATTACK, //17
 			FIREMAGE_ATTACK, //18
 			ICEMAGE_ATTACK, //19
 			LIGHTNINGMAGE_ATTACK, //20
@@ -186,13 +194,15 @@ RANGER_STATS,
 WIZARD_STATS,
 SORCERESS_STATS,
 COMMANDER_STATS,
-PALADIN_STATS,
+//PALADIN_STATS,
+HEADHUNTER_STATS,
 SWORDMASTER_STATS,
 CUTPURSE_STATS,
 CANNONEER_STATS,
 SHARPSHOOTER_STATS,
 BEASTMASTER_STATS,
-ASSASSIN_STATS,
+//ASSASSIN_STATS,
+BERSERKER_STATS,
 FIREMAGE_STATS,
 ICEMAGE_STATS,
 LIGHTNINGMAGE_STATS,
@@ -210,13 +220,15 @@ RANGER_ATTACK,
 WIZARD_ATTACK,
 SORCERESS_ATTACK,
 COMMANDER_ATTACK,
-PALADIN_ATTACK,
+//PALADIN_ATTACK,
+HEADHUNTER_ATTACK,
 SWORDMASTER_ATTACK,
 CUTPURSE_ATTACK,
 CANNONEER_ATTACK,
 SHARPSHOOTER_ATTACK,
 BEASTMASTER_ATTACK,
-ASSASSIN_ATTACK,
+//ASSASSIN_ATTACK,
+BERSERKER_ATTACK,
 FIREMAGE_ATTACK,
 ICEMAGE_ATTACK,
 LIGHTNINGMAGE_ATTACK,
