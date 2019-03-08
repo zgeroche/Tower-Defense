@@ -131,7 +131,6 @@ export class GameScene2 extends Phaser.Scene {
 		//button group
 		GV.BUTTON_GROUP = this.add.group();
 		
-
         //build the game map, this includes pathing, map image, animations, background sounds, and general game assets
         FN.buildMap(this, 'map2');
 		
@@ -328,7 +327,7 @@ export class GameScene2 extends Phaser.Scene {
                 case 6: //Deathknight + Slime
                     if (GV.SPAWNED < 20) {
                         if (GV.SPAWNED % 2 === 0) {
-                            enemy = GV.ENEMY_GROUP[0].get(GV.ENEMY_ARRAY[1]);
+                            enemy = GV.ENEMY_GROUP[0].get(GV.ENEMY_ARRAY[0]);
                             if (enemy) {
                                 enemy.setActive(true);
                                 enemy.setVisible(true);

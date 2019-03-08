@@ -60,7 +60,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
     }
 
 	startOnPath (path)
-	{
+    {
 		this.follower.t = 0;
         this.path = path;
 		//this.walk.play();																//sounds
