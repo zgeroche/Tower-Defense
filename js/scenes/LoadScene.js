@@ -39,6 +39,8 @@ export class LoadScene extends Phaser.Scene{
 		this.load.atlas('swordmaster', 'assets/towers/swordmaster.png', 'assets/towers/towers.json');
 		this.load.atlas('warlock', 'assets/towers/warlock.png', 'assets/towers/towers.json');
         this.load.atlas('wizard', 'assets/towers/wizard.png', 'assets/towers/towers.json');
+        this.load.atlas('headhunter', 'assets/towers/headhunter.png', 'assets/towers/towers.json');
+        this.load.atlas('berserker', 'assets/towers/berserker.png', 'assets/towers/towers.json');
 
 		//load enemy sprites, will be a loop like load tower sprites
         this.load.atlas('deathknight', 'assets/Enemies/deathknight.png', 'assets/Enemies/deathknight.json');
@@ -63,7 +65,8 @@ export class LoadScene extends Phaser.Scene{
 		//load map
 		//this.load.image('map', 'assets/castle-gates.png', { frameWidth: 640, frameHeight: 512 });
 		this.load.image('map', 'assets/castle gates - big.png', { frameWidth: 1920, frameHeight: 1024 });
-		this.load.image('map2', 'assets/map2.png', { frameWidth: 1920, frameHeight: 1024 });
+		this.load.image('map2', 'assets/armory - big.png', { frameWidth: 1920, frameHeight: 1024 });
+		this.load.image('map3', 'assets/throne - big.png', { frameWidth: 1920, frameHeight: 1024 });
 		//this.load.image('map2', 'assets/armory.png', { frameWidth: 640, frameHeight: 512 });
 		
 		//load sounds
@@ -79,13 +82,23 @@ export class LoadScene extends Phaser.Scene{
 		this.load.audio('cancelSounds', 'assets/Sounds/Other/Cursor Cancel.wav');
 		
 		//load misc
-		//this.load.image('towerbutton', './assets/buttons/blackbox.png');
 		this.load.image('tomato', 'assets/attacks/Tomato.png');
 		this.load.image('arrow', 'assets/attacks/Arrow.png');
 		this.load.image('sword', 'assets/attacks/Sword.png');
+		this.load.image('curvedsword', 'assets/attacks/CurvedSword.png');
+		this.load.image('bigsword', 'assets/attacks/BigSword.png');
+		this.load.image('blacksword', 'assets/attacks/BlackSword.png');
+		this.load.image('knife', 'assets/attacks/Knife.png');
+		this.load.image('goldbullet', 'assets/attacks/GoldBullet.png');
 		this.load.image('whitemagic', 'assets/attacks/WhiteMagic.png');
 		this.load.image('bluemagic', 'assets/attacks/BlueMagic.png');
 		this.load.image('pinkmagic', 'assets/attacks/PinkMagic.png');
+		this.load.image('purplemagic', 'assets/attacks/PurpleMagic.png');
+		this.load.image('silverbullet', 'assets/attacks/SilverBullet.png');
+		this.load.image('cannonball', 'assets/attacks/Cannonball.png');
+		this.load.image('fireball', 'assets/attacks/Fireball.png');
+		this.load.image('lightning', 'assets/attacks/Lightning.png');
+		this.load.image('icicle', 'assets/attacks/Icicle.png');
 		this.load.image('coin', 'assets/attacks/coin.png');
 		this.load.image('highlight', 'assets/blue.png');
 		this.load.image('explosion', 'assets/muzzleflash3.png');

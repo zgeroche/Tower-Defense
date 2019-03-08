@@ -15,7 +15,7 @@ export class GameScene2 extends Phaser.Scene {
     init(data){
         //console.log(data);
         GV.WAVE = 1;
-        GV.GOLD = 25;
+        GV.GOLD = 2500;
         GV.SPAWNED = 0;
 		
 		GV.TOWER_GROUP = [];
@@ -28,13 +28,13 @@ export class GameScene2 extends Phaser.Scene {
 		var graphics = this.add.graphics();    
 		FN.drawLines(graphics);
 		
-		//this.add.image(960, 512, 'map').setDepth(0);
+		this.add.image(960, 512, 'map2').setDepth(0);
 		
 		var coords = [
-			[ 3, 3, 6, 6,11,11,21,21,27,27,30], //x path 1
-			[16, 7, 7, 3, 3, 4, 4, 2, 2, 7, 7],  //y path 1
-			[ 3, 3,14,14,17,17,26,26,30], //x path 2
-			[16,13,13, 8, 8,10,10, 7, 7]   //y path 2
+			[ 3, 3, 6, 6,11,11,21,21,27,27,29], //x path 1
+			[15, 7, 7, 3, 3, 4, 4, 2, 2, 7, 7],  //y path 1
+			[ 3, 3,14,14,17,17,26,26,29], //x path 2
+			[15,13,13, 8, 8,10,10, 7, 7]   //y path 2
 		];
 		
 		for(var i = 0; i < coords[0].length; i++ )
@@ -73,11 +73,10 @@ export class GameScene2 extends Phaser.Scene {
             9.5 * 64, 6.5 * 64,
             15.5 * 64, 10.5 * 64,
             20.5 * 64, 2.5 * 64,
-            30.5*64, 7.5*64
+            29.5*64, 7.5*64
         ];
         GV.FLYPATH = new Phaser.Curves.Spline(flyPoints);
         GV.FLYPATH.draw(graphics);
-
 
 		GV.MAP = [
 			[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],

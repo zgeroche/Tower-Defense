@@ -442,8 +442,11 @@ export function addAttack(x, y, angle, damage, type, towerID) {
 		 var attack = GV.ATTACK_GROUP[0].get();
 	}
    
+   //var attack = GV.ATTACK_GROUP[towerID].get();
+   
     if (attack)
     {
+		console.log(attack);
         attack.fire(x, y, angle, damage, type);
     }
 }
