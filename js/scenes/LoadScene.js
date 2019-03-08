@@ -80,13 +80,23 @@ export class LoadScene extends Phaser.Scene{
 		this.load.audio('cancelSounds', 'assets/Sounds/Other/Cursor Cancel.wav');
 		
 		//load misc
-		//this.load.image('towerbutton', './assets/buttons/blackbox.png');
 		this.load.image('tomato', 'assets/attacks/Tomato.png');
 		this.load.image('arrow', 'assets/attacks/Arrow.png');
 		this.load.image('sword', 'assets/attacks/Sword.png');
+		this.load.image('curvedsword', 'assets/attacks/CurvedSword.png');
+		this.load.image('bigsword', 'assets/attacks/BigSword.png');
+		this.load.image('blacksword', 'assets/attacks/BlackSword.png');
+		this.load.image('knife', 'assets/attacks/Knife.png');
+		this.load.image('goldbullet', 'assets/attacks/GoldBullet.png');
 		this.load.image('whitemagic', 'assets/attacks/WhiteMagic.png');
 		this.load.image('bluemagic', 'assets/attacks/BlueMagic.png');
 		this.load.image('pinkmagic', 'assets/attacks/PinkMagic.png');
+		this.load.image('purplemagic', 'assets/attacks/PurpleMagic.png');
+		this.load.image('silverbullet', 'assets/attacks/SilverBullet.png');
+		this.load.image('cannonball', 'assets/attacks/Cannonball.png');
+		this.load.image('fireball', 'assets/attacks/Fireball.png');
+		this.load.image('lightning', 'assets/attacks/Lightning.png');
+		this.load.image('icicle', 'assets/attacks/Icicle.png');
 		this.load.image('coin', 'assets/attacks/coin.png');
 		this.load.image('highlight', 'assets/blue.png');
 		this.load.image('explosion', 'assets/muzzleflash3.png');
