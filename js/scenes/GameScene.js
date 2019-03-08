@@ -13,6 +13,7 @@ export class GameScene extends Phaser.Scene {
     //Preload function loads assets before game starts
  
     init(data) {
+		GV.scene = CST.SCENES.GAME;
         GV.PLAYER_HEALTH = 100;
 		var graphics = this.add.graphics();    
 		FN.drawLines(graphics);
@@ -72,6 +73,11 @@ export class GameScene extends Phaser.Scene {
 
     //create function initializes and adds assets to game
     create() {
+		this.bgm = this.sound.add('castlegates');
+		this.bgm.volume = 0.04;
+		this.bgm.loop = true;
+		this.bgm.play();			
+		
         /*creates a group for a tower type, that way we can use GV.TOWER_GROUP.get(towerStats) to instantiate new towers easily
 		loop through GV.TOWER_ARRAY to get each tower object
 		then add each object to GV.TOWER_GROUP arr
@@ -145,6 +151,7 @@ export class GameScene extends Phaser.Scene {
             this.scene.remove('HUD');
             //this.scene.restart();
             this.scene.start(CST.SCENES.TRANSITION1);
+			this.bgm.stop();
         });		
 
 		
