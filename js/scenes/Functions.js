@@ -4,7 +4,7 @@ var CS = require('./Classes.js');
 //build the pathing and map for level
 export function buildMap(scene, mapBG){
 	//path to which enemey follows
-    var graphics = scene.add.graphics();    
+/*     var graphics = scene.add.graphics();    
     drawLines(graphics);
     GV.WALKPATH = scene.add.path(0, 352);		//start point for path coords
     GV.WALKPATH.lineTo(416, 352);
@@ -18,15 +18,15 @@ export function buildMap(scene, mapBG){
     GV.WALKPATH.lineTo(1568, 544);
     GV.WALKPATH.lineTo(1568, 288);
     GV.WALKPATH.lineTo(1920, 288);
-    graphics.lineStyle(0, 0xffffff, 1);
-    GV.WALKPATH.draw(graphics);
+    graphics.lineStyle(1, 0xffffff, 1);
+    GV.WALKPATH.draw(graphics); */
 
-    GV.FLYPATH = scene.add.path(0, 352);
+    /* GV.FLYPATH = scene.add.path(0, 352);
     GV.FLYPATH.lineTo(1920, 288);
-    GV.FLYPATH.draw(graphics);
+    GV.FLYPATH.draw(graphics); */
     
 	//add map image
-	scene.add.image(960, 512, mapBG).setDepth(0);
+	//scene.add.image(960, 512, mapBG).setDepth(0);
 
 	//add background music
 	scene.bgm = scene.sound.add('background');
@@ -151,7 +151,6 @@ export function showTowerRange(scene, i, j) {
 	if(typeof GV.MAP[i][j] === 'object') {
 		var x = j * 64 + 64/2;
 		var y = i * 64 + 64/2;
-		var shape = new Phaser.Geom.Circle(i, j, GV.MAP[i][j].atkRange);
 		scene.rangeCircle = scene.scene.add.circle(x, y, GV.MAP[i][j].atkRange, 0x0099ff, 127);
 	}
 }
@@ -227,16 +226,20 @@ export function createButton(scene, x, y, z, title){
 
 export function placeTowerAction(pointer, scene, i, j){
 	
-    var bannerImg = createButton(scene, 1660, 1024, 0, "Place Tower");
+    var placetowerImg = createButton(scene, 1660, 1024, 0, "Place Tower");
 	
-    bannerImg.setInteractive({ useHandCursor: true }).on('pointerdown', ()=> {
-        
+    placetowerImg.setInteractive({ useHandCursor: true }).on('pointerdown', ()=> {
+        GV.BUTTON_GROUP.clear(true,true);
 		scene.scene.menuSounds.play();
-		var buttonImg = createButton(scene,1660, 1024, 54, "Peasant | 5g");
+		var peasantImg = createButton(scene,1660, 1024, 0, "Peasant | 5g");
 		
-        buttonImg.setInteractive({ useHandCursor: true }).on('pointerdown', function (event) {
+        peasantImg.setInteractive({ useHandCursor: true }).on('pointerdown', function (event) {
             var hud = this.scene.get('HUD');
 			var newTower = GV.TOWER_GROUP[GV.PEASANT_STATS.towerId].get(GV.PEASANT_STATS);
+			//have to set new tower to false for active and visible because it was placing
+			//the tower while the menu was open before actually selecting an upgrade
+			newTower.setActive(false);
+			newTower.setVisible(false);
 			if (newTower.checkCost())
 			{
 				newTower.placeTower(i, j, scene);
@@ -244,7 +247,7 @@ export function placeTowerAction(pointer, scene, i, j){
 			}
 			else
 			{
-				this.scene.errorSounds.play();
+				scene.scene.errorSounds.play();
 				GV.BUTTON_GROUP.clear(true,true);
 				createButton(scene,1660, 1024, 0, "Not Enough Gold");
 				cancelAction(scene);
@@ -252,9 +255,10 @@ export function placeTowerAction(pointer, scene, i, j){
 
             hud.tooltipText.setVisible(false);
             hud.tooltip.setVisible(false);
+            scene.upgradeCircle.destroy();
         }, scene.scene);
 
-        buttonImg.on('pointerover', function (event) {
+        peasantImg.on('pointerover', function (event) {
             var hud = this.scene.get('HUD');
             hud.tooltip.setVisible(true);
             var towerInfo = [
@@ -266,14 +270,20 @@ export function placeTowerAction(pointer, scene, i, j){
                 "Hit Flying:    " + GV.PEASANT_STATS.hitFly,
                 ];
 
+            //Add Attack Range Visibly
+            var x = j * 64 + 64 / 2;
+            var y = i * 64 + 64 / 2;
+            scene.upgradeCircle = scene.scene.add.circle(x, y, GV.PEASANT_STATS.atkRange, 0xffffff, 0.25);
+
             hud.tooltipText.setText(towerInfo);
             hud.tooltipText.setVisible(true);
         }, scene.scene);
 
-        buttonImg.on('pointerout', function(event) {
+        peasantImg.on('pointerout', function(event) {
             var hud = this.scene.get('HUD');
             hud.tooltip.setVisible(false);
             hud.tooltipText.setVisible(false);
+            scene.upgradeCircle.destroy();
         }, scene.scene);
     });
 
@@ -293,7 +303,6 @@ export function removeTowerAction(pointer, scene, i, j){
 		}
 		
 		GV.BUTTON_GROUP.clear(true,true);
-		
 	});
 }
 
@@ -305,7 +314,8 @@ export function upgradeTowerAction(i, j, scene, pointer, id){
 	upgradeButtonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
 		scene.scene.menuSounds.play();
 		GV.BUTTON_GROUP.clear(true,true);
-		cancelAction(scene);
+        cancelAction(scene);
+        
 		if(GV.TOWER_ARRAY[id].upgrades)
 		{
 			var numOfUpgrades = GV.TOWER_ARRAY[id].upgrades.length;
@@ -353,7 +363,7 @@ export function cancelAction(scene){
 	
 	cancelImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
 		GV.BUTTON_GROUP.clear(true,true);
-		scene.scene.cancelSounds.play();
+        scene.scene.cancelSounds.play();
 	});
 }
 
@@ -423,7 +433,7 @@ export function drawLines(graphics) {
     graphics.strokePath();
 }	
 
-export function addAttack(x, y, angle, damage, type, towerID) {
+export function addAttack(x, y, angle, damage, type, towerID, enemy) {
 	//REMOVE try/catch once all attack classes are finished.
 	try {
 		 var attack = GV.ATTACK_GROUP[towerID].get();
@@ -432,8 +442,11 @@ export function addAttack(x, y, angle, damage, type, towerID) {
 		 var attack = GV.ATTACK_GROUP[0].get();
 	}
    
+   //var attack = GV.ATTACK_GROUP[towerID].get();
+   
     if (attack)
     {
-        attack.fire(x, y, angle, damage, type);
+		//console.log(attack);
+        attack.fire(x, y, angle, damage, type, enemy);
     }
 }

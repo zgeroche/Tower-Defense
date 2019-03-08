@@ -1,8 +1,12 @@
-import {MenuScene} from "./scenes/MenuScene";
+import { MenuScene } from "./scenes/MenuScene";
+import { IntroScene } from "./scenes/IntroScene";
 import {GameScene} from "./scenes/GameScene";
 import {GameScene2} from "./scenes/GameScene2";
+import {GameScene3} from "./scenes/GameScene3";
 import {LoadScene} from "./scenes/LoadScene";
-import {GameOverScene} from "./scenes/GameOverScene";
+import { GameOverScene } from "./scenes/GameOverScene";
+import { TransitionScene1 } from "./scenes/TransitionScene1";
+import { TransitionScene2 } from "./scenes/TransitionScene2";
 
 //-------------------------------------------------------SETUP-----------------------------------------------------
 //master config for game
@@ -13,7 +17,8 @@ var config = {
     width: 1920,
     height: 1024,
     physics: {
-        default: 'arcade'
+        default: 'arcade',
+        aracde: { debug: true }
     },
     render:{
         pixelArt: true
@@ -21,8 +26,12 @@ var config = {
     scene: [
         LoadScene,
         MenuScene,
+        IntroScene,
         GameScene,
-		GameScene2,
+        TransitionScene1,
+        GameScene2,
+        TransitionScene2,
+		GameScene3,
         GameOverScene]
 
 };
