@@ -74,12 +74,20 @@ export class LoadScene extends Phaser.Scene{
 		this.load.audio('hit', 'assets/Sounds/General Sounds/Simple Damage Sounds/sfx_damage_hit2.wav');
 		this.load.audio('walk', 'assets/Sounds/Movement/Footsteps/sfx_movement_footstepsloop4_slow.wav');
 		this.load.audio('background', 'assets/Sounds/random silly chip song.ogg');
-		this.load.audio('upgradeSound', 'assets/Sounds/General Sounds/Positive Sounds/sfx_sounds_powerup6.wav');
+		this.load.audio('upgradeSound', 'assets/Sounds/00031.wav');
+		//this.load.audio('upgradeSound', 'assets/Sounds/General Sounds/Positive Sounds/sfx_sounds_powerup6.wav');
 		this.load.audio('explosionSound', 'assets/Sounds/Explosions/Short/sfx_exp_short_hard2.wav');
 		this.load.audio('menuSounds', 'assets/Sounds/Other/FFmenu.wav');
 		this.load.audio('mapSounds', 'assets/Sounds/Other/00029.wav');
 		this.load.audio('errorSounds', 'assets/Sounds/Other/Cursor No.wav');
 		this.load.audio('cancelSounds', 'assets/Sounds/Other/Cursor Cancel.wav');
+		this.load.audio('castlegates', 'assets/Sounds/bgm/castlegates.wav');
+		this.load.audio('armory', 'assets/Sounds/bgm/armory.mp3');
+		this.load.audio('throneroom', 'assets/Sounds/bgm/throneroom.wav');
+		//this.load.audio('sword', 'assets/Sounds/7.wav');
+		this.load.audio('gun', 'assets/Sounds/gun-3.wav');
+		this.load.audio('swing', 'assets/Sounds/swing3.wav');
+		this.load.audio('cannonSound', 'assets/Sounds/explosion-1.ogg');
 		
 		//load misc
 		this.load.image('tomato', 'assets/attacks/Tomato.png');

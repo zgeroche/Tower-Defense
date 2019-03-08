@@ -29,10 +29,11 @@ export function buildMap(scene, mapBG){
 	//scene.add.image(960, 512, mapBG).setDepth(0);
 
 	//add background music
-	scene.bgm = scene.sound.add('background');
+/* 	scene.bgm = scene.sound.add('castlegates');
 	scene.bgm.volume = 0.04;
 	scene.bgm.loop = true;
-	//bgm.play();																//sounds
+	//bgm.play();			 */													//sounds
+
 	
 	//menu sounds
 	scene.menuSounds = scene.sound.add('menuSounds');
