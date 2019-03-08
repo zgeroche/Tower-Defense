@@ -39,6 +39,8 @@ export class LoadScene extends Phaser.Scene{
 		this.load.atlas('swordmaster', 'assets/towers/swordmaster.png', 'assets/towers/towers.json');
 		this.load.atlas('warlock', 'assets/towers/warlock.png', 'assets/towers/towers.json');
         this.load.atlas('wizard', 'assets/towers/wizard.png', 'assets/towers/towers.json');
+        this.load.atlas('headhunter', 'assets/towers/headhunter.png', 'assets/towers/towers.json');
+        this.load.atlas('berserker', 'assets/towers/berserker.png', 'assets/towers/towers.json');
 
 		//load enemy sprites, will be a loop like load tower sprites
         this.load.atlas('deathknight', 'assets/deathknight.png', 'assets/deathknight.json');
