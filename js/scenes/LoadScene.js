@@ -41,24 +41,24 @@ export class LoadScene extends Phaser.Scene{
         this.load.atlas('wizard', 'assets/towers/wizard.png', 'assets/towers/towers.json');
 
 		//load enemy sprites, will be a loop like load tower sprites
-        this.load.atlas('deathknight', 'assets/deathknight.png', 'assets/deathknight.json');
-        this.load.atlas('skeleton', 'assets/skeleton.png', 'assets/skeleton.json');
-        this.load.atlas('bat', 'assets/bat.png', 'assets/bat.json');
-        this.load.atlas('ogre', 'assets/ogre.png', 'assets/ogre.json');
-        this.load.atlas('goblin', 'assets/goblin.png', 'assets/goblin.json');
-        this.load.atlas('bossskeleton', 'assets/bossskeleton.png', 'assets/bossskeleton.json');
-        this.load.atlas('reaper', 'assets/reaper.png', 'assets/reaper.json');
-        this.load.atlas('witch', 'assets/witch.png', 'assets/witch.json');
-        this.load.atlas('ghost', 'assets/ghost.png', 'assets/ghost.json');
-        this.load.atlas('jacko', 'assets/jacko.png', 'assets/jacko.json');
-        this.load.atlas('horseman', 'assets/horseman.png', 'assets/horseman.json');
-        this.load.atlas('dragon', 'assets/dragon.png', 'assets/dragon.json');
-        this.load.atlas('golem', 'assets/golem.png', 'assets/golem.json');
-        this.load.atlas('imp', 'assets/imp.png', 'assets/imp.json');
-        this.load.atlas('minotaur', 'assets/minotaur.png', 'assets/minotaur.json');
-        this.load.atlas('slime', 'assets/slime.png', 'assets/slime.json');
-        this.load.atlas('vampire', 'assets/vampire.png', 'assets/vampire.json');
-        this.load.atlas('zombie', 'assets/zombie.png', 'assets/zombie.json');
+        this.load.atlas('deathknight', 'assets/Enemies/deathknight.png', 'assets/Enemies/deathknight.json');
+        this.load.atlas('skeleton', 'assets/Enemies/skeleton.png', 'assets/Enemies/skeleton.json');
+        this.load.atlas('bat', 'assets/Enemies/bat.png', 'assets/Enemies/bat.json');
+        this.load.atlas('ogre', 'assets/Enemies/ogre.png', 'assets/Enemies/ogre.json');
+        this.load.atlas('goblin', 'assets/Enemies/goblin.png', 'assets/Enemies/goblin.json');
+        this.load.atlas('bossskeleton', 'assets/Enemies/bossskeleton.png', 'assets/Enemies/bossskeleton.json');
+        this.load.atlas('reaper', 'assets/Enemies/reaper.png', 'assets/Enemies/reaper.json');
+        this.load.atlas('witch', 'assets/Enemies/witch.png', 'assets/Enemies/witch.json');
+        this.load.atlas('ghost', 'assets/Enemies/ghost.png', 'assets/Enemies/ghost.json');
+        this.load.atlas('jacko', 'assets/Enemies/jacko.png', 'assets/Enemies/jacko.json');
+        this.load.atlas('horseman', 'assets/Enemies/horseman.png', 'assets/Enemies/horseman.json');
+        this.load.atlas('dragon', 'assets/Enemies/dragon.png', 'assets/Enemies/dragon.json');
+        this.load.atlas('golem', 'assets/Enemies/golem.png', 'assets/Enemies/golem.json');
+        this.load.atlas('imp', 'assets/Enemies/imp.png', 'assets/Enemies/imp.json');
+        this.load.atlas('minotaur', 'assets/Enemies/minotaur.png', 'assets/Enemies/minotaur.json');
+        this.load.atlas('slime', 'assets/Enemies/slime.png', 'assets/Enemies/slime.json');
+        this.load.atlas('vampire', 'assets/Enemies/vampire.png', 'assets/Enemies/vampire.json');
+        this.load.atlas('zombie', 'assets/Enemies/zombie.png', 'assets/Enemies/zombie.json');
 		
 		//load map
 		//this.load.image('map', 'assets/castle-gates.png', { frameWidth: 640, frameHeight: 512 });
