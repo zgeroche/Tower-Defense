@@ -13,7 +13,6 @@ export class GameScene2 extends Phaser.Scene {
     //Preload function loads assets before game starts
  
     init(data){
-        //console.log(data);
         GV.WAVE = 1;
         GV.GOLD = 2500;
         GV.SPAWNED = 0;
@@ -42,12 +41,10 @@ export class GameScene2 extends Phaser.Scene {
 			if(i == 0)
 			{
 				GV.WALKPATH = this.add.path((coords[0][i]+0.5)*64, (coords[1][i]+0.5)*64);		//start point for path coords
-				//GV.MAP[coords[1][i]-1][coords[0][i]-1] = 0
 			}
 			else
 			{
 				GV.WALKPATH.lineTo((coords[0][i]+0.5)*64, (coords[1][i]+0.5)*64);
-				//GV.MAP[coords[1][i]-1][coords[0][i]-1] = 0
 			}
 		}
 		
@@ -120,12 +117,7 @@ export class GameScene2 extends Phaser.Scene {
         //turned into attack group soon for different attack types
 		for (var i = 0; i < 10; i++) {
 			var attackClass = "CS."+GV.ATTACK_ARRAY[i].attackName;
-			/* console.log(GV.ATTACK_ARRAY[i]);
-			console.log(GV.ATTACK_ARRAY[i].attackId);
-			console.log(GV.ATTACK_ARRAY[i].attackName);
-			console.log(attackClass); */
 			GV.ATTACK_GROUP[GV.ATTACK_ARRAY[i].attackId] = this.physics.add.group({ classType: eval(attackClass), runChildUpdate: true});
-			//console.log(GV.ATTACK_GROUP[GV.ATTACK_ARRAY[i].attackId]);
 		}
 		
 		//button group
@@ -133,10 +125,6 @@ export class GameScene2 extends Phaser.Scene {
 		
         //build the game map, this includes pathing, map image, animations, background sounds, and general game assets
         FN.buildMap(this, 'map2');
-		
-        //create animations
-        //FN.createAnimations(this, GV.ENEMY_ARRAY, 0);
-        //FN.createAnimations(this, GV.TOWER_ARRAY, 1);
 		
 		//wave management
  		this.buttonImg = this.add.image(1660, 1008, 'waveHUD').setDepth(1);
@@ -153,19 +141,6 @@ export class GameScene2 extends Phaser.Scene {
 			this.buttonImg.setVisible(false);
         });
 		
-/*      this.nextEnemy = this.sys.game.loop.time + GV.WAVE_DELAY;
-        this.complete = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2, 'Wave Complete', {fontFamily: 'VT323', fontSize: 50, color: '#ff0000'}).setDepth(1);
-        this.complete.setVisible(false);
-        this.delay = this.add.text(this.game.renderer.width / 2, this.game.renderer.height / 2 + 50, 'Next Level in ' + (GV.WAVE_DELAY/1000) + ' Seconds', {fontFamily: 'VT323', fontSize: 50, color: '#ff0000'}).setDepth(1);
-        
-		this.skipWave = this.add.text(this.game.renderer.width / 2,this.game.renderer.height / 2 + 100, 'Skip Wait?', {fontFamily: 'VT323', fontSize: 50, color: '#ff0000'}).setDepth(1);
-        this.skipWave.setInteractive();
-        this.skipWave.on("pointerup", ()=>{
-            this.nextEnemy = 0;
-            this.skipWave.setVisible(false);
-        }); */
-
-
         //input related actions in userAction function
         this.input.on('pointerdown', function (pointer){FN.userAction(pointer, this)});
 
@@ -200,11 +175,6 @@ export class GameScene2 extends Phaser.Scene {
         else { */
         this.delay.setText('Next wave in ' + Math.trunc((this.nextEnemy - time) / 1000) + ' Seconds');
         if (time > this.nextEnemy) {
-            //Hide wave completion items
-/*             this.complete.setVisible(false);
-            this.delay.setVisible(false);
-            this.skipWave.setVisible(false);
-			this.buttonImg.setVisible(false); */
 			
             switch (GV.WAVE) {
                 case 1: //Spawn 10 slime
@@ -218,13 +188,7 @@ export class GameScene2 extends Phaser.Scene {
                             GV.SPAWNED += 1;
                         }
                     }
-                    else if (GV.ENEMY_GROUP[16].countActive(true) === 0) {
-                        /* this.complete.setVisible(true);
-                        this.delay.setVisible(true);
-                        this.skipWave.setVisible(true);
-						this.buttonImg.setVisible(true); */
-						
-						
+                    else if (GV.ENEMY_GROUP[16].countActive(true) === 0) {									
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -242,11 +206,6 @@ export class GameScene2 extends Phaser.Scene {
                         }
                     }
                     else if (GV.ENEMY_GROUP[0].countActive(true) === 0) {
-    /*                     this.complete.setVisible(true);
-                        this.delay.setVisible(true);
-                        this.skipWave.setVisible(true);
-						this.buttonImg.setVisible(true); */
-						
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -264,11 +223,6 @@ export class GameScene2 extends Phaser.Scene {
                         }
                     }
                     else if (GV.ENEMY_GROUP[10].countActive(true) === 0) {
-                        /* this.complete.setVisible(true);
-                        this.delay.setVisible(true);
-                        this.skipWave.setVisible(true);
-						this.buttonImg.setVisible(true); */
-						
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -286,11 +240,6 @@ export class GameScene2 extends Phaser.Scene {
                         }
                     }
                     else if (GV.ENEMY_GROUP[5].countActive(true) === 0) {
-/*                         this.complete.setVisible(true);
-                        this.delay.setVisible(true);
-                        this.skipWave.setVisible(true);
-						this.buttonImg.setVisible(true); */
-						
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -314,11 +263,6 @@ export class GameScene2 extends Phaser.Scene {
                         }
                     }
                     else if (GV.ENEMY_GROUP[10].countActive(true) === 0 && GV.ENEMY_GROUP[9].countActive(true) === 0) {
-/*                         this.complete.setVisible(true);
-                        this.delay.setVisible(true);
-                        this.skipWave.setVisible(true);
-						this.buttonImg.setVisible(true); */
-						
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -348,11 +292,6 @@ export class GameScene2 extends Phaser.Scene {
                         }
                     }
                     else if (GV.ENEMY_GROUP[0].countActive(true) === 0 && GV.ENEMY_GROUP[16].countActive(true) === 0) {
-/*                         this.complete.setVisible(true);
-                        this.delay.setVisible(true);
-                        this.skipWave.setVisible(true);
-						this.buttonImg.setVisible(true); */
-						
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -370,11 +309,6 @@ export class GameScene2 extends Phaser.Scene {
                         }
                     }
                     else if (GV.ENEMY_GROUP[5].countActive(true) === 0) {
-                        /*                         this.complete.setVisible(true);
-                                                this.delay.setVisible(true);
-                                                this.skipWave.setVisible(true);
-                                                this.buttonImg.setVisible(true); */
-
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -402,11 +336,6 @@ export class GameScene2 extends Phaser.Scene {
                         }
                     }
                     else if (GV.ENEMY_GROUP[16].countActive(true) === 0) {
-/*                         this.complete.setVisible(true);
-                        this.delay.setVisible(true);
-                        this.skipWave.setVisible(true);
-						this.buttonImg.setVisible(true); */
-
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -446,11 +375,6 @@ export class GameScene2 extends Phaser.Scene {
                         }
                     }
                     else if (GV.ENEMY_GROUP[16].countActive(true) === 0 && GV.ENEMY_GROUP[0].countActive(true) === 0 && GV.ENEMY_GROUP[10].countActive(true) === 0) {
-/*                         this.complete.setVisible(true);
-                        this.delay.setVisible(true);
-                        this.skipWave.setVisible(true);
-						this.buttonImg.setVisible(true); */
-
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -478,11 +402,6 @@ export class GameScene2 extends Phaser.Scene {
                         }
                     }
                     else if (GV.ENEMY_GROUP[17].countActive(true) === 0) {
-/*                         this.complete.setVisible(true);
-                        this.delay.setVisible(true);
-                        this.skipWave.setVisible(true);
-						this.buttonImg.setVisible(true); */
-
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
