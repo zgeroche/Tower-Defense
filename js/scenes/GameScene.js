@@ -89,7 +89,7 @@ export class GameScene extends Phaser.Scene {
         }
 		
         //turned into attack group soon for different attack types
-		for (var i = 0; i < 10; i++) {
+		for (var i = 0; i < 23; i++) {
 			var attackClass = "CS."+GV.ATTACK_ARRAY[i].attackName;
 			/* console.log(GV.ATTACK_ARRAY[i]);
 			console.log(GV.ATTACK_ARRAY[i].attackId);
