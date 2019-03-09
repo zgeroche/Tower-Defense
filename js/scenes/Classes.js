@@ -658,21 +658,12 @@ export class Commander extends Tower {
     }
 }
 
-/* export class Paladin extends Tower {
+export class Berserker extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'paladin');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'berserker');
 		
-		this.anims.play('paladin_idle');
-    }
-} */
-
-export class Headhunter extends Tower {
-    constructor(scene, stats) {
-        super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'headhunter');
-		
-		this.anims.play('headhunter_idle');
+		this.anims.play('berserker_idle');
     }
 }
 
@@ -721,21 +712,12 @@ export class Beastmaster extends Tower {
     }
 }
 
-/* export class Assassin extends Tower {
+export class Headhunter extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'assassin');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'headhunter');
 		
-		this.anims.play('assassin_idle');
-    }
-} */
-
-export class Berserker extends Tower {
-    constructor(scene, stats) {
-        super(scene, stats);
-        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'berserker');
-		
-		this.anims.play('berserker_idle');
+		this.anims.play('headhunter_idle');
     }
 }
 
@@ -1012,17 +994,8 @@ export class CommanderSword extends Attack {
 	}
 };
 
-//PALADIN ATTACK
-/* export class PaladinAttack extends Attack {
-	constructor(scene) {
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
-	}
-}; */
-
-//HEADHUNTER ATTACK
-export class HeadhunterAttack extends Attack {
+//BERSERKER ATTACK
+export class BerserkerAttack extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
@@ -1075,21 +1048,11 @@ export class BeastmasterAttack extends Attack {
 	}
 };
 
-/* //ASSASSIN ATTACK
-export class AssassinAttack extends Attack {
+//HEADHUNTER ATTACK
+export class Spear extends Attack {
 	constructor(scene) {
 		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
-	}
-}; */
-
-
-//BERSERKER ATTACK
-export class BerserkerAttack extends Attack {
-	constructor(scene) {
-		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'spear');
 		this.speed = Phaser.Math.GetSpeed(800, 1);
 	}
 };
@@ -1122,10 +1085,10 @@ export class Lightning extends Attack {
 };
 
 //WARLOCK ATTACK
-export class WarlockAttack extends Attack {
+export class GreenMagic extends Attack {
 	constructor(scene) {
 		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'greenmagic');
 		this.speed = Phaser.Math.GetSpeed(800, 1);
 	}
 };
