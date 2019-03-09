@@ -85,9 +85,11 @@ export class LoadScene extends Phaser.Scene{
 		this.load.audio('armory', 'assets/Sounds/bgm/armory.mp3');
 		this.load.audio('throneroom', 'assets/Sounds/bgm/throneroom.wav');
 		//this.load.audio('sword', 'assets/Sounds/7.wav');
-		this.load.audio('gun', 'assets/Sounds/gun-3.wav');
-		this.load.audio('swing', 'assets/Sounds/swing3.wav');
-		this.load.audio('cannonSound', 'assets/Sounds/explosion-1.ogg');
+		
+		this.load.audio('gunSound', 'assets/Sounds/TowerAttackSounds/gun-3.wav');
+		this.load.audio('swingSound', 'assets/Sounds/TowerAttackSounds/swing3.wav');
+		this.load.audio('cannonSound', 'assets/Sounds/TowerAttackSounds/explosion-1.wav');
+		this.load.audio('arrowSound', 'assets/Sounds/TowerAttackSounds/arrow.wav');
 		
 		//load misc
 		this.load.image('tomato', 'assets/attacks/Tomato.png');

@@ -878,7 +878,7 @@ export class Attack extends Phaser.GameObjects.Image {
 
 	    this.emitter.startFollow(this);
 		
-		this.atkSound = scene.sound.add('swing');
+		this.atkSound = scene.sound.add('swingSound');
 		this.atkSound.volume = 0.04;
 		this.atkSound.loop = false;
         
@@ -941,7 +941,7 @@ export class Sword extends Attack {
 		
         this.speed = 800;//Phaser.Math.GetSpeed(800, 1);
 		
-		this.atkSound = scene.sound.add('swing');
+		this.atkSound = scene.sound.add('swingSound');
 		this.atkSound.volume = 0.04;
 		this.atkSound.loop = false;
 	}
@@ -954,6 +954,10 @@ export class Arrow extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'arrow');
         this.speed = 1200;//Phaser.Math.GetSpeed(1200, 1);
+		
+		this.atkSound = scene.sound.add('arrowSound');
+		this.atkSound.volume = 0.02;
+		this.atkSound.loop = false;
 	}
 };
 
@@ -994,7 +998,7 @@ export class GoldBullet extends Attack {
 
         this.speed = 1400;// Phaser.Math.GetSpeed(1400, 1);
 		
-		this.atkSound = scene.sound.add('gun');
+		this.atkSound = scene.sound.add('gunSound');
 		this.atkSound.volume = 0.02;
 		this.atkSound.loop = false;
 
@@ -1097,7 +1101,7 @@ export class SilverBullet extends Attack {
 
         this.speed = 800;// Phaser.Math.GetSpeed(2000, 1);
 		
-		this.atkSound = scene.sound.add('gun');
+		this.atkSound = scene.sound.add('gunSound');
 		this.atkSound.volume = 0.02;
 		this.atkSound.loop = false;
 	}
