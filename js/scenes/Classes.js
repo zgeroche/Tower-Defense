@@ -186,6 +186,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		this.speed = this.stats.speed/3;
 		this.stunned = false;
 		this.slowed = false;
+		this.ministunned = false;
 		this.clearTint();
 	}
 	
