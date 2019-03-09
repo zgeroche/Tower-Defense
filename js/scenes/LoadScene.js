@@ -86,10 +86,18 @@ export class LoadScene extends Phaser.Scene{
 		this.load.audio('throneroom', 'assets/Sounds/bgm/throneroom.wav');
 		//this.load.audio('sword', 'assets/Sounds/7.wav');
 		
-		this.load.audio('gunSound', 'assets/Sounds/TowerAttackSounds/gun-3.wav');
+		this.load.audio('rifleSound', 'assets/Sounds/TowerAttackSounds/pistol.wav');
+		this.load.audio('gunSound', 'assets/Sounds/TowerAttackSounds/rifle.wav');
 		this.load.audio('swingSound', 'assets/Sounds/TowerAttackSounds/swing3.wav');
 		this.load.audio('cannonSound', 'assets/Sounds/TowerAttackSounds/explosion-1.wav');
 		this.load.audio('arrowSound', 'assets/Sounds/TowerAttackSounds/arrow.wav');
+		//this.load.audio('fireSound', 'assets/Sounds/TowerAttackSounds/foom_0.wav');
+		this.load.audio('fireSound', 'assets/Sounds/TowerAttackSounds/fire.wav');
+		this.load.audio('lightningSound', 'assets/Sounds/TowerAttackSounds/lightning.wav');
+		this.load.audio('spearSound', 'assets/Sounds/TowerAttackSounds/spear.wav');
+		this.load.audio('spellSound', 'assets/Sounds/TowerAttackSounds/spell.wav');
+		this.load.audio('spell2Sound', 'assets/Sounds/TowerAttackSounds/Wind effects 5.wav');
+		this.load.audio('iceSound', 'assets/Sounds/TowerAttackSounds/Ice attack 2.wav');
 		
 		//load misc
 		this.load.image('tomato', 'assets/attacks/Tomato.png');

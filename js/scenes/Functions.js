@@ -436,14 +436,14 @@ export function drawLines(graphics) {
 
 export function addAttack(x, y, angle, damage, type, towerID, enemy) {
 	//REMOVE try/catch once all attack classes are finished.
-	try {
+/* 	try {
 		 var attack = GV.ATTACK_GROUP[towerID].get();
 	}
 	catch(err) {
 		 var attack = GV.ATTACK_GROUP[0].get();
-	}
+	} */
    
-   //var attack = GV.ATTACK_GROUP[towerID].get();
+   var attack = GV.ATTACK_GROUP[towerID].get();
    
     if (attack)
     {

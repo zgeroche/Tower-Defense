@@ -432,7 +432,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 		//this.aoeRange = aoeRange; //area of effect range
 		//this.spc = spc; //has special attack, each value represents special type, 0 = none, 1 = chance to stun, etc.
 		
-		this.text = scene.add.text(0, 0, this.towerName, {font: "16px Arial", fill: "#ffffff"});
+		this.text = scene.add.text(0, 0, this.towerName, { fontFamily: 'VT323', fontSize: 21, fill: "#ffffff", stroke: "000000", strokeThickness: 2});
 		
 		this.upgradeSound = scene.sound.add('upgradeSound');
 		this.upgradeSound.volume = 0.05;
@@ -956,7 +956,7 @@ export class Arrow extends Attack {
         this.speed = 1200;//Phaser.Math.GetSpeed(1200, 1);
 		
 		this.atkSound = scene.sound.add('arrowSound');
-		this.atkSound.volume = 0.02;
+		this.atkSound.volume = 0.04;
 		this.atkSound.loop = false;
 	}
 };
@@ -967,6 +967,11 @@ export class WhiteMagic extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'whitemagic');
         this.speed = 1000;// Phaser.Math.GetSpeed(1000, 1);
+		
+		this.atkSound = scene.sound.add('spell2Sound');
+		this.atkSound.volume = 0.04;
+		this.atkSound.loop = false;
+		this.atkSound.rate = 2;
 	}
 };
 
@@ -998,7 +1003,7 @@ export class GoldBullet extends Attack {
 
         this.speed = 1400;// Phaser.Math.GetSpeed(1400, 1);
 		
-		this.atkSound = scene.sound.add('gunSound');
+		this.atkSound = scene.sound.add('rifleSound');
 		this.atkSound.volume = 0.02;
 		this.atkSound.loop = false;
 
@@ -1012,6 +1017,10 @@ export class RangerArrow extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'arrow');
         this.speed = 800;//Phaser.Math.GetSpeed(800, 1);
+		
+		this.atkSound = scene.sound.add('arrowSound');
+		this.atkSound.volume = 0.04;
+		this.atkSound.loop = false;
 	}
 };
 
@@ -1030,6 +1039,10 @@ export class PinkMagic extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'pinkmagic');
         this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+		
+		this.atkSound = scene.sound.add('spellSound');
+		this.atkSound.volume = 0.01;
+		this.atkSound.loop = false;
 	}
 };
 
@@ -1057,6 +1070,10 @@ export class HeadhunterAttack extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
         this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+		
+		this.atkSound = scene.sound.add('spearSound');
+		this.atkSound.volume = 0.04;
+		this.atkSound.loop = false;
 	}
 };
 
@@ -1102,7 +1119,7 @@ export class SilverBullet extends Attack {
         this.speed = 800;// Phaser.Math.GetSpeed(2000, 1);
 		
 		this.atkSound = scene.sound.add('gunSound');
-		this.atkSound.volume = 0.02;
+		this.atkSound.volume = 0.01;
 		this.atkSound.loop = false;
 	}
 };
@@ -1141,6 +1158,10 @@ export class Fireball extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'fireball');
         this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+		
+		this.atkSound = scene.sound.add('fireSound');
+		this.atkSound.volume = 0.04;
+		this.atkSound.loop = false;
 	}
 };
 
@@ -1150,6 +1171,10 @@ export class Icicle extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'icicle');
         this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+		
+		this.atkSound = scene.sound.add('iceSound');
+		this.atkSound.volume = 0.02;
+		this.atkSound.loop = false;
 	}
 };
 
@@ -1159,6 +1184,10 @@ export class Lightning extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'lightning');
         this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+		
+		this.atkSound = scene.sound.add('lightningSound');
+		this.atkSound.volume = 0.01;
+		this.atkSound.loop = false;
 	}
 };
 
