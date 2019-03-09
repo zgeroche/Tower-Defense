@@ -18,7 +18,20 @@ export class Enemy extends Phaser.GameObjects.Sprite {
         this.flying = stats.flying;
         this.damage = stats.damage;
         this.enemyName = stats.enemyName.toLowerCase();
-
+		this.scene = scene;
+		this.stats = stats;
+		
+		this.stunned = false;
+		this.stuntime = 0;
+		
+		this.slowed = false;
+		this.slowtime = 0;
+		
+		this.ministunned = false;
+		this.ministuntime = 0;
+		
+		this.weakened = false;
+		
         this.facing = 'i';
         this.prevx = 0;
         this.prevy = 0;
@@ -33,6 +46,22 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		this.explode = scene.sound.add('explosionSound');
         this.explode.volume = 0.03;
         this.explode.loop = false;
+		
+		this.stunSound = scene.sound.add('stunSound');
+		this.stunSound.volume = 0.05;
+		this.stunSound.loop = false;
+		
+		this.slowSound = scene.sound.add('slowSound');
+		this.slowSound.volume = 0.04;
+		this.slowSound.loop = false;
+		
+		this.ministunSound = scene.sound.add('ministunSound');
+		this.ministunSound.volume = 0.04;
+		this.ministunSound.loop = false;
+		
+		this.weakenSound = scene.sound.add('weakenSound');
+		this.weakenSound.volume = 0.04;
+		this.weakenSound.loop = false;
 		
 		this.text = scene.add.text(0, 0, "HP: "+ this.hp, {font: "16px Arial", fill: "#ffffff"});		//textHP
 		this.text.setPadding(0, 0, 0, 60);														//textHP
@@ -108,7 +137,58 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			GV.GOLD += this.value;
 		}
 	}
+	
+	stun()
+	{
+		this.speed = 0;
+		this.stunned = true;
+		this.stunSound.play();
+		this.setTint(0xFFFF00);
+		this.stuntime = this.scene.sys.game.loop.time;
+	}
 
+	slow()
+	{
+		if(!this.slowed)
+		{
+			this.speed = this.speed * 0.6;
+			this.slowSound.play();
+		}
+		
+		this.slowed = true;
+		this.setTint(0xADD8E6);
+		this.slowtime = this.scene.sys.game.loop.time;
+	}
+	
+	ministun()
+	{
+		this.speed = 0;
+		this.ministunned = true;
+		this.ministunSound.play();
+		this.setTint(0xFFFF00);
+		this.ministuntime = this.scene.sys.game.loop.time;
+	}
+	
+	weaken()
+	{
+		if(!this.weakened)
+		{
+			this.weakened = true;
+			this.weakenSound.play();
+			this.physicalArmor -= 25;
+			this.magicArmor -= 25;
+			this.setTint(0x8B008B);
+		}
+	}
+	
+	restore()
+	{
+		this.speed = this.stats.speed/3;
+		this.stunned = false;
+		this.slowed = false;
+		this.clearTint();
+	}
+	
 	turnDown()
 	{
 	    let anim = this.enemyName.toLowerCase() + "_down";
@@ -152,6 +232,30 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
 		this.text.setPosition(this.follower.vec.x, this.follower.vec.y);									//textHP
         this.healthbar.setPosition(this.follower.vec.x - this.width, this.follower.vec.y - this.height);
+		
+		if(this.stunned)
+		{
+			if(time - 1500 >= this.stuntime)
+			{
+				this.restore();
+			}		
+		}
+		
+		if(this.slowed)
+		{
+			if(time - 3000 >= this.slowtime)
+			{
+				this.restore();
+			}
+		}
+		
+		if(this.ministunned)
+		{
+			if(time - 200 >= this.ministuntime)
+			{
+				this.restore();
+			}
+		}
 
 		if (this.follower.t >= 1)
 		{
@@ -862,7 +966,7 @@ export class Attack extends Phaser.GameObjects.Image {
         
 	}
 
-    fire(x, y, angle, damage, type, enemy)
+    fire(x, y, angle, id, damage, type, enemy)
     {
         this.setActive(true);
         this.setVisible(true);
@@ -877,6 +981,7 @@ export class Attack extends Phaser.GameObjects.Image {
 
         this.enemy = enemy;
 
+		this.id = id;
         this.lifespan = 1000;
         this.damage = damage;
         this.atkType = type;
@@ -1022,6 +1127,11 @@ export class Knife extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'knife');
         this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+		
+		//cutpurse sound
+		this.cutpurseSound = scene.sound.add('extragold');
+		this.cutpurseSound.volume = 0.04;
+		this.cutpurseSound.loop = false;
 	}
 };
 

@@ -80,6 +80,11 @@ export class LoadScene extends Phaser.Scene{
 		this.load.audio('mapSounds', 'assets/Sounds/Other/00029.wav');
 		this.load.audio('errorSounds', 'assets/Sounds/Other/Cursor No.wav');
 		this.load.audio('cancelSounds', 'assets/Sounds/Other/Cursor Cancel.wav');
+		this.load.audio('stunSound', 'assets/Sounds/General Sounds/Negative Sounds/sfx_sounds_damage1.wav');
+		this.load.audio('slowSound', 'assets/Sounds/General Sounds/Interactions/sfx_sounds_interaction10.wav');
+		this.load.audio('ministunSound', 'assets/Sounds/General Sounds/Negative Sounds/sfx_sounds_error2.wav');
+		this.load.audio('weakenSound', 'assets/Sounds/General Sounds/Interactions/sfx_sounds_interaction26.wav');
+		this.load.audio('extragold', 'assets/Sounds/General Sounds/Coins/sfx_coin_double3.wav');
 		
 		//load misc
 		this.load.image('tomato', 'assets/attacks/Tomato.png');
