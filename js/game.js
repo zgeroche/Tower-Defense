@@ -17,7 +17,8 @@ var config = {
     width: 1920,
     height: 1024,
     physics: {
-        default: 'arcade'
+        default: 'arcade',
+        aracde: { debug: true }
     },
     render:{
         pixelArt: true

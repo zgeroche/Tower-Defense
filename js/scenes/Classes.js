@@ -60,7 +60,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
     }
 
 	startOnPath (path)
-	{
+    {
 		this.follower.t = 0;
         this.path = path;
 		//this.walk.play();																//sounds
@@ -527,7 +527,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 	    var enemy = FN.getEnemy(this.x, this.y, this.atkRange, this.hitFly);
 	    if(enemy) {
 	        var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-	        FN.addAttack(this.x, this.y, angle, this.str, this.atkType, this.towerId);
+	        FN.addAttack(this.x, this.y, angle, this.str, this.atkType, this.towerId, enemy);
 	        //this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make towers rotate to face enemy
 	    }
 		 if(enemy && this.attack == 0)
@@ -846,7 +846,7 @@ export class Attack extends Phaser.GameObjects.Image {
 		this.incX = 0;
 		this.incY = 0;
 		this.lifespan = 0;
-
+        this.scene = scene;
 		//this.speed = Phaser.Math.GetSpeed(600, 1);
 
     	this.particles = scene.add.particles('coin');
@@ -862,7 +862,7 @@ export class Attack extends Phaser.GameObjects.Image {
         
 	}
 
-    fire(x, y, angle, damage, type)
+    fire(x, y, angle, damage, type, enemy)
     {
         this.setActive(true);
         this.setVisible(true);
@@ -872,8 +872,10 @@ export class Attack extends Phaser.GameObjects.Image {
         //  we don't need to rotate the attacks as they are round
         this.setRotation(angle);
 
-        this.dx = Math.cos(angle);
-        this.dy = Math.sin(angle);
+        //this.dx = Math.cos(angle);
+        //this.dy = Math.sin(angle);
+
+        this.enemy = enemy;
 
         this.lifespan = 1000;
         this.damage = damage;
@@ -882,9 +884,11 @@ export class Attack extends Phaser.GameObjects.Image {
 
 	update (time, delta)
 	{
-		this.lifespan -= delta;
-		this.x += this.dx * (this.speed * delta);
-		this.y += this.dy * (this.speed * delta);
+        this.lifespan -= delta;
+        this.scene.physics.moveToObject(this, this.enemy, this.speed);
+
+		//this.x += this.dx * (this.speed * delta);
+		//this.y += this.dy * (this.speed * delta);
         this.emitter.explode(5,this.x,this.y);
 
 		if (this.lifespan <= 0)
@@ -900,7 +904,7 @@ export class Tomato extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'tomato');
-		this.speed = Phaser.Math.GetSpeed(600, 1);
+        this.speed = 600;//Phaser.Math.GetSpeed(600, 1);
 	}
 };
 
@@ -909,7 +913,7 @@ export class Sword extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sword');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;//Phaser.Math.GetSpeed(800, 1);
 	}
 };
 
@@ -918,7 +922,7 @@ export class Arrow extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'arrow');
-		this.speed = Phaser.Math.GetSpeed(1200, 1);
+        this.speed = 1200;//Phaser.Math.GetSpeed(1200, 1);
 	}
 };
 
@@ -927,7 +931,7 @@ export class WhiteMagic extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'whitemagic');
-		this.speed = Phaser.Math.GetSpeed(1000, 1);
+        this.speed = 1000;// Phaser.Math.GetSpeed(1000, 1);
 	}
 };
 
@@ -936,7 +940,7 @@ export class KnightSword extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sword');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
 	}
 };
 
@@ -945,7 +949,7 @@ export class CurvedSword extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'curvedsword');
-		this.speed = Phaser.Math.GetSpeed(900, 1);
+        this.speed = 900;// Phaser.Math.GetSpeed(900, 1);
 	}
 };
 
@@ -954,7 +958,7 @@ export class GoldBullet extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'goldbullet');
-		this.speed = Phaser.Math.GetSpeed(1400, 1);
+        this.speed = 1400;// Phaser.Math.GetSpeed(1400, 1);
 	}
 };
 
@@ -963,7 +967,7 @@ export class RangerArrow extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'arrow');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;//Phaser.Math.GetSpeed(800, 1);
 	}
 };
 
@@ -972,7 +976,7 @@ export class BlueMagic extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bluemagic');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
 	}
 };
 
@@ -981,7 +985,7 @@ export class PinkMagic extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'pinkmagic');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
 	}
 };
 
@@ -990,7 +994,7 @@ export class CommanderSword extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bigsword');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
 	}
 };
 
@@ -999,7 +1003,7 @@ export class BerserkerAttack extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
 	}
 };
 
@@ -1008,7 +1012,7 @@ export class BlackSword extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'blacksword');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
 	}
 };
 
@@ -1017,7 +1021,7 @@ export class Knife extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'knife');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
 	}
 };
 
@@ -1026,7 +1030,7 @@ export class Cannonball extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cannonball');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
 	}
 };
 
@@ -1035,7 +1039,7 @@ export class SilverBullet extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'silverbullet');
-		this.speed = Phaser.Math.GetSpeed(2000, 1);
+        this.speed = 800;// Phaser.Math.GetSpeed(2000, 1);
 	}
 };
 
@@ -1044,7 +1048,7 @@ export class BeastmasterAttack extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
 	}
 };
 
@@ -1053,7 +1057,8 @@ export class Spear extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'spear');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+
 	}
 };
 
@@ -1062,7 +1067,7 @@ export class Fireball extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'fireball');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
 	}
 };
 
@@ -1071,7 +1076,7 @@ export class Icicle extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'icicle');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
 	}
 };
 
@@ -1080,7 +1085,7 @@ export class Lightning extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'lightning');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
 	}
 };
 
@@ -1089,7 +1094,7 @@ export class GreenMagic extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'greenmagic');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
 	}
 };
 
@@ -1098,7 +1103,7 @@ export class PurpleMagic extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'purplemagic');
-		this.speed = Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;//Phaser.Math.GetSpeed(800, 1);
 	}
 }; 
 
