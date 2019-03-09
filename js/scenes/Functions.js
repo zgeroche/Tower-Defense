@@ -412,7 +412,51 @@ export function damageEnemy(enemy, attack) {
     if (enemy.active === true && attack.active === true) {
         // we remove the attack right away
         attack.setActive(false);
-        attack.setVisible(false);    
+        attack.setVisible(false);
+
+		switch(attack.id)
+		{
+			case 10:
+				var stun = Math.floor(Math.random() * 4);
+				if (stun == 0)
+				{
+					enemy.stun();
+				}
+				break;
+			case 12:
+				if (enemy.physicalArmor > 0)
+				{
+					attack.damage += Math.floor(attack.damage * (100+enemy.physicalArmor/100));
+				}
+				break;
+			case 13:
+				var money = Math.floor(Math.random() * 10);
+				if (money == 0)
+				{
+					GV.GOLD += 10;
+					attack.cutpurseSound.play();
+				}
+				break;
+			case 14:
+				break;
+			case 16:
+				break;
+			case 17:
+				break;
+			case 18:
+				break;
+			case 19:
+				enemy.slow();
+				break;
+			case 20:
+				enemy.ministun();
+				break;
+			case 21:
+				enemy.weaken();
+				break;
+			default:
+				break;
+		}	
         
         // decrease the enemy hp with ATTACK_DAMAGE
         enemy.receiveDamage(attack.damage);
@@ -447,6 +491,6 @@ export function addAttack(x, y, angle, damage, type, towerID, enemy) {
     if (attack)
     {
 		//console.log(attack);
-        attack.fire(x, y, angle, damage, type, enemy);
+        attack.fire(x, y, angle, towerID, damage, type, enemy);
     }
 }
