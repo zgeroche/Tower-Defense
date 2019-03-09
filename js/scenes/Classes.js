@@ -84,7 +84,6 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			maxParticles: 10,
 			on: false
 		});
-		
 
     }
 
@@ -135,11 +134,32 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			//this.walk.stop();																//sounds
 			this.destroy();
 			GV.GOLD += this.value;
+			
+			if(this.particlesShock){this.particlesShock.destroy();};
+			if(this.particlesSnow){this.particlesSnow.destroy();};
+			if(this.particlesStun){this.particlesStun.destroy();};
+			if(this.particlesWeak){this.particlesWeak.destroy();};
+			
 		}
 	}
 	
 	stun()
 	{
+		if(!this.stunned)
+			{
+				var shape1 = new Phaser.Geom.Ellipse(0, 0, this.width, this.width/4);
+				this.particlesStun = this.scene.add.particles('confuse');
+				var emitter = this.particlesStun.createEmitter({
+					x: 0,
+					y: 0,
+					//lifespan: 500,
+					//speed: { min: -100, max: 100 },
+					scale: { start: 0.5, end: 0 },
+					blendMode: 'SCREEN',
+					emitZone: { type: 'edge', source: shape1, quantity: 60, yoyo: false }
+				});
+				emitter.startFollow(this);
+			}
 		this.speed = 0;
 		this.stunned = true;
 		this.stunSound.play();
@@ -153,6 +173,20 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		{
 			this.speed = this.speed * 0.6;
 			this.slowSound.play();
+			
+			var shape3 = new Phaser.Geom.Rectangle(0, 0, this.width, this.height);
+			this.particlesSnow = this.scene.add.particles('snowflake');
+			var emitter = this.particlesSnow.createEmitter({
+				x: { min: (this.width/2)*-1, max: (this.width/2) },
+				y: { min: (this.height/2)*-1, max: (this.height/2)},
+				lifespan: 1000,
+				gravityY: 10,
+				scale: { start: 0, end: 0.5, ease: 'Quad.easeOut' },
+				alpha: { start: 1, end: 0, ease: 'Quad.easeIn' },
+				blendMode: 'ADD',
+				emitZone: { type: 'random', source: shape3 }
+			});
+			emitter.startFollow(this);
 		}
 		
 		this.slowed = true;
@@ -167,6 +201,18 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		this.ministunSound.play();
 		this.setTint(0xFFFF00);
 		this.ministuntime = this.scene.sys.game.loop.time;
+
+		this.particlesShock = this.scene.add.particles('shock');
+		var emitter = this.particlesShock.createEmitter({
+			x: { min: (this.width/2)*-1, max: (this.width/2) },
+			y: { min: (this.height/2)*-1, max: (this.height/2)},
+			lifespan: 500,
+			speed: { min: -100, max: 100 },
+			scale: { start: 0.2, end: 0 },
+			quantity: 25,
+			blendMode: 'SCREEN'
+		});
+		emitter.startFollow(this);
 	}
 	
 	weaken()
@@ -178,16 +224,53 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			this.physicalArmor -= 25;
 			this.magicArmor -= 25;
 			this.setTint(0x8B008B);
+			
+			this.particlesWeak = this.scene.add.particles('purplemagic');
+				/* var emitter = this.particlesSnow.createEmitter({
+					x: { min: (this.width/2)*-1, max: (this.width/2) },
+					y: { min: (this.height/2)*-1, max: (this.height/2)},
+					lifespan: 500,
+					speedY: { min: 0, max: 5},
+					scale: { start: 0.5, end: 0 },
+					quantity: 0.5,
+					blendMode: 'SCREEN'
+				}); */
+				var emitter = this.particlesWeak.createEmitter({
+					x: { min: (this.width/2)*-1, max: (this.width/2) },
+					y: { min: (this.height/2)*-1, max: (this.height/2)},
+					lifespan: 500,
+					speedY: { min: 0, max: this.height},
+					scale: { start: 0.5, end: 0 },
+					quantity: 0.5,
+					blendMode: 'MULTIPLY'
+				});
+				emitter.startFollow(this);
+			
+			
 		}
 	}
 	
-	restore()
+	restore(clear)
 	{
 		this.speed = this.stats.speed/3;
-		this.stunned = false;
-		this.slowed = false;
-		this.ministunned = false;
 		this.clearTint();
+		
+		if(clear == 0)
+		{
+			if(this.particlesStun){this.particlesStun.destroy();};
+			this.stunned = false;
+		}
+		else if(clear == 1)
+		{
+			if(this.particlesSnow){this.particlesSnow.destroy();};
+			this.slowed = false;
+		}
+		if(clear == 2)
+		{
+			if(this.particlesShock){this.particlesShock.destroy();};
+			this.ministunned = false;
+		}
+		//if(this.particlesWeak){this.particlesWeak.destroy();};
 	}
 	
 	turnDown()
@@ -238,7 +321,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		{
 			if(time - 1500 >= this.stuntime)
 			{
-				this.restore();
+				this.restore(0);
 			}		
 		}
 		
@@ -246,15 +329,16 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		{
 			if(time - 3000 >= this.slowtime)
 			{
-				this.restore();
+				this.restore(1);
 			}
+			
 		}
 		
 		if(this.ministunned)
 		{
 			if(time - 200 >= this.ministuntime)
 			{
-				this.restore();
+				this.restore(2);
 			}
 		}
 
@@ -270,6 +354,11 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			//this.camera.shake(150, .05, false);							//camera
 			//this.camera.flash(150,  200, 0, 0, false);					//camera
 			GV.PLAYER_HEALTH -= this.damage;
+			
+			if(this.particlesShock){this.particlesShock.destroy();};
+			if(this.particlesSnow){this.particlesSnow.destroy();};
+			if(this.particlesStun){this.particlesStun.destroy();};
+			if(this.particlesWeak){this.particlesWeak.destroy();};
 		}
         if (!this.flying) {
             if (this.prevx < this.follower.vec.x && this.facing != 'r') {
@@ -1303,7 +1392,7 @@ export class HUD extends Phaser.Scene {
 		var playDown = this.add.image(789,16, 'playDown');
 		volDown.setVisible(false);
 		playDown.setVisible(false);
-        var hp = new HealthBar(sceneA, 50, 3, 100);
+        //var hp = new HealthBar(sceneA, 50, 3, 100);
 		this.playerHealth = this.add.text(55, 3, 'Health: ' + GV.PLAYER_HEALTH +'/100', {fontFamily: 'VT323', fontSize: 26, color: '#ff0000'});
 		this.infoBar = this.add.text(275, 2, 'Wave 1: ' + GV.WAVE_DETAIL[0], { fontFamily: 'VT323', fontSize: 30, color: '#00ff00' });
         this.goldBar = this.add.text(55, 34, 'Gold: ' + GV.GOLD, { fontFamily: 'VT323', fontSize: 26, color: '#ffd700' });

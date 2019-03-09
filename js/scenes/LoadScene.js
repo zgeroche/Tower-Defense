@@ -139,6 +139,10 @@ export class LoadScene extends Phaser.Scene{
         this.load.image('towerbutton', 'assets/menuBar.png');
         this.load.image('cancel', 'assets/cancel.png');
         this.load.image('towerButtonBG', 'assets/towerButtonBG.png');
+		
+        this.load.image('snowflake', 'assets/snowflake.png');
+        this.load.image('shock', 'assets/shock.png');
+        this.load.image('confuse', 'assets/star.png');
     }
     create(){
         //Creating menu screen background layers
