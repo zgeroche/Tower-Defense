@@ -29,10 +29,11 @@ export function buildMap(scene, mapBG){
 	//scene.add.image(960, 512, mapBG).setDepth(0);
 
 	//add background music
-	scene.bgm = scene.sound.add('background');
+/* 	scene.bgm = scene.sound.add('castlegates');
 	scene.bgm.volume = 0.04;
 	scene.bgm.loop = true;
-	//bgm.play();																//sounds
+	//bgm.play();			 */													//sounds
+
 	
 	//menu sounds
 	scene.menuSounds = scene.sound.add('menuSounds');
@@ -479,14 +480,14 @@ export function drawLines(graphics) {
 
 export function addAttack(x, y, angle, damage, type, towerID, enemy) {
 	//REMOVE try/catch once all attack classes are finished.
-	try {
+/* 	try {
 		 var attack = GV.ATTACK_GROUP[towerID].get();
 	}
 	catch(err) {
 		 var attack = GV.ATTACK_GROUP[0].get();
-	}
+	} */
    
-   //var attack = GV.ATTACK_GROUP[towerID].get();
+   var attack = GV.ATTACK_GROUP[towerID].get();
    
     if (attack)
     {

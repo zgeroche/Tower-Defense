@@ -13,6 +13,9 @@ export class GameScene3 extends Phaser.Scene {
     //Preload function loads assets before game starts
  
     init(data){
+        //console.log(data);
+		GV.scene = CST.SCENES.GAME3;
+
         GV.WAVE = 1;
         GV.GOLD = 2500;
         GV.SPAWNED = 0;
@@ -41,6 +44,7 @@ export class GameScene3 extends Phaser.Scene {
 			if(i == 0)
 			{
 				GV.WALKPATH = this.add.path((coords[0][i]+0.5)*64, (coords[1][i]+0.5)*64);		//start point for path coords
+				//GV.MAP[coords[1][i]-1][coords[0][i]-1] = 0
 			}
 			else
 			{
@@ -56,6 +60,7 @@ export class GameScene3 extends Phaser.Scene {
 			}
 			else
 			{
+				//GV.MAP[coords[1][i]-1][coords[0][i]-1] = 0
 				GV.WALKPATH2.lineTo((coords[2][i]+0.5)*64, (coords[3][i]+0.5)*64);
 			}
 		}
@@ -95,6 +100,10 @@ export class GameScene3 extends Phaser.Scene {
 
     //create function initializes and adds assets to game
     create() {
+		this.bgm = this.sound.add('throneroom');
+		this.bgm.volume = 0.04;
+		this.bgm.loop = true;
+		this.bgm.play();		
         /*creates a group for a tower type, that way we can use GV.TOWER_GROUP.get(towerStats) to instantiate new towers easily
 		loop through GV.TOWER_ARRAY to get each tower object
 		then add each object to GV.TOWER_GROUP arr
@@ -112,10 +121,9 @@ export class GameScene3 extends Phaser.Scene {
         }
 		
         //turned into attack group soon for different attack types
-		for (var i = 0; i < 10; i++) {
+		for (var i = 0; i < 23; i++) {
 			var attackClass = "CS."+GV.ATTACK_ARRAY[i].attackName;
 			GV.ATTACK_GROUP[GV.ATTACK_ARRAY[i].attackId] = this.physics.add.group({ classType: eval(attackClass), runChildUpdate: true});
-
 		}
 		
 		//button group
@@ -145,7 +153,7 @@ export class GameScene3 extends Phaser.Scene {
     }
 
     //update function constantly refreshes so to progress game
-    update(time, delta) {  
+     update(time, delta) {  
 		//Wave timer and skip in bottom HUD
 		FN.waveHUD(this, Math.trunc((this.nextEnemy - time) / 1000));
 
@@ -206,6 +214,7 @@ export class GameScene3 extends Phaser.Scene {
                             enemy.setActive(true);
                             enemy.setVisible(true);
                             enemy.startOnPath(GV.WALKPATH2);
+
                             this.nextEnemy = time + GV.ENEMY_SPAWN_RATE;
                             GV.SPAWNED += 1;
                         }

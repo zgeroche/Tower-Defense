@@ -74,17 +74,38 @@ export class LoadScene extends Phaser.Scene{
 		this.load.audio('hit', 'assets/Sounds/General Sounds/Simple Damage Sounds/sfx_damage_hit2.wav');
 		this.load.audio('walk', 'assets/Sounds/Movement/Footsteps/sfx_movement_footstepsloop4_slow.wav');
 		this.load.audio('background', 'assets/Sounds/random silly chip song.ogg');
-		this.load.audio('upgradeSound', 'assets/Sounds/General Sounds/Positive Sounds/sfx_sounds_powerup6.wav');
+		this.load.audio('upgradeSound', 'assets/Sounds/00031.wav');
+		//this.load.audio('upgradeSound', 'assets/Sounds/General Sounds/Positive Sounds/sfx_sounds_powerup6.wav');
 		this.load.audio('explosionSound', 'assets/Sounds/Explosions/Short/sfx_exp_short_hard2.wav');
 		this.load.audio('menuSounds', 'assets/Sounds/Other/FFmenu.wav');
 		this.load.audio('mapSounds', 'assets/Sounds/Other/00029.wav');
 		this.load.audio('errorSounds', 'assets/Sounds/Other/Cursor No.wav');
 		this.load.audio('cancelSounds', 'assets/Sounds/Other/Cursor Cancel.wav');
+
 		this.load.audio('stunSound', 'assets/Sounds/General Sounds/Negative Sounds/sfx_sounds_damage1.wav');
 		this.load.audio('slowSound', 'assets/Sounds/General Sounds/Interactions/sfx_sounds_interaction10.wav');
 		this.load.audio('ministunSound', 'assets/Sounds/General Sounds/Negative Sounds/sfx_sounds_error2.wav');
 		this.load.audio('weakenSound', 'assets/Sounds/General Sounds/Interactions/sfx_sounds_interaction26.wav');
 		this.load.audio('extragold', 'assets/Sounds/General Sounds/Coins/sfx_coin_double3.wav');
+
+		this.load.audio('castlegates', 'assets/Sounds/bgm/castlegates.wav');
+		this.load.audio('armory', 'assets/Sounds/bgm/armory.mp3');
+		this.load.audio('throneroom', 'assets/Sounds/bgm/throneroom.wav');
+		//this.load.audio('sword', 'assets/Sounds/7.wav');
+		
+		this.load.audio('rifleSound', 'assets/Sounds/TowerAttackSounds/pistol.wav');
+		this.load.audio('gunSound', 'assets/Sounds/TowerAttackSounds/rifle.wav');
+		this.load.audio('swingSound', 'assets/Sounds/TowerAttackSounds/swing3.wav');
+		this.load.audio('cannonSound', 'assets/Sounds/TowerAttackSounds/explosion-1.wav');
+		this.load.audio('arrowSound', 'assets/Sounds/TowerAttackSounds/arrow.wav');
+		//this.load.audio('fireSound', 'assets/Sounds/TowerAttackSounds/foom_0.wav');
+		this.load.audio('fireSound', 'assets/Sounds/TowerAttackSounds/fire.wav');
+		this.load.audio('lightningSound', 'assets/Sounds/TowerAttackSounds/lightning.wav');
+		this.load.audio('spearSound', 'assets/Sounds/TowerAttackSounds/spear.wav');
+		this.load.audio('spellSound', 'assets/Sounds/TowerAttackSounds/spell.wav');
+		this.load.audio('spell2Sound', 'assets/Sounds/TowerAttackSounds/Wind effects 5.wav');
+		this.load.audio('iceSound', 'assets/Sounds/TowerAttackSounds/Ice attack 2.wav');
+
 		
 		//load misc
 		this.load.image('tomato', 'assets/attacks/Tomato.png');

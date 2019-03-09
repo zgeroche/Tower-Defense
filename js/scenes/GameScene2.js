@@ -13,6 +13,10 @@ export class GameScene2 extends Phaser.Scene {
     //Preload function loads assets before game starts
  
     init(data){
+
+        //console.log(data);
+		GV.scene = CST.SCENES.GAME2;
+
         GV.WAVE = 1;
         GV.GOLD = 2500;
         GV.SPAWNED = 0;
@@ -98,6 +102,11 @@ export class GameScene2 extends Phaser.Scene {
 
     //create function initializes and adds assets to game
     create() {
+		this.bgm = this.sound.add('armory');
+		this.bgm.volume = 0.04;
+		this.bgm.loop = true;
+		this.bgm.play();
+		
         /*creates a group for a tower type, that way we can use GV.TOWER_GROUP.get(towerStats) to instantiate new towers easily
 		loop through GV.TOWER_ARRAY to get each tower object
 		then add each object to GV.TOWER_GROUP arr
@@ -115,7 +124,7 @@ export class GameScene2 extends Phaser.Scene {
         }
 		
         //turned into attack group soon for different attack types
-		for (var i = 0; i < 10; i++) {
+		for (var i = 0; i < 23; i++) {
 			var attackClass = "CS."+GV.ATTACK_ARRAY[i].attackName;
 			GV.ATTACK_GROUP[GV.ATTACK_ARRAY[i].attackId] = this.physics.add.group({ classType: eval(attackClass), runChildUpdate: true});
 		}
@@ -150,6 +159,7 @@ export class GameScene2 extends Phaser.Scene {
             this.scene.remove('HUD');
             //this.scene.restart();
             this.scene.start(CST.SCENES.TRANSITION2);
+			this.bgm.stop();
         });		
 
 		
