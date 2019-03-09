@@ -1056,10 +1056,10 @@ export class WhiteMagic extends Attack {
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'whitemagic');
         this.speed = 1000;// Phaser.Math.GetSpeed(1000, 1);
 		
-		this.atkSound = scene.sound.add('spell2Sound');
+		/* this.atkSound = scene.sound.add('spell2Sound');
 		this.atkSound.volume = 0.04;
 		this.atkSound.loop = false;
-		this.atkSound.rate = 2;
+		this.atkSound.rate = 2; */
 	}
 };
 
