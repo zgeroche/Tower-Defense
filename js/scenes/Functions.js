@@ -1,6 +1,22 @@
 var GV = require('./Globals.js');
 var CS = require('./Classes.js');
 
+//get towers and enemies
+export function loadUnits(scene){
+	GV.TOWER_ARRAY = [];
+	GV.ENEMY_ARRAY = [];
+	
+	for(var i = 0; i < 23; i++) {
+		var key = i.toString();
+		GV.TOWER_ARRAY[i] = scene.cache.json.get(key+"_towers");
+	}
+	
+	for(var i = 0; i < 18; i++) {
+		var key = i.toString();
+		GV.ENEMY_ARRAY[i] = scene.cache.json.get(key+"_enemies");
+	}
+}
+
 //build the pathing and map for level
 export function buildMap(scene, mapBG){
 	//path to which enemey follows
@@ -236,7 +252,7 @@ export function placeTowerAction(pointer, scene, i, j){
 		
         peasantImg.setInteractive({ useHandCursor: true }).on('pointerdown', function (event) {
             var hud = this.scene.get('HUD');
-			var newTower = GV.TOWER_GROUP[GV.PEASANT_STATS.towerId].get(GV.PEASANT_STATS);
+			var newTower = GV.TOWER_GROUP[GV.TOWER_ARRAY[0].towerId].get(GV.TOWER_ARRAY[0]);
 			//have to set new tower to false for active and visible because it was placing
 			//the tower while the menu was open before actually selecting an upgrade
 			newTower.setActive(false);
@@ -263,18 +279,18 @@ export function placeTowerAction(pointer, scene, i, j){
             var hud = this.scene.get('HUD');
             hud.tooltip.setVisible(true);
             var towerInfo = [
-                GV.PEASANT_STATS.towerName,
-                "Attack Speed:  " + GV.PEASANT_STATS.atkRate,
-                "Attack Range:  " + GV.PEASANT_STATS.atkRange,
-                "Damage:        " + GV.PEASANT_STATS.str,
-                "Damage Type:   " + GV.PEASANT_STATS.atkType,
-                "Hit Flying:    " + GV.PEASANT_STATS.hitFly,
+                GV.TOWER_ARRAY[0].towerName,
+                "Attack Speed:  " + GV.TOWER_ARRAY[0].atkRate,
+                "Attack Range:  " + GV.TOWER_ARRAY[0].atkRange,
+                "Damage:        " + GV.TOWER_ARRAY[0].str,
+                "Damage Type:   " + GV.TOWER_ARRAY[0].atkType,
+                "Hit Flying:    " + GV.TOWER_ARRAY[0].hitFly,
                 ];
 
             //Add Attack Range Visibly
             var x = j * 64 + 64 / 2;
             var y = i * 64 + 64 / 2;
-            scene.upgradeCircle = scene.scene.add.circle(x, y, GV.PEASANT_STATS.atkRange, 0xffffff, 0.25);
+            scene.upgradeCircle = scene.scene.add.circle(x, y, GV.TOWER_ARRAY[0].atkRange, 0xffffff, 0.25);
 
             hud.tooltipText.setText(towerInfo);
             hud.tooltipText.setVisible(true);

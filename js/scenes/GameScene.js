@@ -71,9 +71,11 @@ export class GameScene extends Phaser.Scene {
     //create function initializes and adds assets to game
     create() {
 		this.bgm = this.sound.add('castlegates');
-		this.bgm.volume = 0.04;
+		this.bgm.volume = 0.02;
 		this.bgm.loop = true;
 		this.bgm.play();			
+		
+		FN.loadUnits(this);
 		
         /*creates a group for a tower type, that way we can use GV.TOWER_GROUP.get(towerStats) to instantiate new towers easily
 		loop through GV.TOWER_ARRAY to get each tower object
@@ -130,8 +132,9 @@ export class GameScene extends Phaser.Scene {
         nextScene.on("pointerup", ()=>{
             this.scene.remove('HUD');
             //this.scene.restart();
-            this.scene.start(CST.SCENES.TRANSITION1);
 			this.bgm.stop();
+            this.scene.start(CST.SCENES.TRANSITION1);
+			
         });		
 
 		
@@ -367,6 +370,7 @@ export class GameScene extends Phaser.Scene {
                         this.complete.destroy();
                         this.skipWave.destroy();
                         this.scene.remove('HUD');
+						this.bgm.stop();
                         this.add.text(this.game.renderer.width / 2 - 150, 200, 'VICTORY', { fontFamily: 'VT323', fontSize: 150, color: '#ffffff', align: 'center' });
                         this.scene.transition({
                             target: CST.SCENES.TRANSITION1,
