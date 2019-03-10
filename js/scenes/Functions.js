@@ -443,8 +443,14 @@ export function damageEnemy(enemy, attack) {
 			case 16:
 				break;
 			case 17:
+				var critical = Math.floor(Math.random() * 7)
+				if (critical == 0)
+				{
+					attack.damage *= 2.5;
+				}
 				break;
 			case 18:
+				enemy.burn();
 				break;
 			case 19:
 				enemy.slow();

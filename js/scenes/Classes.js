@@ -27,6 +27,10 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		this.slowed = false;
 		this.slowtime = 0;
 		
+		this.burned = false;
+		this.burntime = 0;
+		this.burncounter = 0;
+		
 		this.ministunned = false;
 		this.ministuntime = 0;
 		
@@ -160,6 +164,14 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		this.slowtime = this.scene.sys.game.loop.time;
 	}
 	
+	burn()
+	{
+		this.burned = true;
+		this.setTint(0xFF4500);
+		this.burntime = this.scene.sys.game.loop.time;
+		this.burncounter = 0;
+	}
+	
 	ministun()
 	{
 		this.speed = 0;
@@ -186,6 +198,8 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		this.speed = this.stats.speed/3;
 		this.stunned = false;
 		this.slowed = false;
+		this.burned = false;
+		this.burncounter = 0;
 		this.ministunned = false;
 		this.clearTint();
 	}
@@ -234,25 +248,40 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		this.text.setPosition(this.follower.vec.x, this.follower.vec.y);									//textHP
         this.healthbar.setPosition(this.follower.vec.x - this.width, this.follower.vec.y - this.height);
 		
-		if(this.stunned)
+		if (this.stunned)
 		{
-			if(time - 1500 >= this.stuntime)
+			if (time - 1500 >= this.stuntime)
 			{
 				this.restore();
 			}		
 		}
 		
-		if(this.slowed)
+		if (this.slowed)
 		{
-			if(time - 3000 >= this.slowtime)
+			if (time - 3000 >= this.slowtime)
 			{
 				this.restore();
 			}
 		}
 		
-		if(this.ministunned)
+		if (this.burned)
 		{
-			if(time - 200 >= this.ministuntime)
+			if (time - 500 >= this.burntime)
+			{
+				this.receiveDamage(25, "magical");
+				this.burncounter++;
+				this.burntime += 500;
+			}
+			
+			if(this.burncounter >= 4)
+			{
+				this.restore();
+			}	
+		}
+		
+		if (this.ministunned)
+		{
+			if (time - 200 >= this.ministuntime)
 			{
 				this.restore();
 			}
