@@ -136,6 +136,7 @@ export class LoadScene extends Phaser.Scene{
 		this.load.image('curvedsword', 'assets/attacks/CurvedSword.png');
 		this.load.image('bigsword', 'assets/attacks/BigSword.png');
 		this.load.image('spear', 'assets/attacks/Spear.png');
+		this.load.image('axe', 'assets/attacks/Axe.png');
 		this.load.image('blacksword', 'assets/attacks/BlackSword.png');
 		this.load.image('knife', 'assets/attacks/Knife.png');
 		this.load.image('goldbullet', 'assets/attacks/GoldBullet.png');
@@ -146,6 +147,7 @@ export class LoadScene extends Phaser.Scene{
 		this.load.image('greenmagic', 'assets/attacks/GreenMagic.png');
 		this.load.image('silverbullet', 'assets/attacks/SilverBullet.png');
 		this.load.image('cannonball', 'assets/attacks/Cannonball.png');
+		this.load.image('crow', 'assets/attacks/Crow.png');
 		this.load.image('fireball', 'assets/attacks/Fireball.png');
 		this.load.image('lightning', 'assets/attacks/Lightning.png');
 		this.load.image('icicle', 'assets/attacks/Icicle.png');

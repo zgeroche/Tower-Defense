@@ -1271,10 +1271,10 @@ export class CommanderSword extends Attack {
 };
 
 //BERSERKER ATTACK
-export class BerserkerAttack extends Attack {
+export class Axe extends Attack {
 	constructor(scene) {
 		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'axe');
         this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
 		
 		this.atkSound = scene.sound.add('spearSound');
@@ -1336,10 +1336,10 @@ export class SilverBullet extends Attack {
 };
 
 //BEASTMASTER ATTACK
-export class BeastmasterAttack extends Attack {
+export class Crow extends Attack {
 	constructor(scene) {
 		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'crow');
         this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
 	}
 };
