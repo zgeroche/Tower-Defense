@@ -27,6 +27,10 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		this.slowed = false;
 		this.slowtime = 0;
 		
+		this.burned = false;
+		this.burntime = 0;
+		this.burncounter = 0;
+		
 		this.ministunned = false;
 		this.ministuntime = 0;
 		
@@ -194,6 +198,14 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		this.slowtime = this.scene.sys.game.loop.time;
 	}
 	
+	burn()
+	{
+		this.burned = true;
+		this.setTint(0xFF4500);
+		this.burntime = this.scene.sys.game.loop.time;
+		this.burncounter = 0;
+	}
+	
 	ministun()
 	{
 		this.speed = 0;
@@ -270,7 +282,19 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			if(this.particlesShock){this.particlesShock.destroy();};
 			this.ministunned = false;
 		}
-		//if(this.particlesWeak){this.particlesWeak.destroy();};
+		if(clear == 3)
+    {
+     //if(this.particlesBurn){thisl.particlesBurn.destroy();};
+     this.burned = false;
+    }
+    //if(this.particlesWeak){this.particlesWeak.destroy();};
+	}
+	
+	clearBurn()
+	{
+		this.burned = false;
+		this.burncounter = 0;
+		this.clearTint();
 	}
 	
 	turnDown()
@@ -317,29 +341,43 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		this.text.setPosition(this.follower.vec.x, this.follower.vec.y);									//textHP
         this.healthbar.setPosition(this.follower.vec.x - this.width, this.follower.vec.y - this.height);
 		
-		if(this.stunned)
+		if (this.stunned)
 		{
-			if(time - 1500 >= this.stuntime)
+			if (time - 1500 >= this.stuntime)
 			{
 				this.restore(0);
 			}		
 		}
 		
-		if(this.slowed)
+		if (this.slowed)
 		{
-			if(time - 3000 >= this.slowtime)
+			if (time - 3000 >= this.slowtime)
 			{
 				this.restore(1);
 			}
-			
 		}
 		
-		if(this.ministunned)
+    if (this.ministunned)
 		{
-			if(time - 200 >= this.ministuntime)
+			if (time - 200 >= this.ministuntime)
 			{
 				this.restore(2);
 			}
+		}  
+      
+		if (this.burned)
+		{
+			if (time - 500 >= this.burntime)
+			{
+				this.receiveDamage(25, "magical");
+				this.burncounter++;
+				this.burntime += 500;
+			}
+			
+			if(this.burncounter >= 4)
+			{
+				this.restore(3);
+			}	
 		}
 
 		if (this.follower.t >= 1)
@@ -1116,7 +1154,7 @@ export class Sword extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sword');
 		
-        this.speed = 800;//Phaser.Math.GetSpeed(800, 1);
+        this.speed = 600;//Phaser.Math.GetSpeed(800, 1);
 		
 		this.atkSound = scene.sound.add('swingSound');
 		this.atkSound.volume = 0.04;
@@ -1130,7 +1168,7 @@ export class Arrow extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'arrow');
-        this.speed = 1200;//Phaser.Math.GetSpeed(1200, 1);
+        this.speed = 800;//Phaser.Math.GetSpeed(1200, 1);
 		
 		this.atkSound = scene.sound.add('arrowSound');
 		this.atkSound.volume = 0.04;
@@ -1158,7 +1196,7 @@ export class KnightSword extends Attack {
 		super(scene);
 
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sword');
-        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 600;// Phaser.Math.GetSpeed(800, 1);
 
 	}
 };
@@ -1168,7 +1206,7 @@ export class CurvedSword extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'curvedsword');
-        this.speed = 900;// Phaser.Math.GetSpeed(900, 1);
+        this.speed = 800;// Phaser.Math.GetSpeed(900, 1);
 	}
 };
 
@@ -1178,7 +1216,7 @@ export class GoldBullet extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'goldbullet');
 
-        this.speed = 1400;// Phaser.Math.GetSpeed(1400, 1);
+        this.speed = 1200;// Phaser.Math.GetSpeed(1400, 1);
 		
 		this.atkSound = scene.sound.add('rifleSound');
 		this.atkSound.volume = 0.02;
@@ -1228,15 +1266,15 @@ export class CommanderSword extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bigsword');
-        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 600;// Phaser.Math.GetSpeed(800, 1);
 	}
 };
 
 //BERSERKER ATTACK
-export class BerserkerAttack extends Attack {
+export class Axe extends Attack {
 	constructor(scene) {
 		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'axe');
         this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
 		
 		this.atkSound = scene.sound.add('spearSound');
@@ -1274,7 +1312,7 @@ export class Cannonball extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cannonball');
 
-        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 400;// Phaser.Math.GetSpeed(800, 1);
 		
 		this.atkSound = scene.sound.add('cannonSound');
 		this.atkSound.volume = 0.02;
@@ -1289,7 +1327,7 @@ export class SilverBullet extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'silverbullet');
 
-        this.speed = 800;// Phaser.Math.GetSpeed(2000, 1);
+        this.speed = 1200;// Phaser.Math.GetSpeed(2000, 1);
 		
 		this.atkSound = scene.sound.add('gunSound');
 		this.atkSound.volume = 0.01;
@@ -1298,11 +1336,13 @@ export class SilverBullet extends Attack {
 };
 
 //BEASTMASTER ATTACK
-export class BeastmasterAttack extends Attack {
+export class Crow extends Attack {
 	constructor(scene) {
 		super(scene);
-		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'coin');
+		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'crow');
         this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+		
+		this.attackcount = 0;
 	}
 };
 
@@ -1311,7 +1351,7 @@ export class Spear extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'spear');
-        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 600;// Phaser.Math.GetSpeed(800, 1);
 
 	}
 };
@@ -1321,7 +1361,7 @@ export class Fireball extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'fireball');
-        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 700;// Phaser.Math.GetSpeed(800, 1);
 		
 		this.atkSound = scene.sound.add('fireSound');
 		this.atkSound.volume = 0.04;
@@ -1334,7 +1374,7 @@ export class Icicle extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'icicle');
-        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 700;// Phaser.Math.GetSpeed(800, 1);
 		
 		this.atkSound = scene.sound.add('iceSound');
 		this.atkSound.volume = 0.02;
@@ -1347,7 +1387,7 @@ export class Lightning extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'lightning');
-        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 700;// Phaser.Math.GetSpeed(800, 1);
 		
 		this.atkSound = scene.sound.add('lightningSound');
 		this.atkSound.volume = 0.01;
