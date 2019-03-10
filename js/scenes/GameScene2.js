@@ -158,8 +158,9 @@ export class GameScene2 extends Phaser.Scene {
         nextScene.on("pointerup", ()=>{
             this.scene.remove('HUD');
             //this.scene.restart();
-            this.scene.start(CST.SCENES.TRANSITION2);
 			this.bgm.stop();
+            this.scene.start(CST.SCENES.TRANSITION2);
+			
         });		
 
 		

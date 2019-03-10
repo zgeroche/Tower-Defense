@@ -1,4 +1,5 @@
 import { CST} from "../CST";
+var GV = require('./Globals.js');
 
 export class LoadScene extends Phaser.Scene{
     constructor(){
@@ -8,6 +9,22 @@ export class LoadScene extends Phaser.Scene{
     }
 
     preload(){
+		//load towers from file. Tower files are named by tower ids
+ 		for(var i = 0; i < 23; i++) {
+			var str = i.toString();
+			var loader = 'assets/towers/json/'+str+'.json';
+			var key = str+"_towers";
+			this.load.json(key, loader);
+		} 
+		
+		//load enemies from file. Enemy files are named by enemy ids
+		for(var i = 0; i < 18; i++) {
+			var str = i.toString();
+			var loader = 'assets/Enemies/json/'+str+'.json';
+			var key = str+"_enemies";
+			this.load.json(key, loader);
+		} 
+		
 		this.load.image('HUD', 'assets/HUD.png');
 		this.load.image('vol', 'assets/volume.png');
 		this.load.image('volDown', 'assets/volDown.png');
@@ -63,17 +80,15 @@ export class LoadScene extends Phaser.Scene{
         this.load.atlas('zombie', 'assets/Enemies/zombie.png', 'assets/Enemies/zombie.json');
 		
 		//load map
-		//this.load.image('map', 'assets/castle-gates.png', { frameWidth: 640, frameHeight: 512 });
 		this.load.image('map', 'assets/castle gates - big.png', { frameWidth: 1920, frameHeight: 1024 });
 		this.load.image('map2', 'assets/armory - big.png', { frameWidth: 1920, frameHeight: 1024 });
 		this.load.image('map3', 'assets/throne - big.png', { frameWidth: 1920, frameHeight: 1024 });
-		//this.load.image('map2', 'assets/armory.png', { frameWidth: 640, frameHeight: 512 });
 		
 		//load sounds
 		this.load.audio('dkDeath', 'assets/Sounds/Death Screams/Human/sfx_deathscream_human5.wav');
 		this.load.audio('hit', 'assets/Sounds/General Sounds/Simple Damage Sounds/sfx_damage_hit2.wav');
 		this.load.audio('walk', 'assets/Sounds/Movement/Footsteps/sfx_movement_footstepsloop4_slow.wav');
-		this.load.audio('background', 'assets/Sounds/random silly chip song.ogg');
+		//this.load.audio('background', 'assets/Sounds/bgm/random silly chip song.ogg');
 		this.load.audio('upgradeSound', 'assets/Sounds/00031.wav');
 		//this.load.audio('upgradeSound', 'assets/Sounds/General Sounds/Positive Sounds/sfx_sounds_powerup6.wav');
 		this.load.audio('explosionSound', 'assets/Sounds/Explosions/Short/sfx_exp_short_hard2.wav');
@@ -88,9 +103,6 @@ export class LoadScene extends Phaser.Scene{
 		this.load.audio('weakenSound', 'assets/Sounds/General Sounds/Interactions/sfx_sounds_interaction26.wav');
 		this.load.audio('extragold', 'assets/Sounds/General Sounds/Coins/sfx_coin_double3.wav');
 
-		this.load.audio('castlegates', 'assets/Sounds/bgm/castlegates.wav');
-		this.load.audio('armory', 'assets/Sounds/bgm/armory.mp3');
-		this.load.audio('throneroom', 'assets/Sounds/bgm/throneroom.wav');
 		//this.load.audio('sword', 'assets/Sounds/7.wav');
 		
 		this.load.audio('rifleSound', 'assets/Sounds/TowerAttackSounds/pistol.wav');
@@ -105,6 +117,16 @@ export class LoadScene extends Phaser.Scene{
 		this.load.audio('spellSound', 'assets/Sounds/TowerAttackSounds/spell.wav');
 		this.load.audio('spell2Sound', 'assets/Sounds/TowerAttackSounds/Wind effects 5.wav');
 		this.load.audio('iceSound', 'assets/Sounds/TowerAttackSounds/Ice attack 2.wav');
+		
+		this.load.audio('itemClickSound', 'assets/Sounds/Other/Item2A.wav');
+		this.load.audio('menuClickSound', 'assets/Sounds/Other/Menu2A.wav');
+		this.load.audio('menuBGM', 'assets/Sounds/bgm/menu.mp3');
+		this.load.audio('castlegates', 'assets/Sounds/bgm/castlegates.wav');
+		this.load.audio('armory', 'assets/Sounds/bgm/armory.mp3');
+		this.load.audio('throneroom', 'assets/Sounds/bgm/throneroom.wav');
+		this.load.audio('introSceneBGM', 'assets/Sounds/bgm/snow_about_a_castle.mp3');
+		this.load.audio('transScene1BGM', 'assets/Sounds/bgm/Classical Murder.ogg');
+		this.load.audio('transScene2BGM', 'assets/Sounds/bgm/Uncatchable.mp3');
 
 		
 		//load misc
@@ -130,7 +152,15 @@ export class LoadScene extends Phaser.Scene{
 		this.load.image('coin', 'assets/attacks/coin.png');
 		this.load.image('highlight', 'assets/blue.png');
 		this.load.image('explosion', 'assets/muzzleflash3.png');
-        this.load.image('menuscreen', 'assets/bg.png', { frameWidth: 1920, frameHeight: 1024 });
+        //this.load.image('menuscreen', 'assets/bg.png', { frameWidth: 1920, frameHeight: 1024 });
+		
+        this.load.image('menuscreenA', 'assets/menuBG.png', { frameWidth: 1920, frameHeight: 1024 });
+        this.load.image('menuscreenB', 'assets/menuMountainFar.png', { frameWidth: 1920, frameHeight: 1024 });
+        this.load.image('menuscreenC', 'assets/menuMountainClose.png', { frameWidth: 1920, frameHeight: 1024 });
+        this.load.image('menuscreenD', 'assets/menuTreesFar.png', { frameWidth: 1920, frameHeight: 1024 });
+        this.load.image('menuscreenE', 'assets/menuTreesClose.png', { frameWidth: 1920, frameHeight: 1024 });
+        this.load.image('menuscreenF', 'assets/menuCloud.png', { frameWidth: 1920, frameHeight: 1024 });
+		
         this.load.image('introscreen', 'assets/fortress.png', { frameWidth: 1920, frameHeight: 1024 });
         this.load.image('transition', 'assets/gate.png', { frameWidth: 1920, frameHeight: 1024 });
 		this.load.image('newgame', 'assets/new.png');
@@ -139,10 +169,13 @@ export class LoadScene extends Phaser.Scene{
         this.load.image('towerbutton', 'assets/menuBar.png');
         this.load.image('cancel', 'assets/cancel.png');
         this.load.image('towerButtonBG', 'assets/towerButtonBG.png');
+		
+        this.load.image('snowflake', 'assets/snowflake.png');
+        this.load.image('shock', 'assets/shock.png');
+        this.load.image('confuse', 'assets/star.png');
     }
     create(){
         //Creating menu screen background layers
         this.scene.start(CST.SCENES.MENU, "Loading complete");
-        //this.scene.start(CST.SCENES.GAME2, "Loading complete");
         }
 }
