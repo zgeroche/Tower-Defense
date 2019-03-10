@@ -193,14 +193,31 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		}
 	}
 	
-	restore()
+	clearStun()
 	{
 		this.speed = this.stats.speed/3;
 		this.stunned = false;
+		this.clearTint();
+	}
+	
+	clearSlow()
+	{
+		this.speed = this.stats.speed/3;
 		this.slowed = false;
+		this.clearTint();
+	}
+	
+	clearMinistun()
+	{
+		this.speed = this.stats.speed/3;
+		this.ministunned = false;
+		this.clearTint();
+	}
+	
+	clearBurn()
+	{
 		this.burned = false;
 		this.burncounter = 0;
-		this.ministunned = false;
 		this.clearTint();
 	}
 	
@@ -252,7 +269,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		{
 			if (time - 1500 >= this.stuntime)
 			{
-				this.restore();
+				this.clearStun();
 			}		
 		}
 		
@@ -260,7 +277,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		{
 			if (time - 3000 >= this.slowtime)
 			{
-				this.restore();
+				this.clearSlow();
 			}
 		}
 		
@@ -275,7 +292,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			
 			if(this.burncounter >= 4)
 			{
-				this.restore();
+				this.clearBurn();
 			}	
 		}
 		
@@ -283,7 +300,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		{
 			if (time - 200 >= this.ministuntime)
 			{
-				this.restore();
+				this.clearMinistun();
 			}
 		}
 
