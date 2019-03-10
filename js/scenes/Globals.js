@@ -18,7 +18,7 @@ var TOWER_FIRE_RATE = 300;
 
 //stats for each tower type loaded from file rather than defined here, but for now do this
 //objects to hold sounds and animation information as well?
-var PEASANT_STATS = 		 {towerId:0,  towerName:"Peasant", 		 cost:5,   str:50,  atkRange:150, atkType:"physical", atkRate:750,  hitFly:false, upgrades: [1, 2, 3]};
+/* var PEASANT_STATS = 		 {towerId:0,  towerName:"Peasant", 		 cost:5,   str:50,  atkRange:150, atkType:"physical", atkRate:750,  hitFly:false, upgrades: [1, 2, 3]};
 var SOLDIER_STATS = 		 {towerId:1,  towerName:"Soldier", 		 cost:20,  str:100, atkRange:200, atkType:"physical", atkRate:400,  hitFly:false, upgrades: [4, 5]};
 var ARCHER_STATS = 			 {towerId:2,  towerName:"Archer", 		 cost:20,  str:75,  atkRange:300, atkType:"physical", atkRate:600,  hitFly:true,  upgrades: [6, 7]};
 var APPRENTICE_STATS = 		 {towerId:3,  towerName:"Apprentice", 	 cost:20,  str:80,  atkRange:250, atkType:"magical",  atkRate:500,  hitFly:false, upgrades: [8, 9]};
@@ -65,7 +65,7 @@ var TOWER_ARRAY = [PEASANT_STATS, //0
 			ICEMAGE_STATS,//19
 			LIGHTNINGMAGE_STATS,//20
 			WARLOCK_STATS,//21
-			PRIESTESS_STATS];//22 
+			PRIESTESS_STATS];//22  */
 
 var PEASANT_ATTACK = 		{attackId:0,  attackName:"Tomato"};
 var SOLDIER_ATTACK = 		{attackId:1,  attackName:"Sword"};
@@ -115,7 +115,7 @@ var ATTACK_ARRAY = [PEASANT_ATTACK, //0
 			WARLOCK_ATTACK, //21
 			PRIESTESS_ATTACK]; //22 
 
-var DEATHKNIGHT_STATS =  {enemyId: 0,   enemyName: "Deathknight",    speed: 1,    hp: 500,    magicArmor: 0,  physicalArmor: 0,  flying: false, value: 1,  frameEnd: 4, damage: 10};
+/* var DEATHKNIGHT_STATS =  {enemyId: 0,   enemyName: "Deathknight",    speed: 1,    hp: 500,    magicArmor: 0,  physicalArmor: 0,  flying: false, value: 1,  frameEnd: 4, damage: 10};
 var SKELETON_STATS =     {enemyId: 1,   enemyName: "Skeleton",       speed: 1,    hp: 600,    magicArmor: 10, physicalArmor: 0,  flying: false, value: 2,  frameEnd: 4, damage: 10};
 var BAT_STATS =          {enemyId: 2,   enemyName: "Bat",            speed: 2,    hp: 300,    magicArmor: 0,  physicalArmor: 0,  flying: true,  value: 1,  frameEnd: 5, damage: 7 };
 var OGRE_STATS =         {enemyId: 4,   enemyName: "Ogre",           speed: .75,  hp: 2000,   magicArmor: 10, physicalArmor: 10, flying: false, value: 5,  frameEnd: 6, damage: 20};
@@ -152,7 +152,7 @@ var ENEMY_ARRAY = [DEATHKNIGHT_STATS,
                 VAMPIRE_STATS,
                 SLIME_STATS,
                 MINOTAUR_STATS
-];
+]; */
 
 //map for tower placement, 0=can place, -1=cannot place, towerObj=tower already occupying space
 var MAP;
@@ -176,7 +176,7 @@ WAVE_DELAY,
 PLAYER_HEALTH,
 ATTACK_DAMAGE,
 TOWER_FIRE_RATE,
-PEASANT_STATS,
+/* PEASANT_STATS,
 SOLDIER_STATS,
 ARCHER_STATS,
 APPRENTICE_STATS,
@@ -199,7 +199,7 @@ ICEMAGE_STATS,
 LIGHTNINGMAGE_STATS,
 WARLOCK_STATS,
 PRIESTESS_STATS,  
-TOWER_ARRAY,
+TOWER_ARRAY, */
 PEASANT_ATTACK,
 SOLDIER_ATTACK,
 ARCHER_ATTACK,
@@ -224,7 +224,7 @@ LIGHTNINGMAGE_ATTACK,
 WARLOCK_ATTACK,
 PRIESTESS_ATTACK, 
 ATTACK_ARRAY,
-DEATHKNIGHT_STATS,
+/* DEATHKNIGHT_STATS,
 SKELETON_STATS,
 BAT_STATS,
 OGRE_STATS,
@@ -242,7 +242,7 @@ ZOMBIE_STATS,
 VAMPIRE_STATS,
 SLIME_STATS,
 MINOTAUR_STATS,
-ENEMY_ARRAY,
+ENEMY_ARRAY, */
 MAP,
 WAVE_DETAIL
 }
