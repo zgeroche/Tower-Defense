@@ -75,6 +75,8 @@ export class GameScene extends Phaser.Scene {
 		this.bgm.loop = true;
 		this.bgm.play();			
 		
+		FN.loadUnits(this);
+		
         /*creates a group for a tower type, that way we can use GV.TOWER_GROUP.get(towerStats) to instantiate new towers easily
 		loop through GV.TOWER_ARRAY to get each tower object
 		then add each object to GV.TOWER_GROUP arr

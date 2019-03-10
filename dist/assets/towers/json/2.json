@@ -1,0 +1,1 @@
+{"towerId":2,  "towerName":"Archer", 		 "cost":20,  "str":75,  "atkRange":300, "atkType":"physical", "atkRate":600,  "hitFly":true,  "upgrades": [6, 7]}

@@ -1,4 +1,5 @@
 import { CST} from "../CST";
+var GV = require('./Globals.js');
 
 export class LoadScene extends Phaser.Scene{
     constructor(){
@@ -8,6 +9,22 @@ export class LoadScene extends Phaser.Scene{
     }
 
     preload(){
+		//load towers from file. Tower files are named by tower ids
+ 		for(var i = 0; i < 23; i++) {
+			var str = i.toString();
+			var loader = 'assets/towers/json/'+str+'.json';
+			var key = str+"_towers";
+			this.load.json(key, loader);
+		} 
+		
+		//load enemies from file. Enemy files are named by enemy ids
+		for(var i = 0; i < 18; i++) {
+			var str = i.toString();
+			var loader = 'assets/Enemies/json/'+str+'.json';
+			var key = str+"_enemies";
+			this.load.json(key, loader);
+		} 
+		
 		this.load.image('HUD', 'assets/HUD.png');
 		this.load.image('vol', 'assets/volume.png');
 		this.load.image('volDown', 'assets/volDown.png');
@@ -63,17 +80,15 @@ export class LoadScene extends Phaser.Scene{
         this.load.atlas('zombie', 'assets/Enemies/zombie.png', 'assets/Enemies/zombie.json');
 		
 		//load map
-		//this.load.image('map', 'assets/castle-gates.png', { frameWidth: 640, frameHeight: 512 });
 		this.load.image('map', 'assets/castle gates - big.png', { frameWidth: 1920, frameHeight: 1024 });
 		this.load.image('map2', 'assets/armory - big.png', { frameWidth: 1920, frameHeight: 1024 });
 		this.load.image('map3', 'assets/throne - big.png', { frameWidth: 1920, frameHeight: 1024 });
-		//this.load.image('map2', 'assets/armory.png', { frameWidth: 640, frameHeight: 512 });
 		
 		//load sounds
 		this.load.audio('dkDeath', 'assets/Sounds/Death Screams/Human/sfx_deathscream_human5.wav');
 		this.load.audio('hit', 'assets/Sounds/General Sounds/Simple Damage Sounds/sfx_damage_hit2.wav');
 		this.load.audio('walk', 'assets/Sounds/Movement/Footsteps/sfx_movement_footstepsloop4_slow.wav');
-		this.load.audio('background', 'assets/Sounds/random silly chip song.ogg');
+		//this.load.audio('background', 'assets/Sounds/bgm/random silly chip song.ogg');
 		this.load.audio('upgradeSound', 'assets/Sounds/00031.wav');
 		//this.load.audio('upgradeSound', 'assets/Sounds/General Sounds/Positive Sounds/sfx_sounds_powerup6.wav');
 		this.load.audio('explosionSound', 'assets/Sounds/Explosions/Short/sfx_exp_short_hard2.wav');
@@ -147,6 +162,5 @@ export class LoadScene extends Phaser.Scene{
     create(){
         //Creating menu screen background layers
         this.scene.start(CST.SCENES.MENU, "Loading complete");
-        //this.scene.start(CST.SCENES.GAME2, "Loading complete");
         }
 }

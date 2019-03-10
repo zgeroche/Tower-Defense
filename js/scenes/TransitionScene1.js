@@ -7,7 +7,7 @@ export class TransitionScene1 extends Phaser.Scene {
         })
     }
     init(data) {
-        console.log(data);
+        //console.log(data);
     }
 
     create() {

@@ -1,0 +1,1 @@
+{ "enemyId": 9,  "enemyName": "Horseman",       "speed": 2,    "hp": 750,    "magicArmor": 0,  "physicalArmor": 0,  "flying": false, "value": 1,  "frameEnd": 3, "damage": 5 }

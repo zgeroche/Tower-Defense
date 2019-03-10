@@ -183,7 +183,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 				gravityY: 10,
 				scale: { start: 0, end: 0.5, ease: 'Quad.easeOut' },
 				alpha: { start: 1, end: 0, ease: 'Quad.easeIn' },
-				blendMode: 'ADD',
+				blendMode: 'SCREEN',
 				emitZone: { type: 'random', source: shape3 }
 			});
 			emitter.startFollow(this);

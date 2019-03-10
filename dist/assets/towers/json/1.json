@@ -1,0 +1,9 @@
+{"towerId":1,  
+"towerName":"Soldier", 		 
+"cost":20,  
+"str":100, 
+"atkRange":200, 
+"atkType":"physical", 
+"atkRate":400,  
+"hitFly":false, 
+"upgrades": [4, 5]}

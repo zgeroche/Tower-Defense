@@ -1,0 +1,1 @@
+{ "enemyId": 14, "enemyName": "Zombie",         "speed": 1,    "hp": 450,    "magicArmor": 0,  "physicalArmor": 0,  "flying": false, "value": 1,  "frameEnd": 9, "damage": 5 }
