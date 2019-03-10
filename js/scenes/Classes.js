@@ -1341,6 +1341,8 @@ export class Crow extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'crow');
         this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+		
+		this.attackcount = 0;
 	}
 };
 

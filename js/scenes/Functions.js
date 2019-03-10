@@ -457,9 +457,16 @@ export function damageEnemy(enemy, attack) {
 			case 14:
 				break;
 			case 16:
+				attack.attackcount++;
+				
+				if (attack.attackcount == 5)
+				{
+					attack.damage *= 2;
+					attack.attackcount = 0;
+				}
 				break;
 			case 17:
-				var critical = Math.floor(Math.random() * 7)
+				var critical = Math.floor(Math.random() * 19)
 				if (critical == 0)
 				{
 					attack.damage *= 2.5;
