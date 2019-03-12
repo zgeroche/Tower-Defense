@@ -7,6 +7,7 @@ import {LoadScene} from "./scenes/LoadScene";
 import { GameOverScene } from "./scenes/GameOverScene";
 import { TransitionScene1 } from "./scenes/TransitionScene1";
 import { TransitionScene2 } from "./scenes/TransitionScene2";
+import { GameVictoryScene } from "./scenes/GameVictoryScene";
 
 //-------------------------------------------------------SETUP-----------------------------------------------------
 //master config for game
@@ -32,7 +33,8 @@ var config = {
         GameScene2,
         TransitionScene2,
 		GameScene3,
-        GameOverScene]
+        GameOverScene,
+		GameVictoryScene]
 
 };
 

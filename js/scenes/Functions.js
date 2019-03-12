@@ -17,6 +17,112 @@ export function loadUnits(scene){
 	}
 }
 
+export function levelVictory(scene, transitionScene){
+		scene.sceneOver = true;
+		
+		//clear all towers
+ 		for(var i = 0; i < GV.TOWER_GROUP.length; i++) {
+			GV.TOWER_GROUP[i].clear(true,true);
+		} 
+
+        ////clear all enemies
+        for (var i = 0; i < GV.ENEMY_GROUP.length; i++) {
+            GV.ENEMY_GROUP[i].clear(true,true);
+        }
+		
+        //clear all attacks
+		for (var i = 0; i < GV.ATTACK_GROUP.length; i++) {
+			GV.ATTACK_GROUP[i].clear(true,true);
+		}
+		
+		//clear all buttons
+		GV.BUTTON_GROUP.clear(true,true);
+	
+		
+		var win = scene.add.text(960, -100, 'VICTORY', { fontFamily: 'VT323', fontSize: 150, color: '#d83939', align: 'center', stroke: "#e7ce40", strokeThickness: 5}).setDepth(2).setOrigin(0.5,1);
+		win.setShadow(2, 2, "#333333", 2, true, true);
+		var nextScene = scene.add.text(960, -200, 'Continue', { fontFamily: 'VT323', fontSize: 50, color: '#ffffff', stroke: "#771818", strokeThickness: 2 }).setDepth(2).setOrigin(0.5,-0.9);
+		var winBG = scene.add.image(960, 0, 'winBG').setDepth(0);
+		var winButton = scene.add.image(960, 0, 'winButton').setDepth(1).setOrigin(0.5,-0.15);
+		
+		scene.delay.destroy();
+		scene.complete.destroy();
+		scene.skipWave.destroy();
+		scene.buttonImg.destroy();
+		scene.bgm.stop();
+		
+		var winBGM = scene.sound.add('levelVictoryBGM');
+		winBGM.volume = 0.2;
+		winBGM.loop = false;
+		winBGM.play();
+		
+		scene.tweens.add({
+			targets: [win, winBG, nextScene, winButton],
+			y: 500,
+			ease: 'Back.easeOut',
+			duration: 1500,
+			delay: 0,
+			repeat: 0
+		});
+	
+		
+        winButton.setInteractive({ useHandCursor: true }).on("pointerup", () => {
+			scene.scene.remove('HUD');
+			win.destroy();
+			nextScene.destroy();
+			winBG.destroy();
+			winButton.destroy();
+			winBGM.stop();
+			scene.scene.start(transitionScene);
+			
+        });		
+		
+/* 		scene.cameras.main.fadeOut(3000);
+		scene.cameras.main.once('camerafadeoutcomplete', function (camera) {
+			win.destroy();
+			fadeBGM.stop();
+			scene.scene.start(transitionScene);
+		}); */
+}
+
+export function gameOver(scene, gameOverScene){
+		scene.sceneOver = true;
+		
+		//clear all towers
+		for(var i = 0; i < GV.TOWER_GROUP.length; i++) {
+			GV.TOWER_GROUP[i].clear(true,true);
+		}
+
+        ////clear all enemies
+        for (var i = 0; i < GV.ENEMY_GROUP.length; i++) {
+            GV.ENEMY_GROUP[i].clear(true,true);
+        }
+		
+        //clear all attacks
+		for (var i = 0; i < GV.ATTACK_GROUP.length; i++) {
+			GV.ATTACK_GROUP[i].clear(true,true);
+		}
+		
+		//clear all buttons
+		GV.BUTTON_GROUP.clear(true,true);
+		
+		scene.scene.remove('HUD');
+		scene.delay.destroy();
+		scene.complete.destroy();
+		scene.skipWave.destroy();
+		scene.buttonImg.destroy();
+		scene.bgm.stop();
+		scene.cameras.main.fadeOut(3000);
+		var fadeBGM = scene.sound.add('gameoverFadeBGM');
+		fadeBGM.volume = 0.2;
+		fadeBGM.loop = true;
+		fadeBGM.play();
+		scene.cameras.main.once('camerafadeoutcomplete', function (camera) {
+			fadeBGM.stop();
+			scene.scene.start(gameOverScene);
+		});
+}
+
 //build the pathing and map for level
 export function buildMap(scene, mapBG){
 	//path to which enemey follows

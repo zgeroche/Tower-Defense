@@ -15,7 +15,7 @@ export class GameScene3 extends Phaser.Scene {
     init(data){
         //console.log(data);
 		GV.scene = CST.SCENES.GAME3;
-
+		GV.PLAYER_HEALTH = 100;
         GV.WAVE = 1;
         GV.GOLD = 2500;
         GV.SPAWNED = 0;
@@ -35,8 +35,8 @@ export class GameScene3 extends Phaser.Scene {
 		var coords = [
 			[ -1, 10,10, 6,6,14,14], //x path 1
 			[12, 12, 7, 7, 2, 2, 0],  //y path 1
-			[30,18,18,26,26,15,15], //x path 2
-			[11,11, 7, 7, 5, 5, 2],  //y path 2
+			[30,18,18,26,26,17,17,15,15], //x path 2
+			[11,11, 7, 7, 5, 5, 2, 2, 0],  //y path 2
 		];
 		
 		for(var i = 0; i < coords[0].length; i++ )
@@ -104,6 +104,9 @@ export class GameScene3 extends Phaser.Scene {
 		this.bgm.volume = 0.04;
 		this.bgm.loop = true;
 		this.bgm.play();		
+		
+		FN.loadUnits(this);
+		
         /*creates a group for a tower type, that way we can use GV.TOWER_GROUP.get(towerStats) to instantiate new towers easily
 		loop through GV.TOWER_ARRAY to get each tower object
 		then add each object to GV.TOWER_GROUP arr
@@ -150,26 +153,50 @@ export class GameScene3 extends Phaser.Scene {
         //input related actions in userAction function
         this.input.on('pointerdown', function (pointer){FN.userAction(pointer, this)});
 		
+		//track if scene is over either by win or loss
+		this.sceneOver = false;
+		
+				/////////////*TESTING*//////////////
+        let win = this.add.text(30, 970, 'Force Win', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
+        win.setInteractive({ useHandCursor: true });
+        win.on("pointerup", ()=>{
+            //this.scene.remove('HUD');
+            //this.scene.restart();
+			//this.bgm.stop();
+            //this.scene.start(CST.SCENES.TRANSITION1);
+			FN.levelVictory(this, CST.SCENES.MENU);	
+			
+        });		
+		let lose = this.add.text(30, 990, 'Force Lose', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
+        lose.setInteractive({ useHandCursor: true });
+        lose.on("pointerup", ()=>{
+            //this.scene.remove('HUD');
+            //this.scene.restart();
+			//this.bgm.stop();
+            //this.scene.start(CST.SCENES.TRANSITION1);
+			FN.gameOver(this, CST.SCENES.GAMEOVER);	
+			
+        });	
+		/////////////*TESTING*//////////////
+		
     }
 
     //update function constantly refreshes so to progress game
      update(time, delta) {  
+        //Check if player still alive
+        if (GV.PLAYER_HEALTH <= 0 && !this.sceneOver)
+        {
+			FN.gameOver(this, CST.SCENES.GAMEOVER);
+			console.log("Game Over");
+        }
+		else if(this.sceneOver == true)
+		{
+			console.log("done");
+		}
+        else
+		{
 		//Wave timer and skip in bottom HUD
 		FN.waveHUD(this, Math.trunc((this.nextEnemy - time) / 1000));
-
-        //Check if player still alive
-/*         if (GV.PLAYER_HEALTH <= 0)
-        {
-            this.scene.remove('HUD');
-            this.delay.destroy();
-            this.complete.destroy();
-            this.skipWave.destroy();
-            this.cameras.main.fade(2500,0,0,0, false);
-            this.cameras.main.once('camerafadeoutcomplete', ()=>{
-                this.scene.start(CST.SCENES.GAMEOVER);
-            }); 
-        }
-        else { */
         this.delay.setText('Next wave in ' + Math.trunc((this.nextEnemy - time) / 1000) + ' Seconds');
         if (time > this.nextEnemy) {
             switch (GV.WAVE) {
@@ -423,13 +450,14 @@ export class GameScene3 extends Phaser.Scene {
                         }
                     }
                     else if (GV.ENEMY_GROUP[11].countActive(true) === 0) {
-                        GV.SPAWNED = 0;
+						FN.levelVictory(this, CST.SCENES.MENU);
+                       /*  GV.SPAWNED = 0;
                         GV.WAVE += 1;
-                        this.nextEnemy = time + GV.WAVE_DELAY;
+                        this.nextEnemy = time + GV.WAVE_DELAY; */
                     }
                     break;
             }
-
+		}
         }
     }
 }

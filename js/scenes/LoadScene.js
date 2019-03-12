@@ -127,6 +127,9 @@ export class LoadScene extends Phaser.Scene{
 		this.load.audio('introSceneBGM', 'assets/Sounds/bgm/snow_about_a_castle.mp3');
 		this.load.audio('transScene1BGM', 'assets/Sounds/bgm/Classical Murder.ogg');
 		this.load.audio('transScene2BGM', 'assets/Sounds/bgm/Uncatchable.mp3');
+		this.load.audio('gameoverBGM', 'assets/Sounds/bgm/gameover.mp3');
+		this.load.audio('gameoverFadeBGM', 'assets/Sounds/bgm/FFXIV_Instance_Failed.mp3');
+		this.load.audio('levelVictoryBGM', 'assets/Sounds/bgm/FFXIV_Quest_Complete.mp3');
 
 		
 		//load misc
@@ -171,6 +174,8 @@ export class LoadScene extends Phaser.Scene{
         this.load.image('towerbutton', 'assets/menuBar.png');
         this.load.image('cancel', 'assets/cancel.png');
         this.load.image('towerButtonBG', 'assets/towerButtonBG.png');
+        this.load.image('winBG', 'assets/win.png');
+        this.load.image('winButton', 'assets/winButton.png');
 		
         this.load.image('snowflake', 'assets/snowflake.png');
         this.load.image('shock', 'assets/shock.png');
@@ -178,6 +183,6 @@ export class LoadScene extends Phaser.Scene{
     }
     create(){
         //Creating menu screen background layers
-        this.scene.start(CST.SCENES.MENU, "Loading complete");
+		this.scene.start(CST.SCENES.MENU, "Loading complete");
         }
 }
