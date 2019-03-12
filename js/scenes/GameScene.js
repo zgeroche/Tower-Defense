@@ -167,7 +167,7 @@ export class GameScene extends Phaser.Scene {
         //Check if player still alive
         if (GV.PLAYER_HEALTH <= 0 && !this.sceneOver)
         {
-			//FN.gameOver(this, CST.SCENES.GAMEOVER);
+			FN.gameOver(this, CST.SCENES.GAMEOVER);
 			console.log("Game Over");
         }
 		else if(this.sceneOver == true)
