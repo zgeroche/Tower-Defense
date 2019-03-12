@@ -11,12 +11,16 @@ export class GameOverScene extends Phaser.Scene{
     }
 
     preload(){
-        this.add.text(this.cameras.main.width/2, this.cameras.main.height/2, 'GAME OVER', {fontFamily: 'VT323', fontSize: 50, color: '#fff', alight: 'center'}).setOrigin(0.5);
+        //this.add.text(this.cameras.main.width/2, this.cameras.main.height/2, 'GAME OVER', {fontFamily: 'VT323', fontSize: 50, color: '#fff', alight: 'center'}).setOrigin(0.5);
+		this.add.text(this.game.renderer.width / 2 - 150, 200, 'VICTORY', { fontFamily: 'VT323', fontSize: 150, color: '#ffffff', align: 'center' });
     }
 
     create(){
         //Creating Game Over Scene
-        this.cameras.main.fadeFrom(2500, 0, 0, 0, false);
+		
+		scene.scene.start(CST.SCENES.MENU, "Starting New Game");
+		
+/*         this.cameras.main.fadeFrom(2500, 0, 0, 0, false);
 		
 		var sceneBGM = this.sound.add('gameoverBGM');
 		sceneBGM.volume = 0.2;
@@ -47,6 +51,6 @@ export class GameOverScene extends Phaser.Scene{
 				
 			});
             
-        })
+        }) */
     }
 }

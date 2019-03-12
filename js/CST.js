@@ -8,6 +8,7 @@ export const CST = {
         TRANSITION2: "TRANSITION2",
         GAME2: "GAME2",
         GAME3: "GAME3",
-        GAMEOVER: "GAMEOVER"
+        GAMEOVER: "GAMEOVER",
+        GAMEVICTORY: "GAMEVICTORY"
     }
 }
