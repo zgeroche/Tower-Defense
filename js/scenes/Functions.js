@@ -37,13 +37,12 @@ export function levelVictory(scene, transitionScene){
 		
 		//clear all buttons
 		GV.BUTTON_GROUP.clear(true,true);
-	
 		
 		var win = scene.add.text(960, -100, 'VICTORY', { fontFamily: 'VT323', fontSize: 150, color: '#d83939', align: 'center', stroke: "#e7ce40", strokeThickness: 5}).setDepth(2).setOrigin(0.5,1);
 		win.setShadow(2, 2, "#333333", 2, true, true);
 		var nextScene = scene.add.text(960, -200, 'Continue', { fontFamily: 'VT323', fontSize: 50, color: '#ffffff', stroke: "#771818", strokeThickness: 2 }).setDepth(2).setOrigin(0.5,-0.9);
 		var winBG = scene.add.image(960, 0, 'winBG').setDepth(0);
-		var winButton = scene.add.image(960, 0, 'winButton').setDepth(1).setOrigin(0.5,-0.15);
+		var winButton = scene.add.image(960, -200, 'winButton').setDepth(1).setOrigin(0.5,-0.15);
 		
 		scene.delay.destroy();
 		scene.complete.destroy();
@@ -363,6 +362,7 @@ export function placeTowerAction(pointer, scene, i, j){
 			//the tower while the menu was open before actually selecting an upgrade
 			newTower.setActive(false);
 			newTower.setVisible(false);
+
 			if (newTower.checkCost())
 			{
 				newTower.placeTower(i, j, scene);
@@ -370,6 +370,8 @@ export function placeTowerAction(pointer, scene, i, j){
 			}
 			else
 			{
+				newTower.text.destroy();											
+				GV.TOWER_GROUP[newTower.towerId].remove(newTower, true, true);
 				scene.scene.errorSounds.play();
 				GV.BUTTON_GROUP.clear(true,true);
 				createButton(scene,1660, 1024, 0, "Not Enough Gold");
@@ -454,6 +456,7 @@ export function upgradeTowerAction(i, j, scene, pointer, id){
 				//the tower while the menu was open before actually selecting an upgrade
 				newTower.setActive(false);
 				newTower.setVisible(false);
+				newTower.text.setVisible(false);
 				
 				var towerButton = new CS.TowerButton(scene.scene, z);
 				towerButton.upgradeTowerButton(pointer,scene, currTower, newTower,i,j); 

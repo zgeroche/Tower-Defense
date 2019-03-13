@@ -18,7 +18,7 @@ export class GameScene2 extends Phaser.Scene {
 		GV.scene = CST.SCENES.GAME2;
 		GV.PLAYER_HEALTH = 100;
         GV.WAVE = 1;
-        GV.GOLD = 2500;
+        GV.GOLD = 50000;
         GV.SPAWNED = 0;
 		
 		GV.TOWER_GROUP = [];
@@ -28,8 +28,8 @@ export class GameScene2 extends Phaser.Scene {
 
         GV.WAVE_DETAIL = ['10 Slimes', '10 Deathknights', '10 Jackos', '10 Ghosts (flying)', '10 Jackos + Boss', '20 Deathknight + Slimes', '20 Ghosts (flying, Mass)', '70 Slimes (mass)', '60 Slimes, Deathknights & Jackos', '5 Minotaur Bosses'];
 
-		var graphics = this.add.graphics();    
-		FN.drawLines(graphics);
+		//var graphics = this.add.graphics();    
+		//FN.drawLines(graphics);
 		
 		this.add.image(960, 512, 'map2').setDepth(0);
 		
@@ -64,9 +64,9 @@ export class GameScene2 extends Phaser.Scene {
 			}
 		}
 		
-		graphics.lineStyle(1, 0xffffff, 1);
-		GV.WALKPATH.draw(graphics);
-		GV.WALKPATH2.draw(graphics);
+		//graphics.lineStyle(1, 0xffffff, 1);
+		//GV.WALKPATH.draw(graphics);
+		//GV.WALKPATH2.draw(graphics);
 
         var flyPoints = [
             3.5 * 64, 16.5 * 64,
@@ -77,7 +77,7 @@ export class GameScene2 extends Phaser.Scene {
             29.5*64, 7.5*64
         ];
         GV.FLYPATH = new Phaser.Curves.Spline(flyPoints);
-        GV.FLYPATH.draw(graphics);
+        //GV.FLYPATH.draw(graphics);
 
 		GV.MAP = [
 			[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],

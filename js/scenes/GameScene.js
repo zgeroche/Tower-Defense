@@ -14,9 +14,13 @@ export class GameScene extends Phaser.Scene {
  
     init(data) {
 		GV.scene = CST.SCENES.GAME;
-        GV.PLAYER_HEALTH = 100;
-		var graphics = this.add.graphics();    
-		FN.drawLines(graphics);
+		GV.PLAYER_HEALTH = 100;
+        GV.WAVE = 1;
+        GV.GOLD = 30;
+        GV.SPAWNED = 0;
+		
+		//var graphics = this.add.graphics();    
+		//FN.drawLines(graphics);
 		
 		GV.TOWER_GROUP = [];
 		GV.ENEMY_GROUP = [];
@@ -46,12 +50,12 @@ export class GameScene extends Phaser.Scene {
 			}
 		}
 		
-		graphics.lineStyle(1, 0xffffff, 1);
-		GV.WALKPATH.draw(graphics);
+		//graphics.lineStyle(1, 0xffffff, 1);
+		//GV.WALKPATH.draw(graphics);
 		
 		GV.FLYPATH = this.add.path(-1, 352);
 		GV.FLYPATH.lineTo(1920, 288);
-		GV.FLYPATH.draw(graphics);
+		//GV.FLYPATH.draw(graphics);
 		
 		GV.MAP = [
 		[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],

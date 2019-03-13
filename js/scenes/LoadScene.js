@@ -130,6 +130,7 @@ export class LoadScene extends Phaser.Scene{
 		this.load.audio('gameoverBGM', 'assets/Sounds/bgm/gameover.mp3');
 		this.load.audio('gameoverFadeBGM', 'assets/Sounds/bgm/FFXIV_Instance_Failed.mp3');
 		this.load.audio('levelVictoryBGM', 'assets/Sounds/bgm/FFXIV_Quest_Complete.mp3');
+		this.load.audio('gameVictoryBGM', 'assets/Sounds/bgm/Land of fearless.mp3');
 
 		
 		//load misc
@@ -168,6 +169,7 @@ export class LoadScene extends Phaser.Scene{
 		
         this.load.image('introscreen', 'assets/fortress.png', { frameWidth: 1920, frameHeight: 1024 });
         this.load.image('transition', 'assets/gate.png', { frameWidth: 1920, frameHeight: 1024 });
+        this.load.image('gameVictoryBG', 'assets/12.jpg', { frameWidth: 1920, frameHeight: 1024 });
 		this.load.image('newgame', 'assets/new.png');
         this.load.image('bottomHUD', 'assets/BottomHUD.png');
         this.load.image('waveHUD', 'assets/waveHUD.png');

@@ -33,7 +33,7 @@ export class MenuScene extends Phaser.Scene{
 		
         newGame.setInteractive({ useHandCursor: true }).on("pointerdown", () => {
 			var clickSound = this.sound.add('itemClickSound');
-			clickSound.volume = 0.5;
+			clickSound.volume = 0.4;
 			clickSound.loop = false;
 			clickSound.play();
 			menuSound.stop();
