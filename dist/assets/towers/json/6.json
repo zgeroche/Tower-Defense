@@ -1,1 +1,1 @@
-{"towerId":6,  "towerName":"Rifleman", 	 "cost":3,   "str":150, "atkRange":350, "atkType":"physical", "atkRate":650,  "hitFly":true,  "upgrades": [14, 15]}
+{"towerId":6,  "towerName":"Rifleman", 	 "cost":25,   "str":150, "atkRange":350, "atkType":"physical", "atkRate":650,  "hitFly":true,  "upgrades": [14, 15]}

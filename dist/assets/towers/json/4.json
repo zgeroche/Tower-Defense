@@ -1,1 +1,1 @@
-{"towerId":4,  "towerName":"Knight", 		 "cost":3,   "str":200, "atkRange":200, "atkType":"physical", "atkRate":600,  "hitFly":false, "upgrades": [10, 11]}
+{"towerId":4,  "towerName":"Knight", 		 "cost":25,   "str":200, "atkRange":200, "atkType":"physical", "atkRate":600,  "hitFly":false, "upgrades": [10, 11]}
