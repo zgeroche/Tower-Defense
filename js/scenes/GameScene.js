@@ -19,6 +19,8 @@ export class GameScene extends Phaser.Scene {
         GV.GOLD = 30;
         GV.SPAWNED = 0;
 		
+		GV.WAVE_DETAIL = ['10 Skeletons', '10 Witches', '10 Goblins (fast)', '10 bats (flying)', '10 Skeletons + Boss', '20 Goblins (mass, fast)', '10 witches + 10 bats (flying)', '25 Skeletons (mass)' , '10 Skeletons, Witches & Goblins', '2 Ogre Boss'];
+		
 		//var graphics = this.add.graphics();    
 		//FN.drawLines(graphics);
 		
