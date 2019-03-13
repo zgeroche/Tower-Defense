@@ -110,8 +110,8 @@ export class LoadScene extends Phaser.Scene{
 		this.load.audio('swingSound', 'assets/Sounds/TowerAttackSounds/swing3.wav');
 		this.load.audio('cannonSound', 'assets/Sounds/TowerAttackSounds/explosion-1.wav');
 		this.load.audio('arrowSound', 'assets/Sounds/TowerAttackSounds/arrow.wav');
-		//this.load.audio('fireSound', 'assets/Sounds/TowerAttackSounds/foom_0.wav');
-		this.load.audio('fireSound', 'assets/Sounds/TowerAttackSounds/fire.wav');
+		this.load.audio('fireSound', 'assets/Sounds/TowerAttackSounds/foom_0.wav');
+		//this.load.audio('fireSound', 'assets/Sounds/TowerAttackSounds/fire.wav');
 		this.load.audio('lightningSound', 'assets/Sounds/TowerAttackSounds/lightning.wav');
 		this.load.audio('spearSound', 'assets/Sounds/TowerAttackSounds/spear.wav');
 		this.load.audio('spellSound', 'assets/Sounds/TowerAttackSounds/spell.wav');
@@ -178,6 +178,7 @@ export class LoadScene extends Phaser.Scene{
         this.load.image('towerButtonBG', 'assets/towerButtonBG.png');
         this.load.image('winBG', 'assets/win.png');
         this.load.image('winButton', 'assets/winButton.png');
+        this.load.image('coinPop', 'assets/coinPop.png');
 		
         this.load.image('snowflake', 'assets/snowflake.png');
         this.load.image('shock', 'assets/shock.png');

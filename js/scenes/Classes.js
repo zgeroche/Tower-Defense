@@ -143,6 +143,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			if(this.particlesSnow){this.particlesSnow.destroy();};
 			if(this.particlesStun){this.particlesStun.destroy();};
 			if(this.particlesWeak){this.particlesWeak.destroy();};
+			if(this.particlesBurn){this.particlesBurn.destroy();};
 			
 		}
 	}
@@ -200,6 +201,24 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 	
 	burn()
 	{
+		if(!this.burned)
+		{
+			 this.particlesBurn = this.scene.add.particles('explosion');
+			 var emitter = this.particlesBurn.createEmitter({
+				x: { min: (this.width/2)*-1, max: (this.width/2) },
+				y: { min: (this.height/2)*-1, max: (this.height/2)},
+				speed: { min: 100, max: 200 },
+				angle: { min: -85, max: -95 },
+				scale: { start: 0, end: 1, ease: 'Back.easeOut' },
+				alpha: { start: 1, end: 0, ease: 'Quart.easeOut' },
+				blendMode: 'SCREEN',
+				lifespan: 1000
+			});
+
+			emitter.startFollow(this);
+
+		}
+		
 		this.burned = true;
 		this.setTint(0xFF4500);
 		this.burntime = this.scene.sys.game.loop.time;
@@ -261,6 +280,19 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			
 		}
 	}
+	coins()
+	{
+		var image = this.scene.add.image(this.follower.vec.x - this.width/4, this.follower.vec.y - this.height, 'coinPop');
+		this.scene.tweens.add({
+			targets: image,
+			angle: 180,
+			y: '-=30', 
+			duration: 300, 
+			ease: 'Linear',
+			delay: 0,
+			onComplete: function () {image.destroy();}
+		});
+	}
 	
 	restore(clear)
 	{
@@ -283,11 +315,12 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			this.ministunned = false;
 		}
 		if(clear == 3)
-    {
-     //if(this.particlesBurn){thisl.particlesBurn.destroy();};
-     this.burned = false;
-    }
-    //if(this.particlesWeak){this.particlesWeak.destroy();};
+		{
+			//if(this.particlesBurn){thisl.particlesBurn.destroy();};
+			if(this.particlesBurn){this.particlesBurn.destroy();}
+			this.burned = false;
+		}
+			//if(this.particlesWeak){this.particlesWeak.destroy();};
 	}
 	
 	clearBurn()
@@ -357,7 +390,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			}
 		}
 		
-    if (this.ministunned)
+		if (this.ministunned)
 		{
 			if (time - 200 >= this.ministuntime)
 			{
@@ -397,6 +430,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			if(this.particlesSnow){this.particlesSnow.destroy();};
 			if(this.particlesStun){this.particlesStun.destroy();};
 			if(this.particlesWeak){this.particlesWeak.destroy();};
+			if(this.particlesBurn){this.particlesBurn.destroy();};
 		}
         if (!this.flying) {
             if (this.prevx < this.follower.vec.x && this.facing != 'r') {

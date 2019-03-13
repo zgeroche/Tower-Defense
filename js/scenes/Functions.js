@@ -561,6 +561,7 @@ export function damageEnemy(enemy, attack) {
 				{
 					GV.GOLD += 10;
 					attack.cutpurseSound.play();
+					enemy.coins();
 				}
 				break;
 			case 14:
