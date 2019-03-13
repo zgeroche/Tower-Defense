@@ -1464,19 +1464,15 @@ export class HUD extends Phaser.Scene {
 		volume.on("pointerout", ()=>{
 			volDown.setVisible(false);
 		});
-		
+			
 		volume.on("pointerup", ()=>{
-			if(sceneA.bgm.isPaused)
+			if(this.game.sound.mute)
 			{
-				sceneA.bgm.resume();
-			}
-			else if(sceneA.bgm.isPlaying)
-			{
-				sceneA.bgm.pause();
+				this.game.sound.mute = false;
 			}
 			else
 			{
-				sceneA.bgm.play();
+				this.game.sound.mute = true;
 			}
 		});
 		
@@ -1487,13 +1483,24 @@ export class HUD extends Phaser.Scene {
 			playDown.setVisible(false);
 		});
 		
+		
 		play.on("pointerup", ()=>{
 			if(sceneA.scene.isActive())
 			{
 				sceneA.scene.pause();
+				this.pauseText = this.add.text(960, 500, 'PAUSED', { fontFamily: 'VT323', fontSize: 150, color: '#ffffff', align: 'center'}).setDepth(1).setOrigin(0.5,1);
+				sceneA.cameras.main.setAlpha(0.5);
+				this.isMute = this.game.sound.mute;
+				this.game.sound.mute = true;
 			}
 			else
 			{
+				if(this.isMute)
+					this.game.sound.mute = true;
+				else
+					this.game.sound.mute = false;
+				this.pauseText.destroy();
+				sceneA.cameras.main.setAlpha(1);
 				sceneA.scene.resume();
 			}
 		});

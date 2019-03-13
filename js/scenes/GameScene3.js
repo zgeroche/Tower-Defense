@@ -27,8 +27,8 @@ export class GameScene3 extends Phaser.Scene {
 
         GV.WAVE_DETAIL = ['10 Imps', '10 Zombies', '15 Reapers', '10 Dragons (flying)', '15 Imps + Golem (miniBoss)', '20 Vampre + Zombie', '40 Imp + Reaper', '60 Dragon, Zombie, Vampire', '50 Reaper, Golem, Imp', '30 Dragons (Mass)'];
 
-		var graphics = this.add.graphics();    
-		FN.drawLines(graphics);
+		//var graphics = this.add.graphics();    
+		//FN.drawLines(graphics);
 		
 		this.add.image(960, 512, 'map3').setDepth(0);
 		
@@ -65,17 +65,17 @@ export class GameScene3 extends Phaser.Scene {
 			}
 		}
 		
-		graphics.lineStyle(1, 0xffffff, 1);
-		GV.WALKPATH.draw(graphics);
-		GV.WALKPATH2.draw(graphics);
+		//graphics.lineStyle(1, 0xffffff, 1);
+		//GV.WALKPATH.draw(graphics);
+		//GV.WALKPATH2.draw(graphics);
 		
 		GV.FLYPATH = this.add.path(-1.5*64, 12.5*64);
 		GV.FLYPATH.lineTo(20.5*64, 0.5*64);
-		GV.FLYPATH.draw(graphics);
+		//GV.FLYPATH.draw(graphics);
 		
 		GV.FLYPATH2 = this.add.path(30.5*64, 11.5*64);
 		GV.FLYPATH2.lineTo(20.5*64, 0.5*64);
-		GV.FLYPATH2.draw(graphics);
+		//GV.FLYPATH2.draw(graphics);
 		
 		GV.MAP = [
 			[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -164,7 +164,7 @@ export class GameScene3 extends Phaser.Scene {
             //this.scene.restart();
 			//this.bgm.stop();
             //this.scene.start(CST.SCENES.TRANSITION1);
-			FN.levelVictory(this, CST.SCENES.MENU);	
+			FN.levelVictory(this, CST.SCENES.GAMEVICTORY);	
 			
         });		
 		let lose = this.add.text(30, 990, 'Force Lose', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
@@ -450,7 +450,7 @@ export class GameScene3 extends Phaser.Scene {
                         }
                     }
                     else if (GV.ENEMY_GROUP[11].countActive(true) === 0) {
-						FN.levelVictory(this, CST.SCENES.MENU);
+						FN.levelVictory(this, CST.SCENES.GAMEVICTORY);
                        /*  GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY; */
