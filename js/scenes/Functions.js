@@ -595,7 +595,7 @@ export function damageEnemy(enemy, attack) {
 		}	
         
         // decrease the enemy hp with ATTACK_DAMAGE
-        enemy.receiveDamage(attack.damage);
+        enemy.receiveDamage(attack.damage, attack.atkType);
         //damage.play();
     }
 }
