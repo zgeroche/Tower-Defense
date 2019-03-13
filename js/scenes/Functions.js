@@ -362,6 +362,7 @@ export function placeTowerAction(pointer, scene, i, j){
 			//the tower while the menu was open before actually selecting an upgrade
 			newTower.setActive(false);
 			newTower.setVisible(false);
+
 			if (newTower.checkCost())
 			{
 				newTower.placeTower(i, j, scene);
@@ -369,6 +370,8 @@ export function placeTowerAction(pointer, scene, i, j){
 			}
 			else
 			{
+				newTower.text.destroy();											
+				GV.TOWER_GROUP[newTower.towerId].remove(newTower, true, true);
 				scene.scene.errorSounds.play();
 				GV.BUTTON_GROUP.clear(true,true);
 				createButton(scene,1660, 1024, 0, "Not Enough Gold");
@@ -453,6 +456,7 @@ export function upgradeTowerAction(i, j, scene, pointer, id){
 				//the tower while the menu was open before actually selecting an upgrade
 				newTower.setActive(false);
 				newTower.setVisible(false);
+				newTower.text.setVisible(false);
 				
 				var towerButton = new CS.TowerButton(scene.scene, z);
 				towerButton.upgradeTowerButton(pointer,scene, currTower, newTower,i,j); 

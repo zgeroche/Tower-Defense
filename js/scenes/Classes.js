@@ -1547,6 +1547,8 @@ export class TowerButton extends Phaser.GameObjects.Image {
 				}
 				else
 				{
+					newTower.text.destroy();											
+					GV.TOWER_GROUP[newTower.towerId].remove(newTower, true, true);
 					scene.scene.errorSounds.play();
 					GV.BUTTON_GROUP.clear(true,true);
 					FN.createButton(scene,1660, 1024, 0, "Not Enough Gold");

@@ -14,7 +14,11 @@ export class GameScene extends Phaser.Scene {
  
     init(data) {
 		GV.scene = CST.SCENES.GAME;
-        GV.PLAYER_HEALTH = 100;
+		GV.PLAYER_HEALTH = 100;
+        GV.WAVE = 1;
+        GV.GOLD = 30;
+        GV.SPAWNED = 0;
+		
 		//var graphics = this.add.graphics();    
 		//FN.drawLines(graphics);
 		
