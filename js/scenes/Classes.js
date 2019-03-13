@@ -338,7 +338,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		else{ GV.FLYPATH.getPoint(this.follower.t, this.follower.vec)};
 		*/
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
-		this.text.setPosition(this.follower.vec.x, this.follower.vec.y);									//textHP
+		this.text.setPosition(this.follower.vec.x, this.follower.vec.y-30);									//textHP
         this.healthbar.setPosition(this.follower.vec.x - this.width, this.follower.vec.y - this.height);
 		
 		if (this.stunned)
