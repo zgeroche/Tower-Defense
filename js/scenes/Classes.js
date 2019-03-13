@@ -789,9 +789,9 @@ export class Tower extends Phaser.GameObjects.Sprite{
 	
 	}
 	
-	fire() {
-	    var enemy = FN.getEnemy(this.x, this.y, this.atkRange, this.hitFly);
-	    if(enemy) {
+    fire() {
+        var enemy = FN.getEnemy(this.x, this.y, this.atkRange, this.hitFly);
+	    if (enemy) {
 	        var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
 	        FN.addAttack(this.x, this.y, angle, this.str, this.atkType, this.towerId, enemy);
 	        //this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make towers rotate to face enemy
@@ -919,6 +919,7 @@ export class Commander extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'commander');
+        this.special = 'Chance to Stun';
 		
 		this.anims.play('commander_idle');
     }
@@ -928,7 +929,7 @@ export class Berserker extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'berserker');
-		
+
 		this.anims.play('berserker_idle');
     }
 }
@@ -937,6 +938,7 @@ export class Swordmaster extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'swordmaster');
+        this.special = 'Ignores Armor';
 		
 		this.anims.play('swordmaster_idle');
     }
@@ -946,6 +948,7 @@ export class Cutpurse extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'cutpurse');
+        this.special = 'Steals Gold';
 		
 		this.anims.play('cutpurse_idle');
     }
@@ -973,6 +976,7 @@ export class Beastmaster extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'beastmaster');
+        this.special = 'Chance to Double Damage';
 		
 		this.anims.play('beastmaster_idle');
     }
@@ -1009,6 +1013,7 @@ export class LightningMage extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'lightningmage');
+        this.special = 'Briefly Stuns Enemy';
 		
 		this.anims.play('lightningmage_idle');
     }
@@ -1018,6 +1023,7 @@ export class Warlock extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'warlock');
+        this.special = 'Shreds Armor';
 		
 		this.anims.play('warlock_idle');
     }
@@ -1027,6 +1033,7 @@ export class Priestess extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'priestess');
+        this.special = 'Buffs Ally Damage';
 		
 		this.anims.play('priestess_idle');
     }
@@ -1602,6 +1609,9 @@ export class TowerButton extends Phaser.GameObjects.Image {
                 "Damage:        " + newTower.str,
                 "Damage Type:   " + newTower.atkType,
                 "Hit Flying:    " + newTower.hitFly];
+            if (newTower.special) {
+                towerInfo.push("Special: " + newTower.special);
+            }
 
             this.hud.tooltipText.setText(towerInfo);
             this.hud.tooltipText.setVisible(true);

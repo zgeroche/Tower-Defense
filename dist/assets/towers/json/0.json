@@ -1,6 +1,6 @@
 {"towerId":0,  
 "towerName":"Peasant", 		 
-"cost":5,   
+"cost":8,   
 "str":50,  
 "atkRange":150, 
 "atkType":"physical", 

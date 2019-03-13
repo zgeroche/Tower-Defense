@@ -353,7 +353,7 @@ export function placeTowerAction(pointer, scene, i, j){
     placetowerImg.setInteractive({ useHandCursor: true }).on('pointerdown', ()=> {
         GV.BUTTON_GROUP.clear(true,true);
 		scene.scene.menuSounds.play();
-		var peasantImg = createButton(scene,1660, 1024, 0, "Peasant | 5g");
+		var peasantImg = createButton(scene,1660, 1024, 0, "Peasant | 8g");
 		
         peasantImg.setInteractive({ useHandCursor: true }).on('pointerdown', function (event) {
             var hud = this.scene.get('HUD');
@@ -523,8 +523,8 @@ export function userAction(pointer, scene){
 export function getEnemy(x, y, distance, hitFly) {
     for (var j = 0; j < GV.ENEMY_GROUP.length; j++)
     {
-        var enemyUnits = GV.ENEMY_GROUP[j].getChildren();
-        for(var i = 0; i < enemyUnits.length; i++) {       
+        var enemyUnits = GV.ENEMY_GROUP[GV.ENEMY_GROUP.length-j-1].getChildren();
+        for (var i = 0; i < enemyUnits.length; i++) {       
             if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) < distance)
                 if (hitFly || !enemyUnits[i].flying)
                     return enemyUnits[i];
@@ -559,7 +559,7 @@ export function damageEnemy(enemy, attack) {
 				var money = Math.floor(Math.random() * 10);
 				if (money == 0)
 				{
-					GV.GOLD += 10;
+					GV.GOLD += 1;
 					attack.cutpurseSound.play();
 					enemy.coins();
 				}

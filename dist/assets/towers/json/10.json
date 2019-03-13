@@ -1,1 +1,1 @@
-{"towerId":10, "towerName":"Commander", 	 "cost":4,   "str":300, "atkRange":200, "atkType":"physical", "atkRate":550,  "hitFly":false, "upgrades": null}
+{"towerId":10, "towerName":"Commander", 	 "cost":35,   "str":300, "atkRange":200, "atkType":"physical", "atkRate":550,  "hitFly":false, "upgrades": null}
