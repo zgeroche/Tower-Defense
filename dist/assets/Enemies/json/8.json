@@ -1,1 +1,10 @@
-{ "enemyId": 8,  "enemyName": "Reaper",         "speed": 1,    "hp": 450,    "magicArmor": 0,  "physicalArmor": 0,  "flying": false, "value": 1,  "frameEnd": 3, "damage": 5 }
+{ "enemyId": 8,
+  "enemyName": "Reaper",
+  "speed": 1.25,
+  "hp": 500,
+  "magicArmor": 0,
+  "physicalArmor": 0,
+  "flying": false,
+  "value": 3,
+  "frameEnd": 3,
+  "damage": 5 }

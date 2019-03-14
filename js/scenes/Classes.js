@@ -1285,6 +1285,7 @@ export class BlueMagic extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bluemagic');
         this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+		this.aoe = 100;
 	}
 };
 
@@ -1352,7 +1353,7 @@ export class Cannonball extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cannonball');
 
-        this.speed = 400;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 200;// Phaser.Math.GetSpeed(800, 1);
         this.aoe = 200;
 		
 		this.atkSound = scene.sound.add('cannonSound');
