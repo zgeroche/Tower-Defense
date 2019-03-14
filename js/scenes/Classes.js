@@ -1567,7 +1567,8 @@ export class TowerButton extends Phaser.GameObjects.Image {
                 "Attack Range:  " + newTower.atkRange,    
                 "Damage:        " + newTower.str,
                 "Damage Type:   " + newTower.atkType,
-                "Hit Flying:    " + newTower.hitFly];
+                "Hit Flying:    " + newTower.hitFly
+				];
 
             this.hud.tooltipText.setText(towerInfo);
             this.hud.tooltipText.setVisible(true);

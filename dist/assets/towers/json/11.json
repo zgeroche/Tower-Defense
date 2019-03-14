@@ -1,1 +1,9 @@
-{"towerId":11, "towerName":"Berserker", 	 "cost":4,   "str":250, "atkRange":225, "atkType":"physical", "atkRate":450,  "hitFly":true,  "upgrades": null}
+{"towerId":11,
+ "towerName":"Berserker",
+ "cost":25,
+ "str":250,
+ "atkRange":225,
+ "atkType":"physical",
+ "atkRate":450,
+ "hitFly":true,
+ "upgrades": null}

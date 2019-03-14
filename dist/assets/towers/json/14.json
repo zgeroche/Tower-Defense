@@ -1,1 +1,9 @@
-{"towerId":14, "towerName":"Cannoneer", 	 "cost":4,   "str":250, "atkRange":400, "atkType":"physical", "atkRate":1000, "hitFly":false, "upgrades": null}
+{"towerId":14,
+ "towerName":"Cannoneer",
+ "cost":25,
+ "str":250,
+ "atkRange":400,
+ "atkType":"physical",
+ "atkRate":1000,
+ "hitFly":false,
+ "upgrades": null}

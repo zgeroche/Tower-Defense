@@ -1,1 +1,9 @@
-{"towerId":21, "towerName":"Warlock", 		 "cost":4,   "str":200, "atkRange":300, "atkType":"magical",  "atkRate":650,  "hitFly":true,  "upgrades": null}
+{"towerId":21,
+ "towerName":"Warlock",
+ "cost":25,
+ "str":200,
+ "atkRange":300,
+ "atkType":"magical",
+ "atkRate":650,
+ "hitFly":true,
+ "upgrades": null}

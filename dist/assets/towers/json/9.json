@@ -1,1 +1,9 @@
-{"towerId":9,  "towerName":"Sorceress", 	 "cost":3,   "str":120, "atkRange":275, "atkType":"magical",  "atkRate":600,  "hitFly":true,  "upgrades": [21, 22]}
+{"towerId":9,
+ "towerName":"Sorceress",
+ "cost":20,
+ "str":120,
+ "atkRange":275,
+ "atkType":"magical",
+ "atkRate":600,
+ "hitFly":true,
+ "upgrades": [21, 22]}

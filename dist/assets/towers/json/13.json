@@ -1,1 +1,9 @@
-{"towerId":13, "towerName":"Cutpurse", 	 "cost":4,   "str":50 , "atkRange":100, "atkType":"physical", "atkRate":100,  "hitFly":false, "upgrades": null}
+{"towerId":13,
+ "towerName":"Cutpurse",
+ "cost":25,
+ "str":50,
+ "atkRange":100,
+ "atkType":"physical",
+ "atkRate":100,
+ "hitFly":false,
+ "upgrades": null}

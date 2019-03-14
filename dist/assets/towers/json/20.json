@@ -1,1 +1,9 @@
-{"towerId":20, "towerName":"LightningMage", "cost":4,   "str":175, "atkRange":225, "atkType":"magical",  "atkRate":500,  "hitFly":true,  "upgrades": null}
+{"towerId":20,
+ "towerName":"LightningMage",
+ "cost":25,
+ "str":175,
+ "atkRange":225,
+ "atkType":"magical",
+ "atkRate":500,
+ "hitFly":true,
+ "upgrades": null}

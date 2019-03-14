@@ -353,7 +353,7 @@ export function placeTowerAction(pointer, scene, i, j){
     placetowerImg.setInteractive({ useHandCursor: true }).on('pointerdown', ()=> {
         GV.BUTTON_GROUP.clear(true,true);
 		scene.scene.menuSounds.play();
-		var peasantImg = createButton(scene,1660, 1024, 0, "Peasant | 5g");
+		var peasantImg = createButton(scene,1660, 1024, 0, "Peasant | 10g");
 		
         peasantImg.setInteractive({ useHandCursor: true }).on('pointerdown', function (event) {
             var hud = this.scene.get('HUD');
@@ -392,7 +392,7 @@ export function placeTowerAction(pointer, scene, i, j){
                 "Attack Range:  " + GV.TOWER_ARRAY[0].atkRange,
                 "Damage:        " + GV.TOWER_ARRAY[0].str,
                 "Damage Type:   " + GV.TOWER_ARRAY[0].atkType,
-                "Hit Flying:    " + GV.TOWER_ARRAY[0].hitFly,
+                "Hit Flying:    " + GV.TOWER_ARRAY[0].hitFly
                 ];
 
             //Add Attack Range Visibly
@@ -564,6 +564,7 @@ export function damageEnemy(enemy, attack) {
 				}
 				break;
 			case 14:
+			
 				break;
 			case 16:
 				attack.attackcount++;
