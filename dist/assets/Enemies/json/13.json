@@ -1,7 +1,7 @@
 { "enemyId": 13,
   "enemyName": "Imp",
   "speed": 1,
-  "hp": 450,
+  "hp": 400,
   "magicArmor": 0,
   "physicalArmor": 0,
   "flying": false,

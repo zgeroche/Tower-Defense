@@ -1,10 +1,10 @@
 { "enemyId": 11,
   "enemyName": "Dragon",
   "speed": 1,
-  "hp": 500,
-  "magicArmor": 30,
+  "hp": 700,
+  "magicArmor": 15,
   "physicalArmor": 30,
   "flying": true,
-  "value": 4,
+  "value": 3,
   "frameEnd": 3,
   "damage": 5 }
