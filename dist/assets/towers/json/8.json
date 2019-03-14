@@ -1,9 +1,0 @@
-{"towerId":8,
- "towerName":"Wizard",
- "cost":20,
- "str":100,
- "atkRange":250,
- "atkType":"magical",
- "atkRate":500,
- "hitFly":true,
- "upgrades": [18, 19, 20]}

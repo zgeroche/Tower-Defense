@@ -1,9 +1,0 @@
-{"towerId":17,
- "towerName":"Headhunter",
- "cost":25,
- "str":120,
- "atkRange":350,
- "atkType":"magical",
- "atkRate":350,
- "hitFly":true,
- "upgrades": null}

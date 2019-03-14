@@ -1,9 +1,0 @@
-{"towerId":22,
- "towerName":"Priestess",
- "cost":25,
- "str":150,
- "atkRange":250,
- "atkType":"magical",
- "atkRate":500,
- "hitFly":true,
- "upgrades": null}

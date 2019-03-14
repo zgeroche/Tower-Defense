@@ -1,9 +1,0 @@
-{"towerId":3,
- "towerName":"Apprentice",
- "cost":15,
- "str":80,
- "atkRange":250,
- "atkType":"magical",
- "atkRate":500,
- "hitFly":true,
- "upgrades": [8, 9]}

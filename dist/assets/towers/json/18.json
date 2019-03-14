@@ -1,9 +1,0 @@
-{"towerId":18,
- "towerName":"FireMage",
- "cost":25,
- "str":200,
- "atkRange":250,
- "atkType":"magical",
- "atkRate":475,
- "hitFly":true,
- "upgrades": null}

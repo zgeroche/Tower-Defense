@@ -1,9 +1,0 @@
-{"towerId":0,  
- "towerName":"Peasant", 		 
- "cost":10,   
- "str":50,  
- "atkRange":150, 
- "atkType":"physical", 
- "atkRate":750,  
- "hitFly":false, 
- "upgrades": [1, 2, 3]}
