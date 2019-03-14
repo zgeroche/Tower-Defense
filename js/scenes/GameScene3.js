@@ -17,7 +17,7 @@ export class GameScene3 extends Phaser.Scene {
 		GV.scene = CST.SCENES.GAME3;
 		GV.PLAYER_HEALTH = 100;
         GV.WAVE = 1;
-        GV.GOLD = 40;
+        GV.GOLD = 25;
         GV.SPAWNED = 0;
 		
 		GV.TOWER_GROUP = [];
@@ -25,7 +25,7 @@ export class GameScene3 extends Phaser.Scene {
 		GV.ATTACK_GROUP = [];
 		GV.BUTTON_GROUP = [];
 
-        GV.WAVE_DETAIL = ['10 Imps', '10 Zombies', '15 Reapers', '10 Dragons (flying)', '15 Imps + Golem (miniBoss)', '20 Vampire + Zombie', '40 Imp + Reaper', '60 Dragon, Zombie, Vampire', '50 Reaper, Golem, Imp', '30 Dragons (Mass)'];
+        GV.WAVE_DETAIL = ['10 Imps', '10 Zombies', '15 Reapers', '5 Dragons (flying)', '15 Imps + Golem (miniBoss)', '20 Vampire + Zombie', '40 Imp + Reaper', '60 Dragon, Zombie, Vampire', '50 Reaper, Golem, Imp', '30 Dragons (Mass)'];
 
 		//var graphics = this.add.graphics();    
 		//FN.drawLines(graphics);

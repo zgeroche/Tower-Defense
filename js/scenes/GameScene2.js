@@ -18,7 +18,7 @@ export class GameScene2 extends Phaser.Scene {
 		GV.scene = CST.SCENES.GAME2;
 		GV.PLAYER_HEALTH = 100;
         GV.WAVE = 1;
-        GV.GOLD = 50000;
+        GV.GOLD = 25;
         GV.SPAWNED = 0;
 		
 		GV.TOWER_GROUP = [];
