@@ -19,7 +19,7 @@ export class GameScene extends Phaser.Scene {
         GV.GOLD = 25;
         GV.SPAWNED = 0;
 		
-		GV.WAVE_DETAIL = ['10 Skeletons', '10 Witches', '10 Goblins (fast)', '10 bats (flying)', '10 Skeletons + Boss', '20 Goblins (mass, fast)', '10 witches + 10 bats (flying)', '25 Skeletons (mass)' , '10 Skeletons, Witches & Goblins', '2 Ogre Boss'];
+		GV.WAVE_DETAIL = ['10 Skeletons', '10 Witches', '10 Goblins (fast)', '10 bats (flying)', '10 Skeletons + Boss', '10 Goblins (mass, fast)', '10 witches + 10 bats (flying)', '25 Skeletons (mass)' , '10 Skeletons, Witches & Goblins', '2 Ogre Boss'];
 		
 		//var graphics = this.add.graphics();    
 		//FN.drawLines(graphics);
@@ -206,7 +206,7 @@ export class GameScene extends Phaser.Scene {
 						break;
 					case 2: //10 Witches
 						if (GV.SPAWNED < 10) {
-							enemy = GV.ENEMY_GROUP[7].get(GV.ENEMY_ARRAY[7]);
+							enemy = GV.ENEMY_GROUP[2].get(GV.ENEMY_ARRAY[2]);
 							if (enemy) {
 								enemy.setActive(true);
 								enemy.setVisible(true);
@@ -215,7 +215,7 @@ export class GameScene extends Phaser.Scene {
 								GV.SPAWNED += 1;
 							}
 						}
-						else if (GV.ENEMY_GROUP[7].countActive(true) === 0) {
+						else if (GV.ENEMY_GROUP[2].countActive(true) === 0) {
 							GV.SPAWNED = 0;
 							GV.WAVE += 1;
 							this.nextEnemy = time + GV.WAVE_DELAY;
@@ -240,7 +240,7 @@ export class GameScene extends Phaser.Scene {
 						break;
 					case 4: //10 Bats
 						if (GV.SPAWNED < 10) {
-							enemy = GV.ENEMY_GROUP[2].get(GV.ENEMY_ARRAY[2]);
+							enemy = GV.ENEMY_GROUP[7].get(GV.ENEMY_ARRAY[7]);
 							if (enemy) {
 								enemy.setActive(true);
 								enemy.setVisible(true);
@@ -249,7 +249,7 @@ export class GameScene extends Phaser.Scene {
 								GV.SPAWNED += 1;
 							}
 						}
-						else if (GV.ENEMY_GROUP[2].countActive(true) === 0) {
+						else if (GV.ENEMY_GROUP[7].countActive(true) === 0) {
 							GV.SPAWNED = 0;
 							GV.WAVE += 1;
 							this.nextEnemy = time + GV.WAVE_DELAY;
@@ -285,7 +285,7 @@ export class GameScene extends Phaser.Scene {
 								enemy.setActive(true);
 								enemy.setVisible(true);
 								enemy.startOnPath(GV.WALKPATH);
-								this.nextEnemy = time + 350;
+								this.nextEnemy = time + 450;
 								GV.SPAWNED += 1;
 							}
 						}
@@ -302,7 +302,7 @@ export class GameScene extends Phaser.Scene {
 								if (enemy) {
 									enemy.setActive(true);
 									enemy.setVisible(true);
-									enemy.startOnPath(GV.FLYPATH);
+									enemy.startOnPath(GV.WALKPATH);
 									this.nextEnemy = time + GV.ENEMY_SPAWN_RATE / 2;
 									GV.SPAWNED += 1;
 								}
@@ -312,7 +312,7 @@ export class GameScene extends Phaser.Scene {
 								if (enemy) {
 									enemy.setActive(true);
 									enemy.setVisible(true);
-									enemy.startOnPath(GV.WALKPATH);
+									enemy.startOnPath(GV.FLYPATH);
 									this.nextEnemy = time + GV.ENEMY_SPAWN_RATE / 2;
 									GV.SPAWNED += 1;
 								}
@@ -354,7 +354,7 @@ export class GameScene extends Phaser.Scene {
 								}
 							}
 							else if (GV.SPAWNED % 2 === 0) {
-								enemy = GV.ENEMY_GROUP[7].get(GV.ENEMY_ARRAY[7]);
+								enemy = GV.ENEMY_GROUP[2].get(GV.ENEMY_ARRAY[2]);
 								if (enemy) {
 									enemy.setActive(true);
 									enemy.setVisible(true);
@@ -374,7 +374,7 @@ export class GameScene extends Phaser.Scene {
 								}
 							}
 						}
-						else if (GV.ENEMY_GROUP[3].countActive(true) === 0 && GV.ENEMY_GROUP[1].countActive(true) === 0 && GV.ENEMY_GROUP[7].countActive(true) === 0) {
+						else if (GV.ENEMY_GROUP[3].countActive(true) === 0 && GV.ENEMY_GROUP[1].countActive(true) === 0 && GV.ENEMY_GROUP[2].countActive(true) === 0) {
 							GV.SPAWNED = 0;
 							GV.WAVE += 1;
 							this.nextEnemy = time + GV.WAVE_DELAY;

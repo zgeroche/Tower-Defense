@@ -366,10 +366,6 @@ export class Enemy extends Phaser.GameObjects.Sprite {
         this.follower.t += GV.ENEMY_SPEED * delta * this.speed;
 
         this.path.getPoint(this.follower.t, this.follower.vec);
-        /*
-		if (!this.flying){ GV.WALKPATH.getPoint(this.follower.t, this.follower.vec);}
-		else{ GV.FLYPATH.getPoint(this.follower.t, this.follower.vec)};
-		*/
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
 		this.text.setPosition(this.follower.vec.x, this.follower.vec.y-30);									//textHP
         this.healthbar.setPosition(this.follower.vec.x - this.width, this.follower.vec.y - this.height);
@@ -1171,7 +1167,7 @@ export class Attack extends Phaser.GameObjects.Image {
 		//this.y += this.dy * (this.speed * delta);
         this.emitter.explode(5,this.x,this.y);
 
-		if (this.lifespan <= 0)
+		if (this.lifespan <= 0 || this.enemy === null)
 		{
 			this.setActive(false);
 			this.setVisible(false);  
