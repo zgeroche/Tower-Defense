@@ -366,10 +366,6 @@ export class Enemy extends Phaser.GameObjects.Sprite {
         this.follower.t += GV.ENEMY_SPEED * delta * this.speed;
 
         this.path.getPoint(this.follower.t, this.follower.vec);
-        /*
-		if (!this.flying){ GV.WALKPATH.getPoint(this.follower.t, this.follower.vec);}
-		else{ GV.FLYPATH.getPoint(this.follower.t, this.follower.vec)};
-		*/
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
 		this.text.setPosition(this.follower.vec.x, this.follower.vec.y-30);									//textHP
         this.healthbar.setPosition(this.follower.vec.x - this.width, this.follower.vec.y - this.height);
@@ -958,7 +954,8 @@ export class Cannoneer extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'cannoneer');
-		
+        this.special = 'Area Damage';
+
 		this.anims.play('cannoneer_idle');
     }
 }
@@ -995,7 +992,8 @@ export class FireMage extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'firemage');
-		
+        this.special = 'Burns Enemies, Splash';
+
 		this.anims.play('firemage_idle');
     }
 }
@@ -1004,7 +1002,8 @@ export class IceMage extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'icemage');
-		
+        this.special = 'Slows Enemies, Splash';
+
 		this.anims.play('icemage_idle');
     }
 }
@@ -1171,7 +1170,7 @@ export class Attack extends Phaser.GameObjects.Image {
 		//this.y += this.dy * (this.speed * delta);
         this.emitter.explode(5,this.x,this.y);
 
-		if (this.lifespan <= 0)
+		if (this.lifespan <= 0 || this.enemy === null)
 		{
 			this.setActive(false);
 			this.setVisible(false);  
@@ -1354,6 +1353,7 @@ export class Cannonball extends Attack {
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cannonball');
 
         this.speed = 400;// Phaser.Math.GetSpeed(800, 1);
+        this.aoe = 200;
 		
 		this.atkSound = scene.sound.add('cannonSound');
 		this.atkSound.volume = 0.02;
@@ -1403,6 +1403,7 @@ export class Fireball extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'fireball');
         this.speed = 700;// Phaser.Math.GetSpeed(800, 1);
+        this.aoe = 100;
 		
 		this.atkSound = scene.sound.add('fireSound');
 		this.atkSound.volume = 0.04;
@@ -1416,6 +1417,7 @@ export class Icicle extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'icicle');
         this.speed = 700;// Phaser.Math.GetSpeed(800, 1);
+        this.aoe = 100;
 		
 		this.atkSound = scene.sound.add('iceSound');
 		this.atkSound.volume = 0.02;
