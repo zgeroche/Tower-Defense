@@ -553,7 +553,7 @@ export function damageEnemy(enemy, attack) {
 			case 12:
 				if (enemy.physicalArmor > 0)
 				{
-					attack.damage += Math.floor(attack.damage * (100+enemy.physicalArmor/100));
+					attack.damage = Math.floor(attack.damage * ((100+enemy.physicalArmor)/100));
 				}
 				break;
 			case 13:
