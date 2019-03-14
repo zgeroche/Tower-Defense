@@ -1,7 +1,7 @@
 { "enemyId": 6,
   "enemyName": "BossSkeleton",
   "speed": 0.75,
-  "hp": 2500,
+  "hp": 2000,
   "magicArmor": 15,
   "physicalArmor": 15,
   "flying": false,
