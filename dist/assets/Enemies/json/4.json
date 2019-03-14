@@ -1,1 +1,10 @@
-{"enemyId": 4,   "enemyName": "Ogre",           "speed": 0.75,  "hp": 4000,   "magicArmor": 20, "physicalArmor": 20, "flying": false, "value": 25,  "frameEnd": 6, "damage": 25}
+{"enemyId": 4,
+ "enemyName": "Ogre",
+ "speed": 0.75,
+ "hp": 2000,
+ "magicArmor": 10,
+ "physicalArmor": 10,
+ "flying": false,
+ "value": 5,
+ "frameEnd": 6,
+ "damage": 20}

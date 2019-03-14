@@ -1,0 +1,10 @@
+{"enemyId": 5,
+ "enemyName": "Ghost",
+ "speed": 1.5,
+ "hp": 450,
+ "magicArmor": 0,
+ "physicalArmor": 0,
+ "flying": true,
+ "value": 1,
+ "frameEnd": 3,
+ "damage": 5 }
