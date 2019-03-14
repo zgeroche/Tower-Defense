@@ -136,6 +136,21 @@ export class GameScene3 extends Phaser.Scene {
         FN.buildMap(this, 'map3');
 			
 		//wave management
+		this.startPoint = this.add.text(128, GV.WALKPATH.startPoint.y, '->', { fontFamily: 'VT323', fontSize: 75, color: '#00ff00', stroke: "#ffffff", strokeThickness: 2 }).setOrigin(0.5).setDepth(1);
+		this.startPoint2 = this.add.text(GV.WALKPATH2.startPoint.x-128, GV.WALKPATH2.startPoint.y, '<-', { fontFamily: 'VT323', fontSize: 75, color: '#00ff00', stroke: "#ffffff", strokeThickness: 2 }).setOrigin(0.5).setDepth(1);
+		this.startPoint2.setVisible(false);
+		var targets = [this.startPoint, this.startPoint2];
+		this.numPaths = 1;
+		this.pathSide = 1;
+		this.startPosIndicate = this.tweens.add({
+				targets: targets, // on the start button
+				duration: 500, 
+				scaleX: 2, 
+				scaleY: 2, 
+				yoyo: true, // at the end, go back to original scale 
+				loop: -1
+			});
+			
  		this.buttonImg = this.add.image(1660, 1008, 'waveHUD').setDepth(1);
 		this.nextEnemy = this.sys.game.loop.time + GV.WAVE_DELAY;
         this.complete = this.add.text(1660, 1008, 'Wave Complete', {fontFamily: 'VT323', fontSize: 30, color: '#ff0000'}).setDepth(1).setOrigin(.8,0.5);
@@ -148,6 +163,9 @@ export class GameScene3 extends Phaser.Scene {
             this.skipWave.setVisible(false);
 			this.delay.setVisible(false);
 			this.buttonImg.setVisible(false);
+			this.startPoint.setVisible(false);
+			this.startPosIndicate.pause();
+			this.startPoint2.setVisible(false);
         });
 		
         //input related actions in userAction function
@@ -197,6 +215,7 @@ export class GameScene3 extends Phaser.Scene {
 		{
 		//Wave timer and skip in bottom HUD
 		FN.waveHUD(this, Math.trunc((this.nextEnemy - time) / 1000));
+		FN.pathIndicator(this, Math.trunc((this.nextEnemy - time) / 1000), this.numPaths, this.pathSide)
         this.delay.setText('Next wave in ' + Math.trunc((this.nextEnemy - time) / 1000) + ' Seconds');
         if (time > this.nextEnemy) {
             switch (GV.WAVE) {
@@ -229,7 +248,9 @@ export class GameScene3 extends Phaser.Scene {
                         }
                     }
                     else if (GV.ENEMY_GROUP[14].countActive(true) === 0) {
-                         GV.SPAWNED = 0;
+						this.numPaths = 1;
+						this.pathSide = 2;
+                        GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
                     }
@@ -247,6 +268,8 @@ export class GameScene3 extends Phaser.Scene {
                         }
                     }
                     else if (GV.ENEMY_GROUP[8].countActive(true) === 0) {
+						this.numPaths = 1;
+						this.pathSide = 1;
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -264,6 +287,8 @@ export class GameScene3 extends Phaser.Scene {
                         }
                     }
                     else if (GV.ENEMY_GROUP[11].countActive(true) === 0) {
+						this.numPaths = 2;
+						this.pathSide = -1;
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -287,7 +312,9 @@ export class GameScene3 extends Phaser.Scene {
                         }
                     }
                     else if (GV.ENEMY_GROUP[13].countActive(true) === 0 && GV.ENEMY_GROUP[7].countActive(true) === 0) {
-                              GV.SPAWNED = 0;
+                        this.numPaths = 1;
+						this.pathSide = 2;
+						GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
                     }
@@ -316,7 +343,9 @@ export class GameScene3 extends Phaser.Scene {
                         }
                     }
                     else if (GV.ENEMY_GROUP[15].countActive(true) === 0 && GV.ENEMY_GROUP[14].countActive(true) === 0) {
-                        GV.SPAWNED = 0;
+                        this.numPaths = 2;
+						this.pathSide = -1;
+						GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
                     }
