@@ -1,1 +1,1 @@
-{"towerId":19, "towerName":"IceMage", 		 "cost":35,   "str":130, "atkRange":300, "atkType":"magical",  "atkRate":450,  "hitFly":true,  "upgrades": null}
+{"towerId":19, "towerName":"IceMage", 		 "cost":35,   "str":30, "atkRange":300, "atkType":"magical",  "atkRate":450,  "hitFly":true,  "upgrades": null}

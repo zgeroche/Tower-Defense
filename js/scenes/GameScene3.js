@@ -17,7 +17,7 @@ export class GameScene3 extends Phaser.Scene {
 		GV.scene = CST.SCENES.GAME3;
 		GV.PLAYER_HEALTH = 100;
         GV.WAVE = 1;
-        GV.GOLD = 50000;
+        GV.GOLD = 40;
         GV.SPAWNED = 0;
 		
 		GV.TOWER_GROUP = [];
@@ -25,7 +25,7 @@ export class GameScene3 extends Phaser.Scene {
 		GV.ATTACK_GROUP = [];
 		GV.BUTTON_GROUP = [];
 
-        GV.WAVE_DETAIL = ['10 Imps', '10 Zombies', '15 Reapers', '10 Dragons (flying)', '15 Imps + Golem (miniBoss)', '20 Vampre + Zombie', '40 Imp + Reaper', '60 Dragon, Zombie, Vampire', '50 Reaper, Golem, Imp', '30 Dragons (Mass)'];
+        GV.WAVE_DETAIL = ['10 Imps', '10 Zombies', '15 Reapers', '10 Dragons (flying)', '15 Imps + Golem (miniBoss)', '20 Vampire + Zombie', '40 Imp + Reaper', '60 Dragon, Zombie, Vampire', '50 Reaper, Golem, Imp', '30 Dragons (Mass)'];
 
 		//var graphics = this.add.graphics();    
 		//FN.drawLines(graphics);
@@ -275,7 +275,7 @@ export class GameScene3 extends Phaser.Scene {
                         if (enemy) {
                             enemy.setActive(true);
                             enemy.setVisible(true);
-                            enemy.startOnPath(GV.WALKPATH);
+                            enemy.startOnPath(GV.WALKPATH2);
                             this.nextEnemy = time + GV.ENEMY_SPAWN_RATE;
                             GV.SPAWNED += 1;
                         }
@@ -283,7 +283,7 @@ export class GameScene3 extends Phaser.Scene {
                             enemy = GV.ENEMY_GROUP[12].get(GV.ENEMY_ARRAY[12]);
                             enemy.setActive(true);
                             enemy.setVisible(true);
-                            enemy.startOnPath(GV.WALKPATH2);
+                            enemy.startOnPath(GV.WALKPATH);
                         }
                     }
                     else if (GV.ENEMY_GROUP[13].countActive(true) === 0 && GV.ENEMY_GROUP[7].countActive(true) === 0) {
@@ -309,7 +309,7 @@ export class GameScene3 extends Phaser.Scene {
                             if (enemy) {
                                 enemy.setActive(true);
                                 enemy.setVisible(true);
-                                enemy.startOnPath(GV.WALKPATH2);
+                                enemy.startOnPath(GV.WALKPATH);
                                 this.nextEnemy = time + 350;
                                 GV.SPAWNED += 1;
                             }
