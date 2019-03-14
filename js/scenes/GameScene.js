@@ -16,8 +16,10 @@ export class GameScene extends Phaser.Scene {
 		GV.scene = CST.SCENES.GAME;
 		GV.PLAYER_HEALTH = 100;
         GV.WAVE = 1;
-        GV.GOLD = 30;
+        GV.GOLD = 25;
         GV.SPAWNED = 0;
+		
+		GV.WAVE_DETAIL = ['10 Skeletons', '10 Witches', '10 Goblins (fast)', '10 bats (flying)', '10 Skeletons + Boss', '20 Goblins (mass, fast)', '10 witches + 10 bats (flying)', '25 Skeletons (mass)' , '10 Skeletons, Witches & Goblins', '2 Ogre Boss'];
 		
 		//var graphics = this.add.graphics();    
 		//FN.drawLines(graphics);
@@ -276,14 +278,14 @@ export class GameScene extends Phaser.Scene {
 							this.nextEnemy = time + GV.WAVE_DELAY;
 						}
 						break;
-					case 6: // 20 goblins spawned in a bunch (3)
-						if (GV.SPAWNED < 20) {
+					case 6: // 10 goblins spawned in a bunch (3)
+						if (GV.SPAWNED < 10) {
 							enemy = GV.ENEMY_GROUP[3].get(GV.ENEMY_ARRAY[3]);
 							if (enemy) {
 								enemy.setActive(true);
 								enemy.setVisible(true);
 								enemy.startOnPath(GV.WALKPATH);
-								this.nextEnemy = time + 250;
+								this.nextEnemy = time + 350;
 								GV.SPAWNED += 1;
 							}
 						}

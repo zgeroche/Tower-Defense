@@ -1,0 +1,1 @@
+{ "enemyId": 7,  "enemyName": "Witch",          "speed": 1,    "hp": 450,    "magicArmor": 5,  "physicalArmor": 0,  "flying": false, "value": 2,  "frameEnd": 3, "damage": 5 }

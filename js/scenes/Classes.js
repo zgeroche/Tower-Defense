@@ -143,6 +143,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			if(this.particlesSnow){this.particlesSnow.destroy();};
 			if(this.particlesStun){this.particlesStun.destroy();};
 			if(this.particlesWeak){this.particlesWeak.destroy();};
+			if(this.particlesBurn){this.particlesBurn.destroy();};
 			
 		}
 	}
@@ -200,6 +201,24 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 	
 	burn()
 	{
+		if(!this.burned)
+		{
+			 this.particlesBurn = this.scene.add.particles('explosion');
+			 var emitter = this.particlesBurn.createEmitter({
+				x: { min: (this.width/2)*-1, max: (this.width/2) },
+				y: { min: (this.height/2)*-1, max: (this.height/2)},
+				speed: { min: 100, max: 200 },
+				angle: { min: -85, max: -95 },
+				scale: { start: 0, end: 1, ease: 'Back.easeOut' },
+				alpha: { start: 1, end: 0, ease: 'Quart.easeOut' },
+				blendMode: 'SCREEN',
+				lifespan: 1000
+			});
+
+			emitter.startFollow(this);
+
+		}
+		
 		this.burned = true;
 		this.setTint(0xFF4500);
 		this.burntime = this.scene.sys.game.loop.time;
@@ -261,6 +280,19 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			
 		}
 	}
+	coins()
+	{
+		var image = this.scene.add.image(this.follower.vec.x - this.width/4, this.follower.vec.y - this.height, 'coinPop');
+		this.scene.tweens.add({
+			targets: image,
+			angle: 180,
+			y: '-=30', 
+			duration: 300, 
+			ease: 'Linear',
+			delay: 0,
+			onComplete: function () {image.destroy();}
+		});
+	}
 	
 	restore(clear)
 	{
@@ -283,11 +315,12 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			this.ministunned = false;
 		}
 		if(clear == 3)
-    {
-     //if(this.particlesBurn){thisl.particlesBurn.destroy();};
-     this.burned = false;
-    }
-    //if(this.particlesWeak){this.particlesWeak.destroy();};
+		{
+			//if(this.particlesBurn){thisl.particlesBurn.destroy();};
+			if(this.particlesBurn){this.particlesBurn.destroy();}
+			this.burned = false;
+		}
+			//if(this.particlesWeak){this.particlesWeak.destroy();};
 	}
 	
 	clearBurn()
@@ -357,7 +390,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			}
 		}
 		
-    if (this.ministunned)
+		if (this.ministunned)
 		{
 			if (time - 200 >= this.ministuntime)
 			{
@@ -397,6 +430,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			if(this.particlesSnow){this.particlesSnow.destroy();};
 			if(this.particlesStun){this.particlesStun.destroy();};
 			if(this.particlesWeak){this.particlesWeak.destroy();};
+			if(this.particlesBurn){this.particlesBurn.destroy();};
 		}
         if (!this.flying) {
             if (this.prevx < this.follower.vec.x && this.facing != 'r') {
@@ -755,9 +789,9 @@ export class Tower extends Phaser.GameObjects.Sprite{
 	
 	}
 	
-	fire() {
-	    var enemy = FN.getEnemy(this.x, this.y, this.atkRange, this.hitFly);
-	    if(enemy) {
+    fire() {
+        var enemy = FN.getEnemy(this.x, this.y, this.atkRange, this.hitFly);
+	    if (enemy) {
 	        var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
 	        FN.addAttack(this.x, this.y, angle, this.str, this.atkType, this.towerId, enemy);
 	        //this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make towers rotate to face enemy
@@ -885,6 +919,7 @@ export class Commander extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'commander');
+        this.special = 'Chance to Stun';
 		
 		this.anims.play('commander_idle');
     }
@@ -894,7 +929,7 @@ export class Berserker extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'berserker');
-		
+
 		this.anims.play('berserker_idle');
     }
 }
@@ -903,6 +938,7 @@ export class Swordmaster extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'swordmaster');
+        this.special = 'Ignores Armor';
 		
 		this.anims.play('swordmaster_idle');
     }
@@ -912,6 +948,7 @@ export class Cutpurse extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'cutpurse');
+        this.special = 'Steals Gold';
 		
 		this.anims.play('cutpurse_idle');
     }
@@ -939,6 +976,7 @@ export class Beastmaster extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'beastmaster');
+        this.special = 'Chance to Double Damage';
 		
 		this.anims.play('beastmaster_idle');
     }
@@ -975,6 +1013,7 @@ export class LightningMage extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'lightningmage');
+        this.special = 'Briefly Stuns Enemy';
 		
 		this.anims.play('lightningmage_idle');
     }
@@ -984,6 +1023,7 @@ export class Warlock extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'warlock');
+        this.special = 'Shreds Armor';
 		
 		this.anims.play('warlock_idle');
     }
@@ -993,6 +1033,7 @@ export class Priestess extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'priestess');
+        this.special = 'Buffs Ally Damage';
 		
 		this.anims.play('priestess_idle');
     }
@@ -1567,8 +1608,10 @@ export class TowerButton extends Phaser.GameObjects.Image {
                 "Attack Range:  " + newTower.atkRange,    
                 "Damage:        " + newTower.str,
                 "Damage Type:   " + newTower.atkType,
-                "Hit Flying:    " + newTower.hitFly
-				];
+                "Hit Flying:    " + newTower.hitFly];
+            if (newTower.special) {
+                towerInfo.push("Special: " + newTower.special);
+            }
 
             this.hud.tooltipText.setText(towerInfo);
             this.hud.tooltipText.setVisible(true);

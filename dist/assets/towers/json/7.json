@@ -1,0 +1,1 @@
+{"towerId":7,  "towerName":"Ranger", 		 "cost":25,   "str":100, "atkRange":300, "atkType":"physical", "atkRate":500,  "hitFly":true,  "upgrades": [16, 17]}
