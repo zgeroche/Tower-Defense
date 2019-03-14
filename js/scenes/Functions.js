@@ -418,13 +418,27 @@ export function placeTowerAction(pointer, scene, i, j){
 
 
 export function removeTowerAction(pointer, scene, i, j){
-	var removeButtonImg = createButton(scene,1660, 1024, 0, "Remove Tower");
+	var removeButtonImg = createButton(scene,1660, 1024, 0, "Sell Tower");
 	
 	removeButtonImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
 		scene.scene.menuSounds.play();
 		var tower = GV.MAP[i][j];
 		if(typeof tower ==="object")
-		{
+        {
+            switch (tower.cost) {
+                case 8:
+                    GV.GOLD += 6;
+                    break;
+                case 15:
+                    GV.GOLD += 17;
+                    break;
+                case 25:
+                    GV.GOLD += 36;
+                    break;
+                case 35:
+                    GV.GOLD += 62;
+                    break;
+            }
 			tower.removeTower(i, j, scene);
 		}
 		
@@ -534,12 +548,26 @@ export function getEnemy(x, y, distance, hitFly) {
     return false;
 } 
 
+export function getEnemies(x, y, area, fly) {
+    var enemies = [];
+    for (var j = 0; j < GV.ENEMY_GROUP.length; j++) {
+        var enemyUnits = GV.ENEMY_GROUP[GV.ENEMY_GROUP.length - j - 1].getChildren();
+        for (var i = 0; i < enemyUnits.length; i++) {
+            if (enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) < area)
+                if (fly || !enemyUnits[i].flying)
+                    enemies.push(enemyUnits[i]);
+        }
+    }
+    return enemies;
+}
+
 export function damageEnemy(enemy, attack) {  
     // only if both enemy and attack are alive
     if (enemy.active === true && attack.active === true) {
         // we remove the attack right away
         attack.setActive(false);
         attack.setVisible(false);
+        //damage.play();
 
 		switch(attack.id)
 		{
@@ -564,10 +592,13 @@ export function damageEnemy(enemy, attack) {
 					attack.cutpurseSound.play();
 					enemy.coins();
 				}
-				break;
-			case 14:
-			
-				break;
+                break;
+            case 14:
+                var areaEnemies = getEnemies(enemy.x, enemy.y, attack.aoe);
+                for (var i = 0; i < areaEnemies.length; i++) {
+                    areaEnemies[i].receiveDamage(attack.damage, attack.atkType);
+                }
+                break;        
 			case 16:
 				attack.attackcount++;
 				
@@ -584,11 +615,21 @@ export function damageEnemy(enemy, attack) {
 					attack.damage *= 2.5;
 				}
 				break;
-			case 18:
-				enemy.burn();
+            case 18:
+                var enemies = getEnemies(enemy.x, enemy.y, attack.aoe, true);
+                for (var i = 0; i < enemies.length; i++) {
+                    enemies[i].burn();
+                    enemies[i].receiveDamage(attack.damage, attack.atkType);
+                }
+				//enemy.burn();
 				break;
 			case 19:
-				enemy.slow();
+                //enemy.slow();
+                var enemies = getEnemies(enemy.x, enemy.y, attack.aoe, true);
+                for (var i = 0; i < enemies.length; i++) {
+                    enemies[i].slow();
+                    enemies[i].receiveDamage(attack.damage, attack.atkType);
+                }
 				break;
 			case 20:
 				enemy.ministun();
@@ -601,8 +642,10 @@ export function damageEnemy(enemy, attack) {
 		}	
         
         // decrease the enemy hp with ATTACK_DAMAGE
-        enemy.receiveDamage(attack.damage, attack.atkType);
-        //damage.play();
+        if (!attack.aoe) {
+            enemy.receiveDamage(attack.damage, attack.atkType);
+        }
+        
     }
 }
 
