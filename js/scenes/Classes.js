@@ -690,9 +690,8 @@ export class Tower extends Phaser.GameObjects.Sprite{
 		this.atkType = stats.atkType;
 		this.atkRate = stats.atkRate; 
 		this.hitFly = stats.hitFly; //true = can hit flying enemeies, false = cannot hit flying enemies
-		//this.attackImage = stats.attackimage
-		//this.aoeRange = aoeRange; //area of effect range
-		//this.spc = spc; //has special attack, each value represents special type, 0 = none, 1 = chance to stun, etc.
+		
+		this.priestessBuff = false;
 		
 		this.text = scene.add.text(0, 0, this.towerName, { fontFamily: 'VT323', fontSize: 21, fill: "#ffffff", stroke: "000000", strokeThickness: 2});
 		
@@ -711,7 +710,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 			return false;
 	}	
 	
-	placeTower(i, j,scene) {
+	placeTower(i, j, scene) {
 		//var i = Math.floor(pointer.y/64);
 		//var j = Math.floor(pointer.x/64);
 		if(GV.MAP[i][j] === 0) {
@@ -738,6 +737,15 @@ export class Tower extends Phaser.GameObjects.Sprite{
 					alpha: 0.2,
 					yoyo: true, // at the end, go back to original scale 
 				});
+				
+				var priestesses = GV.TOWER_GROUP[22].getChildren();
+				for (var k = 0; k < priestesses.length; k++)
+				{
+					if (priestesses[k].active && Phaser.Math.Distance.Between(this.x, this.y, priestesses[k].x, priestesses[k].y) < 250)
+					{
+						this.priestessBuff = true;
+					}
+				}
 			}   
 		}
 		else
@@ -775,6 +783,11 @@ export class Tower extends Phaser.GameObjects.Sprite{
                 alpha: 0.2,
                 yoyo: true, // at the end, go back to original scale 
             });
+			
+			if (newTower.towerName == "Priestess")
+			{				
+				FN.buffTowers(this.x, this.y, this.atkRange);
+			}
 
 		}
 		else
@@ -789,7 +802,15 @@ export class Tower extends Phaser.GameObjects.Sprite{
         var enemy = FN.getEnemy(this.x, this.y, this.atkRange, this.hitFly);
 	    if (enemy) {
 	        var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-	        FN.addAttack(this.x, this.y, angle, this.str, this.atkType, this.towerId, enemy);
+			if (this.priestessBuff)
+			{
+				FN.addAttack(this.x, this.y, angle, (this.str * 1.2), this.atkType, this.towerId, enemy);
+			}
+			else
+			{
+				FN.addAttack(this.x, this.y, angle, this.str, this.atkType, this.towerId, enemy);
+			}
+	        
 	        //this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make towers rotate to face enemy
 	    }
 		 if(enemy && this.attack == 0)
