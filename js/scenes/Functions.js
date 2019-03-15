@@ -657,6 +657,18 @@ export function getEnemies(x, y, area, fly) {
     return enemies;
 }
 
+export function buffTowers(x, y, area) {
+	for (var j = 0; j < GV.TOWER_GROUP.length; j++) {
+		var towers = GV.TOWER_GROUP[GV.TOWER_GROUP.length - j - 1].getChildren();
+		for (var i = 0; i < towers.length; i++) {
+			if (towers[i].active && Phaser.Math.Distance.Between(x, y, towers[i].x, towers[i].y) < area) {
+				towers[i].priestessBuff = true;
+			}
+		}
+	}
+}
+				
+
 export function damageEnemy(enemy, attack) {  
     // only if both enemy and attack are alive
     if (enemy.active === true && attack.active === true) {
