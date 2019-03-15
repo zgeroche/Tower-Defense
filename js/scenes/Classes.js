@@ -106,7 +106,8 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
 		
 		//this.text.setPosition(this.follower.vec.x, this.follower.vec.y);
-		this.healthbar.setPosition(this.follower.vec.x - this.width, this.follower.vec.y - this.height);
+        this.healthbar.setPosition(this.follower.vec.x - this.width, this.follower.vec.y - this.height);
+        this.healthbar.setMax(this.hp);
 	 }
 	
 	receiveDamage(damage, type) {
@@ -442,8 +443,11 @@ export class Enemy extends Phaser.GameObjects.Sprite {
                 this.turnUp();
             }
         }
-        else if (this.facing != 'r'){
+        else if (this.prevx < this.follower.vec.x && this.facing != 'r') {
             this.turnRight();
+        }
+        else if (this.prevx > this.follower.vec.x && this.facing != 'l') {
+            this.turnLeft();
         }
 	}
 };
@@ -694,7 +698,8 @@ export class Tower extends Phaser.GameObjects.Sprite{
 		//this.aoeRange = aoeRange; //area of effect range
 		//this.spc = spc; //has special attack, each value represents special type, 0 = none, 1 = chance to stun, etc.
 		
-		this.text = scene.add.text(0, 0, this.towerName, { fontFamily: 'VT323', fontSize: 21, fill: "#ffffff", stroke: "000000", strokeThickness: 2});
+        this.text = scene.add.text(0, 0, this.towerName, { fontFamily: 'VT323', fontSize: 21, fill: "#ffffff", stroke: "000000", strokeThickness: 2 });
+        this.upgrades = stats.upgrades;
 		
 		this.upgradeSound = scene.sound.add('upgradeSound');
 		this.upgradeSound.volume = 0.05;
@@ -1061,6 +1066,12 @@ export class HealthBar {
         this.x = x;
         this.y = y;
         this.draw();
+    }
+
+    setMax(health) {
+        this.maxValue = health;
+        this.value = health;
+        this.p = 76 / this.maxValue;
     }
 
     decrease(amount) {
@@ -1615,6 +1626,16 @@ export class TowerButton extends Phaser.GameObjects.Image {
             if (newTower.special) {
                 towerInfo.push("Special: " + newTower.special);
             }
+            if (newTower.upgrades) {
+                for (var k = 0; k < newTower.upgrades.length; k++) {
+                    if (k == 0) {
+                        towerInfo.push("Upgrades:       " + GV.TOWER_ARRAY[newTower.upgrades[k]].towerName);
+                    }
+                    else {
+                        towerInfo.push("                " + GV.TOWER_ARRAY[newTower.upgrades[k]].towerName);
+                    }
+                }
+            }
 
             this.hud.tooltipText.setText(towerInfo);
             this.hud.tooltipText.setVisible(true);
@@ -1627,8 +1648,7 @@ export class TowerButton extends Phaser.GameObjects.Image {
         });
 
         buttonImg.on('pointerout', () => {
-            this.hud.tooltip.setVisible(false);
-            this.hud.tooltipText.setVisible(false);
+            FN.showTowerStats(scene, i, j);
             scene.upgradeCircle.destroy();
             scene.rangeCircle.destroy();
         });

@@ -1,10 +1,10 @@
 {"enemyId": 0,
  "enemyName": "Deathknight",
  "speed": 1,
- "hp": 500,
+ "hp": 450,
  "magicArmor": 0,
- "physicalArmor": 0,
+ "physicalArmor": 15,
  "flying": false,
- "value": 1,
+ "value": 2,
  "frameEnd": 4,
  "damage": 5}
