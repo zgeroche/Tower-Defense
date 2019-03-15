@@ -685,7 +685,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 	{
 		super(scene);
 
-		this.nextTic = 0;
+		this.nextTic = -1;
 		this.towerId =  stats.towerId; //each tower has unique id
 		this.towerName = stats.towerName;
 		this.cost = stats.cost //price of building the tower
@@ -812,7 +812,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 	
 	update(time, delta, pointer)
 	{
-		if(time > this.nextTic) {
+		if(time >= this.nextTic) {
 			this.fire();
 			this.nextTic = time + this.atkRate;
 		}
@@ -902,7 +902,8 @@ export class Wizard extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'wizard');
-		
+        this.special = 'Small AoE';
+
 		this.anims.play('wizard_idle');
     }
 }
@@ -1364,7 +1365,7 @@ export class Cannonball extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cannonball');
 
-        this.speed = 200;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
         this.aoe = 200;
 		
 		this.atkSound = scene.sound.add('cannonSound');

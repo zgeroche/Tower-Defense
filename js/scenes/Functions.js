@@ -666,7 +666,13 @@ export function damageEnemy(enemy, attack) {
         //damage.play();
 
 		switch(attack.id)
-		{
+        {
+            case 8:
+                var areaEnemies = getEnemies(enemy.x, enemy.y, attack.aoe, true);
+                for (var i = 0; i < areaEnemies.length; i++) {
+                    areaEnemies[i].receiveDamage(attack.damage, attack.atkType);
+                }
+                break;
 			case 10:
 				var stun = Math.floor(Math.random() * 4);
 				if (stun == 0)
@@ -690,7 +696,7 @@ export function damageEnemy(enemy, attack) {
 				}
                 break;
             case 14:
-                var areaEnemies = getEnemies(enemy.x, enemy.y, attack.aoe);
+                var areaEnemies = getEnemies(enemy.x, enemy.y, attack.aoe, false);
                 for (var i = 0; i < areaEnemies.length; i++) {
                     areaEnemies[i].receiveDamage(attack.damage, attack.atkType);
                 }
