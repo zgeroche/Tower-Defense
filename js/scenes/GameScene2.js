@@ -364,6 +364,8 @@ export class GameScene2 extends Phaser.Scene {
                             enemy.setActive(true);
                             enemy.setVisible(true);
                             enemy.hp *= 2;
+                            enemy.speed *= .75;
+                            enemy.damage = 1;
                             enemy.startOnPath(GV.WALKPATH);
                             this.nextEnemy = time + 150;
                             GV.SPAWNED += 1;
@@ -378,6 +380,8 @@ export class GameScene2 extends Phaser.Scene {
                             enemy.setActive(true);
                             enemy.setVisible(true);
                             enemy.hp *= 2;
+                            enemy.speed *= .75;
+                            enemy.damage = 1;
                             enemy.startOnPath(GV.WALKPATH2);
                             this.nextEnemy = time + 150;
                             GV.SPAWNED += 1;
@@ -429,13 +433,13 @@ export class GameScene2 extends Phaser.Scene {
                     }
                     break;
                 case 10: //5 Minotaur Bosses
-                    if (GV.SPAWNED < 2) {
+                    if (GV.SPAWNED % 2 == 0) {
                         enemy = GV.ENEMY_GROUP[17].get(GV.ENEMY_ARRAY[17]);
                         if (enemy) {
                             enemy.setActive(true);
                             enemy.setVisible(true);
                             enemy.startOnPath(GV.WALKPATH);
-                            this.nextEnemy = time + 750;
+                            this.nextEnemy = time + 1500;
                             GV.SPAWNED += 1;
                         }
                     }
@@ -445,7 +449,7 @@ export class GameScene2 extends Phaser.Scene {
                             enemy.setActive(true);
                             enemy.setVisible(true);
                             enemy.startOnPath(GV.WALKPATH2);
-                            this.nextEnemy = time + 750;
+                            this.nextEnemy = time + 1500;
                             GV.SPAWNED += 1;
                         }
                     }
