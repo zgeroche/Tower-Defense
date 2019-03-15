@@ -307,7 +307,7 @@ export function showTowerStats(scene, i, j) {
 
     hud.tooltipText.setText(towerInfo);
     hud.tooltipText.setVisible(true);
-
+}
 
 export function pathIndicator(scene, t, numOfStartPoints, pid){
 	if(numOfStartPoints == 1)
