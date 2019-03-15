@@ -70,11 +70,11 @@ export class GameScene3 extends Phaser.Scene {
 		//GV.WALKPATH2.draw(graphics);
 		
 		GV.FLYPATH = this.add.path(-1.5*64, 12.5*64);
-		GV.FLYPATH.lineTo(20.5*64, 0.5*64);
+		GV.FLYPATH.lineTo(15.5*64, 0.5*64);
 		//GV.FLYPATH.draw(graphics);
 		
-		GV.FLYPATH2 = this.add.path(30.5*64, 11.5*64);
-		GV.FLYPATH2.lineTo(20.5*64, 0.5*64);
+		GV.FLYPATH2 = this.add.path(30.5*64, 12.5*64);
+		GV.FLYPATH2.lineTo(15.5*64, 0.5*64);
 		//GV.FLYPATH2.draw(graphics);
 		
 		GV.MAP = [
