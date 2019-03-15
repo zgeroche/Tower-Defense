@@ -26,7 +26,7 @@ export class GameScene2 extends Phaser.Scene {
 		GV.ATTACK_GROUP = [];
 		GV.BUTTON_GROUP = [];
 
-        GV.WAVE_DETAIL = ['10 Slimes', '10 Deathknights', '10 Jackos', '10 Ghosts (flying)', '10 Jackos + Boss', '20 Deathknight + Slimes', '20 Ghosts (flying, Mass)', '70 Slimes (mass)', '60 Slimes, Deathknights & Jackos', '5 Minotaur Bosses'];
+        GV.WAVE_DETAIL = ['10 Slimes', '10 Deathknights', '10 Jackos', '10 Ghosts (flying)', '10 Jackos + Boss', '20 Deathknight + Slimes', '15 Ghosts (flying, Mass)', '50 Slimes (mass)', '60 Slimes, Deathknights & Jackos', '5 Minotaur Bosses'];
 
 		//var graphics = this.add.graphics();    
 		//FN.drawLines(graphics);
@@ -345,6 +345,7 @@ export class GameScene2 extends Phaser.Scene {
                         if (enemy) {
                             enemy.setActive(true);
                             enemy.setVisible(true);
+                            enemy.speed *= .75;
                             enemy.startOnPath(GV.FLYPATH);
                             this.nextEnemy = time + 350;
                             GV.SPAWNED += 1;
@@ -357,7 +358,7 @@ export class GameScene2 extends Phaser.Scene {
                     }
                     break;
                 case 8: //Mass Slimes
-                    if (GV.SPAWNED < 25) {
+                    if (GV.SPAWNED < 20) {
                         enemy = GV.ENEMY_GROUP[16].get(GV.ENEMY_ARRAY[16]);
                         if (enemy) {
                             enemy.setActive(true);
@@ -371,7 +372,7 @@ export class GameScene2 extends Phaser.Scene {
                             }
                         }
                     }
-                    else if (GV.SPAWNED < 50) {
+                    else if (GV.SPAWNED < 40) {
                         enemy = GV.ENEMY_GROUP[16].get(GV.ENEMY_ARRAY[16]);
                         if (enemy) {
                             enemy.setActive(true);
@@ -428,7 +429,7 @@ export class GameScene2 extends Phaser.Scene {
                     }
                     break;
                 case 10: //5 Minotaur Bosses
-                    if (GV.SPAWNED < 3) {
+                    if (GV.SPAWNED < 2) {
                         enemy = GV.ENEMY_GROUP[17].get(GV.ENEMY_ARRAY[17]);
                         if (enemy) {
                             enemy.setActive(true);
@@ -438,7 +439,7 @@ export class GameScene2 extends Phaser.Scene {
                             GV.SPAWNED += 1;
                         }
                     }
-                    else if (GV.SPAWNED < 5) {
+                    else if (GV.SPAWNED < 4) {
                         enemy = GV.ENEMY_GROUP[17].get(GV.ENEMY_ARRAY[17]);
                         if (enemy) {
                             enemy.setActive(true);
