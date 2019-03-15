@@ -175,7 +175,7 @@ export class GameScene3 extends Phaser.Scene {
 		this.sceneOver = false;
 		
 				/////////////*TESTING*//////////////
-        let win = this.add.text(30, 970, 'Force Win', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
+        /* let win = this.add.text(30, 970, 'Force Win', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
         win.setInteractive({ useHandCursor: true });
         win.on("pointerup", ()=>{
             //this.scene.remove('HUD');
@@ -194,7 +194,7 @@ export class GameScene3 extends Phaser.Scene {
             //this.scene.start(CST.SCENES.TRANSITION1);
 			FN.gameOver(this, CST.SCENES.GAMEOVER);	
 			
-        });	
+        });	 */
 		/////////////*TESTING*//////////////
 		
     }
