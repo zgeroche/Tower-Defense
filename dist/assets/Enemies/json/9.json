@@ -1,1 +1,1 @@
-{ "enemyId": 9,  "enemyName": "Horseman",       "speed": 2,    "hp": 750,    "magicArmor": 0,  "physicalArmor": 0,  "flying": false, "value": 1,  "frameEnd": 3, "damage": 5 }
+{ "enemyId": 9, "enemyName": "Jacko",          "speed": 1,    "hp": 450,    "magicArmor": 15,  "physicalArmor": 0,  "flying": false, "value": 2,  "frameEnd": 3, "damage": 5 }

@@ -26,7 +26,7 @@ export class GameScene2 extends Phaser.Scene {
 		GV.ATTACK_GROUP = [];
 		GV.BUTTON_GROUP = [];
 
-        GV.WAVE_DETAIL = ['10 Slimes', '10 Deathknights', '10 Jackos', '10 Ghosts (flying)', '10 Jackos + Boss', '20 Deathknight + Slimes', '20 Ghosts (flying, Mass)', '70 Slimes (mass)', '60 Slimes, Deathknights & Jackos', '5 Minotaur Bosses'];
+        GV.WAVE_DETAIL = ['10 Slimes', '10 Deathknights', '10 Jackos', '10 Ghosts (flying)', '10 Jackos + Boss', '20 Deathknight + Slimes', '15 Ghosts (flying, Mass)', '50 Slimes (mass)', '60 Slimes, Deathknights & Jackos', '5 Minotaur Bosses'];
 
 		//var graphics = this.add.graphics();    
 		//FN.drawLines(graphics);
@@ -255,7 +255,7 @@ export class GameScene2 extends Phaser.Scene {
                     break;
                 case 3: //10 Jacko
                     if (GV.SPAWNED < 10) {
-                        enemy = GV.ENEMY_GROUP[10].get(GV.ENEMY_ARRAY[10]);
+                        enemy = GV.ENEMY_GROUP[9].get(GV.ENEMY_ARRAY[9]);
                         if (enemy) {
                             enemy.setActive(true);
                             enemy.setVisible(true);
@@ -264,7 +264,7 @@ export class GameScene2 extends Phaser.Scene {
                             GV.SPAWNED += 1;
                         }
                     }
-                    else if (GV.ENEMY_GROUP[10].countActive(true) === 0) {
+                    else if (GV.ENEMY_GROUP[9].countActive(true) === 0) {
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
@@ -289,7 +289,7 @@ export class GameScene2 extends Phaser.Scene {
                     break;
                 case 5: //Jacko + Horseman
                     if (GV.SPAWNED < 10) {
-                        enemy = GV.ENEMY_GROUP[10].get(GV.ENEMY_ARRAY[10]);
+                        enemy = GV.ENEMY_GROUP[9].get(GV.ENEMY_ARRAY[9]);
                         if (enemy) {
                             enemy.setActive(true);
                             enemy.setVisible(true);
@@ -298,7 +298,7 @@ export class GameScene2 extends Phaser.Scene {
                             GV.SPAWNED += 1;
                         }
                         if (GV.SPAWNED == 5) {
-                            enemy = GV.ENEMY_GROUP[9].get(GV.ENEMY_ARRAY[9]);
+                            enemy = GV.ENEMY_GROUP[10].get(GV.ENEMY_ARRAY[10]);
                             enemy.setActive(true);
                             enemy.setVisible(true);
                             enemy.startOnPath(GV.WALKPATH2);
@@ -340,13 +340,14 @@ export class GameScene2 extends Phaser.Scene {
                     }
                     break;
                 case 7: //Mass Ghosts
-                    if (GV.SPAWNED < 20) {
+                    if (GV.SPAWNED < 15) {
                         enemy = GV.ENEMY_GROUP[5].get(GV.ENEMY_ARRAY[5]);
                         if (enemy) {
                             enemy.setActive(true);
                             enemy.setVisible(true);
+                            enemy.speed *= .75;
                             enemy.startOnPath(GV.FLYPATH);
-                            this.nextEnemy = time + 250;
+                            this.nextEnemy = time + 350;
                             GV.SPAWNED += 1;
                         }
                     }
@@ -357,21 +358,26 @@ export class GameScene2 extends Phaser.Scene {
                     }
                     break;
                 case 8: //Mass Slimes
-                    if (GV.SPAWNED < 35) {
+                    if (GV.SPAWNED < 20) {
                         enemy = GV.ENEMY_GROUP[16].get(GV.ENEMY_ARRAY[16]);
                         if (enemy) {
                             enemy.setActive(true);
                             enemy.setVisible(true);
+                            enemy.hp *= 2;
                             enemy.startOnPath(GV.WALKPATH);
                             this.nextEnemy = time + 150;
                             GV.SPAWNED += 1;
+                            if (GV.SPAWNED == 25) {
+                                this.nextEnemy += 1000;
+                            }
                         }
                     }
-                    else if (GV.SPAWNED < 70) {
+                    else if (GV.SPAWNED < 40) {
                         enemy = GV.ENEMY_GROUP[16].get(GV.ENEMY_ARRAY[16]);
                         if (enemy) {
                             enemy.setActive(true);
                             enemy.setVisible(true);
+                            enemy.hp *= 2;
                             enemy.startOnPath(GV.WALKPATH2);
                             this.nextEnemy = time + 150;
                             GV.SPAWNED += 1;
@@ -406,7 +412,7 @@ export class GameScene2 extends Phaser.Scene {
                             }
                         }
                         else {
-                            enemy = GV.ENEMY_GROUP[10].get(GV.ENEMY_ARRAY[10]);
+                            enemy = GV.ENEMY_GROUP[9].get(GV.ENEMY_ARRAY[9]);
                             if (enemy) {
                                 enemy.setActive(true);
                                 enemy.setVisible(true);
@@ -416,14 +422,14 @@ export class GameScene2 extends Phaser.Scene {
                             }
                         }
                     }
-                    else if (GV.ENEMY_GROUP[16].countActive(true) === 0 && GV.ENEMY_GROUP[0].countActive(true) === 0 && GV.ENEMY_GROUP[10].countActive(true) === 0) {
+                    else if (GV.ENEMY_GROUP[16].countActive(true) === 0 && GV.ENEMY_GROUP[0].countActive(true) === 0 && GV.ENEMY_GROUP[9].countActive(true) === 0) {
                         GV.SPAWNED = 0;
                         GV.WAVE += 1;
                         this.nextEnemy = time + GV.WAVE_DELAY;
                     }
                     break;
                 case 10: //5 Minotaur Bosses
-                    if (GV.SPAWNED < 3) {
+                    if (GV.SPAWNED < 2) {
                         enemy = GV.ENEMY_GROUP[17].get(GV.ENEMY_ARRAY[17]);
                         if (enemy) {
                             enemy.setActive(true);
@@ -433,7 +439,7 @@ export class GameScene2 extends Phaser.Scene {
                             GV.SPAWNED += 1;
                         }
                     }
-                    else if (GV.SPAWNED < 5) {
+                    else if (GV.SPAWNED < 4) {
                         enemy = GV.ENEMY_GROUP[17].get(GV.ENEMY_ARRAY[17]);
                         if (enemy) {
                             enemy.setActive(true);

@@ -267,7 +267,7 @@ export function highlightLoc(scene, i, j){
 }
 
 export function showTowerRange(scene, i, j) {
-	
+
 	if(typeof scene.rangeCircle ==='object'){scene.rangeCircle.destroy();}
 	
 	if(typeof GV.MAP[i][j] === 'object') {
@@ -275,6 +275,38 @@ export function showTowerRange(scene, i, j) {
 		var y = i * 64 + 64/2;
 		scene.rangeCircle = scene.scene.add.circle(x, y, GV.MAP[i][j].atkRange, 0x0099ff, 127);
 	}
+}
+
+export function showTowerStats(scene, i, j) {
+    var sc = scene.scene.scene;
+    var hud = sc.get('HUD');
+
+    var currentTower = GV.MAP[i][j];
+
+    hud.tooltip.setVisible(true);
+    var towerInfo = [
+        currentTower.towerName,
+        "Attack Speed:  " + currentTower.atkRate,
+        "Attack Range:  " + currentTower.atkRange,
+        "Damage:        " + currentTower.str,
+        "Damage Type:   " + currentTower.atkType,
+        "Hit Flying:    " + currentTower.hitFly];
+    if (currentTower.special) {
+        towerInfo.push("Special: " + currentTower.special);
+    }
+    if (currentTower.upgrades) {
+        for (var i = 0; i < currentTower.upgrades.length; i++) {
+            if (i == 0) {
+                towerInfo.push("Upgrades:       " + GV.TOWER_ARRAY[currentTower.upgrades[i]].towerName);
+            }
+            else {
+                towerInfo.push("                " + GV.TOWER_ARRAY[currentTower.upgrades[i]].towerName);
+            }
+        }
+    }
+
+    hud.tooltipText.setText(towerInfo);
+    hud.tooltipText.setVisible(true);
 }
 
 export function pathIndicator(scene, t, numOfStartPoints, pid){
@@ -324,7 +356,6 @@ export function pathIndicator(scene, t, numOfStartPoints, pid){
 		}
 	}
 
-	
 }
 
 export function waveHUD(scene, t){
@@ -445,8 +476,12 @@ export function placeTowerAction(pointer, scene, i, j){
                 "Attack Range:  " + GV.TOWER_ARRAY[0].atkRange,
                 "Damage:        " + GV.TOWER_ARRAY[0].str,
                 "Damage Type:   " + GV.TOWER_ARRAY[0].atkType,
-                "Hit Flying:    " + GV.TOWER_ARRAY[0].hitFly
-                ];
+                "Hit Flying:    " + GV.TOWER_ARRAY[0].hitFly,
+                "Upgrades:      " 
+            ];
+            for (var k = 0; k < GV.TOWER_ARRAY[0].upgrades.length; k++) {
+                towerInfo.push(GV.TOWER_ARRAY[0].upgrades[k].towerName);
+            }
 
             //Add Attack Range Visibly
             var x = j * 64 + 64 / 2;
@@ -557,7 +592,12 @@ export function cancelAction(scene){
 	cancelImg.setInteractive({ useHandCursor: true }).on('pointerdown', () =>{
 		GV.BUTTON_GROUP.clear(true,true);
         scene.scene.cancelSounds.play();
-	});
+
+        var hud = scene.scene.scene.get('HUD');
+        hud.tooltipText.setVisible(false);
+        hud.tooltip.setVisible(false);
+    });   
+
 }
 
 //user input related actions 
@@ -569,7 +609,8 @@ export function userAction(pointer, scene){
 		//highlight location clicked by user
 		highlightLoc(scene, i, j);
 		
-		showTowerRange(scene, i , j);
+        showTowerRange(scene, i, j);
+
 		
 		if(GV.MAP[i][j] != -1){GV.BUTTON_GROUP.clear(true,true);}
 		
@@ -577,11 +618,14 @@ export function userAction(pointer, scene){
 		if(GV.MAP[i][j] == 0)
 		{	
             cancelAction(scene);
-			placeTowerAction(pointer, scene, i, j);
+            placeTowerAction(pointer, scene, i, j);
+            scene.scene.scene.get('HUD').tooltip.setVisible(false);
+            scene.scene.scene.get('HUD').tooltipText.setVisible(false);
 		}
 		else if(typeof GV.MAP[i][j] ==="object")
 		{
             cancelAction(scene);
+            showTowerStats(scene, i, j);
 			upgradeTowerAction(i, j, scene, pointer, GV.MAP[i][j].towerId);
 		}
 	}
@@ -634,7 +678,13 @@ export function damageEnemy(enemy, attack) {
         //damage.play();
 
 		switch(attack.id)
-		{
+        {
+            case 8:
+                var areaEnemies = getEnemies(enemy.x, enemy.y, attack.aoe, true);
+                for (var i = 0; i < areaEnemies.length; i++) {
+                    areaEnemies[i].receiveDamage(attack.damage, attack.atkType);
+                }
+                break;
 			case 10:
 				var stun = Math.floor(Math.random() * 4);
 				if (stun == 0)
@@ -658,7 +708,7 @@ export function damageEnemy(enemy, attack) {
 				}
                 break;
             case 14:
-                var areaEnemies = getEnemies(enemy.x, enemy.y, attack.aoe);
+                var areaEnemies = getEnemies(enemy.x, enemy.y, attack.aoe, false);
                 for (var i = 0; i < areaEnemies.length; i++) {
                     areaEnemies[i].receiveDamage(attack.damage, attack.atkType);
                 }

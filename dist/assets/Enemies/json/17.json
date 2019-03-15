@@ -1,1 +1,1 @@
-{ "enemyId": 17, "enemyName": "Minotaur",       "speed": 1,    "hp": 450,    "magicArmor": 0,  "physicalArmor": 0,  "flying": false, "value": 1,  "frameEnd": 3, "damage": 5 }
+{ "enemyId": 17, "enemyName": "Minotaur",       "speed": 1,    "hp": 4000,    "magicArmor": 40,  "physicalArmor": 40,  "flying": false, "value": 1,  "frameEnd": 3, "damage": 25 }
