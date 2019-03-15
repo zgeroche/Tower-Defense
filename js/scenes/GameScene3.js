@@ -327,7 +327,7 @@ export class GameScene3 extends Phaser.Scene {
                                 enemy.setActive(true);
                                 enemy.setVisible(true);
                                 enemy.startOnPath(GV.WALKPATH2);
-                                this.nextEnemy = time + 350;
+                                this.nextEnemy = time + 750;
                                 GV.SPAWNED += 1;
                             }
                         }
