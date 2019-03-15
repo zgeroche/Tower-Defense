@@ -121,7 +121,18 @@ export class GameScene extends Phaser.Scene {
         FN.createAnimations(this, GV.TOWER_ARRAY, 1);
 		
 		//wave management
- 		this.buttonImg = this.add.image(1660, 1008, 'waveHUD').setDepth(1);
+		this.startPoint = this.add.text(64,GV.WALKPATH.startPoint.y, '->', { fontFamily: 'VT323', fontSize: 75, color: '#ff0000', stroke: "#ffffff", strokeThickness: 2 }).setOrigin(0.5).setDepth(1);
+ 		var targets = [this.startPoint]
+		this.startPosIndicate = this.tweens.add({
+				targets: targets,
+				duration: 500, 
+				scaleX: 2, 
+				scaleY: 2, 
+				yoyo: true, // at the end, go back to original scale 
+				loop: -1
+			});
+		
+		this.buttonImg = this.add.image(1660, 1008, 'waveHUD').setDepth(1);
 		this.nextEnemy = this.sys.game.loop.time + GV.WAVE_DELAY;
         this.complete = this.add.text(1660, 1008, 'Wave Complete', {fontFamily: 'VT323', fontSize: 30, color: '#ff0000'}).setDepth(1).setOrigin(.8,0.5);
         this.complete.setVisible(false);
@@ -133,6 +144,8 @@ export class GameScene extends Phaser.Scene {
             this.skipWave.setVisible(false);
 			this.delay.setVisible(false);
 			this.buttonImg.setVisible(false);
+			this.startPoint.setVisible(false);
+			this.startPosIndicate.pause();
         });
 		
 		//track if scene is over either by win or loss
@@ -184,6 +197,7 @@ export class GameScene extends Phaser.Scene {
 		{
 			//Wave timer and skip in bottom HUD
 			FN.waveHUD(this, Math.trunc((this.nextEnemy - time) / 1000));
+			FN.pathIndicator(this, Math.trunc((this.nextEnemy - time) / 1000), 1, 1)
 			this.delay.setText('Next wave in ' + Math.trunc((this.nextEnemy - time) / 1000) + ' Seconds');
 			if (time > this.nextEnemy) {
 				switch (GV.WAVE) {

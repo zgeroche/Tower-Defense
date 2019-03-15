@@ -138,6 +138,18 @@ export class GameScene2 extends Phaser.Scene {
         FN.buildMap(this, 'map2');
 		
 		//wave management
+		this.startPoint = this.add.text(GV.WALKPATH.startPoint.x, GV.WALKPATH.startPoint.y-32, '->', { fontFamily: 'VT323', fontSize: 75, color: '#0000ff', stroke: "#ffffff", strokeThickness: 2 }).setOrigin(0.5).setDepth(1);
+ 		this.startPoint.angle = -90;
+		var targets = [this.startPoint]
+		this.startPosIndicate = this.tweens.add({
+				targets: targets, 
+				duration: 500, 
+				scaleX: 2,
+				scaleY: 2, 
+				yoyo: true, // at the end, go back to original scale 
+				loop: -1
+			});
+		
  		this.buttonImg = this.add.image(1660, 1008, 'waveHUD').setDepth(1);
 		this.nextEnemy = this.sys.game.loop.time + GV.WAVE_DELAY;
         this.complete = this.add.text(1660, 1008, 'Wave Complete', {fontFamily: 'VT323', fontSize: 30, color: '#ff0000'}).setDepth(1).setOrigin(.8,0.5);
@@ -150,6 +162,8 @@ export class GameScene2 extends Phaser.Scene {
             this.skipWave.setVisible(false);
 			this.delay.setVisible(false);
 			this.buttonImg.setVisible(false);
+			this.startPoint.setVisible(false);
+			this.startPosIndicate.pause();
         });
 		
         //input related actions in userAction function
@@ -200,6 +214,7 @@ export class GameScene2 extends Phaser.Scene {
 		{
 		//Wave timer and skip in bottom HUD
 		FN.waveHUD(this, Math.trunc((this.nextEnemy - time) / 1000));
+		FN.pathIndicator(this, Math.trunc((this.nextEnemy - time) / 1000), 1, 1)
         this.delay.setText('Next wave in ' + Math.trunc((this.nextEnemy - time) / 1000) + ' Seconds');
         if (time > this.nextEnemy) {
 			

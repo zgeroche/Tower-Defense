@@ -1,1 +1,10 @@
-{ "enemyId": 12, "enemyName": "Golem",          "speed": 1,    "hp": 450,    "magicArmor": 0,  "physicalArmor": 0,  "flying": false, "value": 1,  "frameEnd": 7, "damage": 5 }
+{ "enemyId": 12,
+  "enemyName": "Golem",
+  "speed": 0.5,
+  "hp": 5000,
+  "magicArmor": 50,
+  "physicalArmor": 50,
+  "flying": false,
+  "value": 5,
+  "frameEnd": 7,
+  "damage": 5 }
