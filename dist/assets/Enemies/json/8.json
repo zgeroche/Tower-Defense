@@ -1,7 +1,7 @@
 { "enemyId": 8,
   "enemyName": "Reaper",
   "speed": 4,
-  "hp": 250,
+  "hp": 225,
   "magicArmor": 0,
   "physicalArmor": 0,
   "flying": false,
