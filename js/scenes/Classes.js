@@ -1000,7 +1000,7 @@ export class Beastmaster extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'beastmaster');
-        this.special = 'Chance to Double Damage';
+        this.special = 'Double Damage Every 5 Hits';
 		
 		this.anims.play('beastmaster_idle');
     }
@@ -1010,7 +1010,8 @@ export class Headhunter extends Tower {
     constructor(scene, stats) {
         super(scene, stats);
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'headhunter');
-		
+        this.special = '5% Critical Chance';
+
 		this.anims.play('headhunter_idle');
     }
 }
@@ -1318,7 +1319,7 @@ export class BlueMagic extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bluemagic');
         this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
-		this.aoe = 100;
+		this.aoe = 50;
 	}
 };
 
@@ -1387,7 +1388,7 @@ export class Cannonball extends Attack {
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cannonball');
 
         this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
-        this.aoe = 200;
+        this.aoe = 150;
 		
 		this.atkSound = scene.sound.add('cannonSound');
 		this.atkSound.volume = 0.02;
