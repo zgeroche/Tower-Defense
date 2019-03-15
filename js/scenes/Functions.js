@@ -277,16 +277,67 @@ export function showTowerRange(scene, i, j) {
 	}
 }
 
+export function pathIndicator(scene, t, numOfStartPoints, pid){
+	if(numOfStartPoints == 1)
+	{
+		if(pid == 1)
+		{
+			if(t == 0)
+			{	
+				scene.startPoint.setVisible(false);
+				scene.startPosIndicate.pause();
+			}
+			else if(t == (GV.WAVE_DELAY/1000) || t == (GV.WAVE_DELAY/1000)-1)
+			{
+				scene.startPoint.setVisible(true);
+				scene.startPosIndicate.resume();
+			}
+		}
+		else if(pid == 2)
+		{
+			if(t == 0)
+			{	
+				scene.startPoint2.setVisible(false);
+				scene.startPosIndicate.pause();
+			}
+			else if(t == (GV.WAVE_DELAY/1000) || t == (GV.WAVE_DELAY/1000)-1)
+			{
+				scene.startPoint2.setVisible(true);
+				scene.startPosIndicate.resume();
+			}
+		}
+		
+	}
+	else if (numOfStartPoints == 2)
+	{
+		if(t == 0)
+		{	
+			scene.startPoint.setVisible(false);
+			scene.startPoint2.setVisible(false);
+			scene.startPosIndicate.pause();
+		}
+		else if(t == (GV.WAVE_DELAY/1000) || t == (GV.WAVE_DELAY/1000)-1)
+		{
+			scene.startPoint.setVisible(true);
+			scene.startPoint2.setVisible(true);
+			scene.startPosIndicate.resume();
+		}
+	}
+
+	
+}
+
 export function waveHUD(scene, t){
+
 	if(t == 0)
-	{		
+	{	
 		function onCompleteHandler (tween, targets, myImage)
 		{
 			scene.complete.setVisible(false);
 			scene.delay.setVisible(false);
 			scene.skipWave.setVisible(false);
 			scene.buttonImg.setVisible(false);
-			
+
 			scene.complete.setPosition(1660, 1008);
 			scene.buttonImg.setPosition(1660, 1008);
 			scene.delay.setPosition(1660, 1008);
@@ -311,6 +362,7 @@ export function waveHUD(scene, t){
 		scene.delay.setVisible(true);
 		scene.skipWave.setVisible(true);
 		scene.buttonImg.setVisible(true);
+
 		
 		scene.tweens.add({
 			targets: [scene.buttonImg, scene.delay, scene.skipWave],
