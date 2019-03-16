@@ -17,8 +17,8 @@ export class GameVictoryScene extends Phaser.Scene{
     create(){
         this.cameras.main.fadeFrom(6000, 0, 0, 0, false);
         this.add.image(0, 0, 'gameVictoryBG').setOrigin(0).setDepth(0).setDisplaySize(this.game.renderer.width, this.game.renderer.height).setAlpha(.5);
-        this.add.text(this.game.renderer.width / 2 - 400, this.game.renderer.height / 2 - 200,
-            'You win! blahblahblahblahblalhblhablhab',
+        this.add.text(this.game.renderer.width / 2 - 400, this.game.renderer.height / 2 - 300,
+            'With the King\'s leadership, the citizens were able to band together and defend their kingdom. The final onslaught of minions was defeated, and there was peace throughout the realm once again. Praise and honor was bestowed upon those who arose to the call of duty as a giant feast was thrown in their honor. The citizens could once again sleep peacefully, for now...',
             { fontFamily: 'VT323', fontSize: 50, color: '#ffffff', wordWrap: { width: 800, useAdvancedWrap: true } });
         let finishGame = this.add.text(this.game.renderer.width / 2 - 75, this.game.renderer.height - 250, 'End', { fontFamily: 'VT323', fontSize: 30, color: '#ffffff' }).setDepth(1);
 		
