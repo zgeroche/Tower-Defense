@@ -25,6 +25,7 @@ export class LoadScene extends Phaser.Scene{
 			this.load.json(key, loader);
 		} 
 		
+		this.load.image('titleImg', 'assets/title.png');
 		this.load.image('HUD', 'assets/HUD.png');
 		this.load.image('vol', 'assets/volume.png');
 		this.load.image('volDown', 'assets/volDown.png');

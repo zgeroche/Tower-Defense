@@ -13,7 +13,8 @@ export class MenuScene extends Phaser.Scene{
     create(){
         //Creating menu screen background layers
         //this.add.image(0, 0, 'menuscreen').setOrigin(0).setDepth(0);
-		
+		this.logo = this.add.image(1005, 250, 'titleImg').setOrigin(0.5).setDepth(6).setAlpha(0);
+
 		this.image0 = this.add.tileSprite(0, 0, 1920, 1024, 'menuscreenA').setOrigin(0).setDepth(0);
 		this.image5 = this.add.tileSprite(0, 0, 1920, 1024, 'menuscreenF').setOrigin(0).setDepth(1);
 		this.image1 = this.add.tileSprite(0, 0, 1920, 1024, 'menuscreenB').setOrigin(0).setDepth(2);
@@ -23,7 +24,8 @@ export class MenuScene extends Phaser.Scene{
 
 		
 		//this.add.image(0, 0, 'menuscreen').setOrigin(0).setDepth(0).setDisplaySize(this.game.renderer.width, this.game.renderer.height).setAlpha(.5);
-        let newGame = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2, 'newgame').setDepth(6);
+        //let newGame = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2, 'newgame').setDepth(6);
+        let newGame = this.add.image(this.game.renderer.width / 2, 600, 'newgame').setDepth(6);
         console.log("In Menu Scene");
 		
 		var menuSound = this.sound.add('menuBGM');
@@ -50,13 +52,8 @@ export class MenuScene extends Phaser.Scene{
 			var scene = this;
 			this.cameras.main.once('camerafadeoutcomplete', function (camera) {
 				scene.scene.start(CST.SCENES.INTRO);
-				
 			});
-			
-            
         });
-		
-		 
     }
 	update()
 	{
@@ -65,6 +62,7 @@ export class MenuScene extends Phaser.Scene{
 		this.image2.tilePositionX +=0.25;
 		this.image3.tilePositionX +=0.5;
 		this.image4.tilePositionX +=1;
-		
+
+		this.logo.alpha += 0.01;
 	}
 }
