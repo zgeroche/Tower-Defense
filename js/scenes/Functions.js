@@ -723,7 +723,7 @@ export function damageEnemy(enemy, attack) {
 				}
 				break;
 			case 17:
-				var critical = Math.floor(Math.random() * 19)
+				var critical = Math.floor(Math.random() * 20)
 				if (critical == 0)
 				{
 					attack.damage *= 2.5;
