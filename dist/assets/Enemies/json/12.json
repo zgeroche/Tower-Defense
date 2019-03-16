@@ -5,6 +5,6 @@
   "magicArmor": 50,
   "physicalArmor": 50,
   "flying": false,
-  "value": 5,
+  "value": 10,
   "frameEnd": 7,
   "damage": 5 }
