@@ -39,7 +39,6 @@ export class Enemy extends Phaser.GameObjects.Sprite {
         this.facing = 'i';
         this.prevx = 0;
         this.prevy = 0;
-        //this.turned = 0;
 
         this.camera = scene.cameras.main;
         
@@ -77,7 +76,6 @@ export class Enemy extends Phaser.GameObjects.Sprite {
         this.emitter = particles.createEmitter({
 			alpha: { start: 1, end: 0 },
 			scale: { start: 0.5, end: 2.5 },
-			//tint: { start: 0xff945e, end: 0xff945e },
 			speed: 20,
 			accelerationY: -300,
 			angle: { min: -85, max: -95 },
@@ -95,14 +93,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
     {
 		this.follower.t = 0;
         this.path = path;
-		//this.walk.play();																//sounds
         this.path.getPoint(this.follower.t, this.follower.vec);
-        /*
-		if (!this.flying)
-		{GV.WALKPATH.getPoint(this.follower.t, this.follower.vec);}
-		else
-		{GV.FLYPATH.getPoint(this.follower.t, this.follower.vec);}
-		*/
 		this.setPosition(this.follower.vec.x, this.follower.vec.y);
 		
 		//this.text.setPosition(this.follower.vec.x, this.follower.vec.y);
@@ -118,8 +109,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 	    else
 	    {
 	        this.hp -= Math.floor(damage * (100/(100+this.magicArmor)));
-	    }
-		//this.hp -= damage;           
+	    }           
 		this.text.setText("HP: " + this.hp);											//textHP
 		this.healthbar.decrease(damage);
 		this.hurt.play();														//sounds
@@ -134,9 +124,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			this.text.setVisible(false);												//textHP
 			this.healthbar.destroy();
 			
-			//Need to set this to stop when all enemies are dead
 			this.death.play();																//sounds
-			//this.walk.stop();																//sounds
 			this.destroy();
 			GV.GOLD += this.value;
 			
@@ -158,8 +146,6 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 				var emitter = this.particlesStun.createEmitter({
 					x: 0,
 					y: 0,
-					//lifespan: 500,
-					//speed: { min: -100, max: 100 },
 					scale: { start: 0.5, end: 0 },
 					blendMode: 'SCREEN',
 					emitZone: { type: 'edge', source: shape1, quantity: 60, yoyo: false }
@@ -258,15 +244,6 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			this.setTint(0x8B008B);
 			
 			this.particlesWeak = this.scene.add.particles('purplemagic');
-				/* var emitter = this.particlesSnow.createEmitter({
-					x: { min: (this.width/2)*-1, max: (this.width/2) },
-					y: { min: (this.height/2)*-1, max: (this.height/2)},
-					lifespan: 500,
-					speedY: { min: 0, max: 5},
-					scale: { start: 0.5, end: 0 },
-					quantity: 0.5,
-					blendMode: 'SCREEN'
-				}); */
 				var emitter = this.particlesWeak.createEmitter({
 					x: { min: (this.width/2)*-1, max: (this.width/2) },
 					y: { min: (this.height/2)*-1, max: (this.height/2)},
@@ -317,11 +294,9 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 		}
 		if(clear == 3)
 		{
-			//if(this.particlesBurn){thisl.particlesBurn.destroy();};
 			if(this.particlesBurn){this.particlesBurn.destroy();}
 			this.burned = false;
 		}
-			//if(this.particlesWeak){this.particlesWeak.destroy();};
 	}
 	
 	clearBurn()
@@ -361,7 +336,6 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 	
 	update (time, delta)
     {
-		//ENEMY_SPEED = 1/Math.floor((Math.random() * (10000 - 5000)) + 5000);
         this.prevx = this.follower.vec.x;
         this.prevy = this.follower.vec.y;
         this.follower.t += GV.ENEMY_SPEED * delta * this.speed;
@@ -417,10 +391,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 			this.text.setActive(false);										//textHP
 			this.text.setVisible(false);									//textHP
 			this.healthbar.destroy();
-			//this.walk.stop();												//sounds
 			this.destroy();
-			//this.camera.shake(150, .05, false);							//camera
-			//this.camera.flash(150,  200, 0, 0, false);					//camera
 			GV.PLAYER_HEALTH -= this.damage;
 			
 			if(this.particlesShock){this.particlesShock.destroy();};
@@ -461,12 +432,6 @@ export class Deathknight extends Enemy {
 		this.death = scene.sound.add('dkDeath');
 		this.death.volume = 0.05;
 		this.death.loop = false;
-		
-		
-
-		/* this.walk = scene.sound.add('walk');
-		this.walk.volume = 0.01;
-		this.walk.loop = true; */
 	}
 }
 
@@ -716,10 +681,7 @@ export class Tower extends Phaser.GameObjects.Sprite{
 	}	
 	
 	placeTower(i, j, scene) {
-		//var i = Math.floor(pointer.y/64);
-		//var j = Math.floor(pointer.x/64);
 		if(GV.MAP[i][j] === 0) {
-			//console.log(tower);
 			if (this)
 			{
 				this.text.y = (i+.50) * 64 + 64/2;
@@ -774,8 +736,6 @@ export class Tower extends Phaser.GameObjects.Sprite{
 		//check if tower is already upgraded, if not the upgrade
 		if(this.towerName !== newTower.towerName)
 		{
-			//var i = Math.floor(pointer.y/64);
-			//var j = Math.floor(pointer.x/64);
 			this.removeTower(i, j, scene);
 			newTower.placeTower(i, j, scene);
 			this.text = newTower.towerName;
@@ -815,8 +775,6 @@ export class Tower extends Phaser.GameObjects.Sprite{
 			{
 				FN.addAttack(this.x, this.y, angle, this.str, this.atkType, this.towerId, enemy);
 			}
-	        
-	        //this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;    //uncomment to make towers rotate to face enemy
 	    }
 		 if(enemy && this.attack == 0)
 		{
@@ -1147,13 +1105,11 @@ export class Attack extends Phaser.GameObjects.Image {
 	constructor(scene)
 	{
 		super(scene);
-		//Phaser.GameObjects.Image.call(this, scene, 0, 0, imagekey);
 
 		this.incX = 0;
 		this.incY = 0;
 		this.lifespan = 0;
         this.scene = scene;
-		//this.speed = Phaser.Math.GetSpeed(600, 1);
 
     	this.particles = scene.add.particles('coin');
 
@@ -1182,9 +1138,6 @@ export class Attack extends Phaser.GameObjects.Image {
         //  we don't need to rotate the attacks as they are round
         this.setRotation(angle);
 
-        //this.dx = Math.cos(angle);
-        //this.dy = Math.sin(angle);
-
         this.enemy = enemy;
 
 		this.id = id;
@@ -1200,8 +1153,6 @@ export class Attack extends Phaser.GameObjects.Image {
         this.lifespan -= delta;
         this.scene.physics.moveToObject(this, this.enemy, this.speed);
 
-		//this.x += this.dx * (this.speed * delta);
-		//this.y += this.dy * (this.speed * delta);
         this.emitter.explode(5,this.x,this.y);
 
 		if (this.lifespan <= 0 || this.enemy === null)
@@ -1217,7 +1168,7 @@ export class Tomato extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'tomato');
-        this.speed = 600;//Phaser.Math.GetSpeed(600, 1);
+        this.speed = 600;
 	}
 
 };
@@ -1228,7 +1179,7 @@ export class Sword extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sword');
 		
-        this.speed = 600;//Phaser.Math.GetSpeed(800, 1);
+        this.speed = 600;
 		
 		this.atkSound = scene.sound.add('swingSound');
 		this.atkSound.volume = 0.04;
@@ -1242,7 +1193,7 @@ export class Arrow extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'arrow');
-        this.speed = 800;//Phaser.Math.GetSpeed(1200, 1);
+        this.speed = 800;
 		
 		this.atkSound = scene.sound.add('arrowSound');
 		this.atkSound.volume = 0.04;
@@ -1255,12 +1206,7 @@ export class WhiteMagic extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'whitemagic');
-        this.speed = 1000;// Phaser.Math.GetSpeed(1000, 1);
-		
-		/* this.atkSound = scene.sound.add('spell2Sound');
-		this.atkSound.volume = 0.04;
-		this.atkSound.loop = false;
-		this.atkSound.rate = 2; */
+        this.speed = 1000;
 	}
 };
 
@@ -1270,7 +1216,7 @@ export class KnightSword extends Attack {
 		super(scene);
 
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sword');
-        this.speed = 600;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 600;
 
 	}
 };
@@ -1280,7 +1226,7 @@ export class CurvedSword extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'curvedsword');
-        this.speed = 800;// Phaser.Math.GetSpeed(900, 1);
+        this.speed = 800;
 	}
 };
 
@@ -1290,7 +1236,7 @@ export class GoldBullet extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'goldbullet');
 
-        this.speed = 1200;// Phaser.Math.GetSpeed(1400, 1);
+        this.speed = 1200;
 		
 		this.atkSound = scene.sound.add('rifleSound');
 		this.atkSound.volume = 0.02;
@@ -1305,7 +1251,7 @@ export class RangerArrow extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'arrow');
-        this.speed = 800;//Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;
 		
 		this.atkSound = scene.sound.add('arrowSound');
 		this.atkSound.volume = 0.04;
@@ -1318,7 +1264,7 @@ export class BlueMagic extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bluemagic');
-        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;
 		this.aoe = 50;
 	}
 };
@@ -1328,7 +1274,7 @@ export class PinkMagic extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'pinkmagic');
-        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;
 		
 		this.atkSound = scene.sound.add('spellSound');
 		this.atkSound.volume = 0.01;
@@ -1341,7 +1287,7 @@ export class CommanderSword extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bigsword');
-        this.speed = 600;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 600;
 	}
 };
 
@@ -1350,7 +1296,7 @@ export class Axe extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'axe');
-        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;
 		
 		this.atkSound = scene.sound.add('spearSound');
 		this.atkSound.volume = 0.04;
@@ -1363,7 +1309,7 @@ export class BlackSword extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'blacksword');
-        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;
 	}
 };
 
@@ -1372,7 +1318,7 @@ export class Knife extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'knife');
-        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;
 		
 		//cutpurse sound
 		this.cutpurseSound = scene.sound.add('extragold');
@@ -1387,7 +1333,7 @@ export class Cannonball extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cannonball');
 
-        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;
         this.aoe = 150;
 		
 		this.atkSound = scene.sound.add('cannonSound');
@@ -1403,7 +1349,7 @@ export class SilverBullet extends Attack {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'silverbullet');
 
-        this.speed = 1200;// Phaser.Math.GetSpeed(2000, 1);
+        this.speed = 1200;
 		
 		this.atkSound = scene.sound.add('gunSound');
 		this.atkSound.volume = 0.01;
@@ -1416,7 +1362,7 @@ export class Crow extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'crow');
-        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;
 		
 		this.attackcount = 0;
 	}
@@ -1427,7 +1373,7 @@ export class Spear extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'spear');
-        this.speed = 600;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 600;
 
 	}
 };
@@ -1437,7 +1383,7 @@ export class Fireball extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'fireball');
-        this.speed = 700;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 700;
         this.aoe = 100;
 		
 		this.atkSound = scene.sound.add('fireSound');
@@ -1451,7 +1397,7 @@ export class Icicle extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'icicle');
-        this.speed = 700;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 700;
         this.aoe = 100;
 		
 		this.atkSound = scene.sound.add('iceSound');
@@ -1465,7 +1411,7 @@ export class Lightning extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'lightning');
-        this.speed = 700;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 700;
 		
 		this.atkSound = scene.sound.add('lightningSound');
 		this.atkSound.volume = 0.01;
@@ -1478,7 +1424,7 @@ export class GreenMagic extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'greenmagic');
-        this.speed = 800;// Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;
 	}
 };
 
@@ -1487,7 +1433,7 @@ export class PurpleMagic extends Attack {
 	constructor(scene) {
 		super(scene);
 		Phaser.GameObjects.Image.call(this, scene, 0, 0, 'purplemagic');
-        this.speed = 800;//Phaser.Math.GetSpeed(800, 1);
+        this.speed = 800;
 	}
 }; 
 
@@ -1510,7 +1456,7 @@ export class HUD extends Phaser.Scene {
 		var playDown = this.add.image(789,16, 'playDown');
 		volDown.setVisible(false);
 		playDown.setVisible(false);
-        //var hp = new HealthBar(sceneA, 50, 3, 100);
+ 
 		this.playerHealth = this.add.text(55, 3, 'Health: ' + GV.PLAYER_HEALTH +'/100', {fontFamily: 'VT323', fontSize: 26, color: '#ff0000'});
 		this.infoBar = this.add.text(275, 2, 'Wave 1: ' + GV.WAVE_DETAIL[0], { fontFamily: 'VT323', fontSize: 30, color: '#00ff00' });
         this.goldBar = this.add.text(55, 34, 'Gold: ' + GV.GOLD, { fontFamily: 'VT323', fontSize: 26, color: '#ffd700' });
@@ -1527,12 +1473,6 @@ export class HUD extends Phaser.Scene {
         this.tooltipText = this.add.text(1326, 793, "", { fontFamily: 'VT323', fontSize: 18, color: '#00ff00' });
         this.tooltipText.setVisible(false);
  
-		/* HUD.setDepth(1);
-		volume.setDepth(1);
-		volDown.setDepth(1);
-		play.setDepth(1);
-		playDown.setDepth(1);
-		this.infoBar.setDepth(1); */
 		
 		volume.setInteractive({ useHandCursor: true });
 		play.setInteractive({ useHandCursor: true });
