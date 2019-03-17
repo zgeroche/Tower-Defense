@@ -75,13 +75,6 @@ export function levelVictory(scene, transitionScene){
 			scene.scene.start(transitionScene);
 			
         });		
-		
-/* 		scene.cameras.main.fadeOut(3000);
-		scene.cameras.main.once('camerafadeoutcomplete', function (camera) {
-			win.destroy();
-			fadeBGM.stop();
-			scene.scene.start(transitionScene);
-		}); */
 }
 
 export function gameOver(scene, gameOverScene){
@@ -124,61 +117,26 @@ export function gameOver(scene, gameOverScene){
 
 //build the pathing and map for level
 export function buildMap(scene, mapBG){
-	//path to which enemey follows
-/*     var graphics = scene.add.graphics();    
-    drawLines(graphics);
-    GV.WALKPATH = scene.add.path(0, 352);		//start point for path coords
-    GV.WALKPATH.lineTo(416, 352);
-    GV.WALKPATH.lineTo(416, 160);
-    GV.WALKPATH.lineTo(800, 160);
-    GV.WALKPATH.lineTo(800, 608);
-    GV.WALKPATH.lineTo(608, 608);
-    GV.WALKPATH.lineTo(608, 864);
-    GV.WALKPATH.lineTo(1248, 864);
-    GV.WALKPATH.lineTo(1248, 544);
-    GV.WALKPATH.lineTo(1568, 544);
-    GV.WALKPATH.lineTo(1568, 288);
-    GV.WALKPATH.lineTo(1920, 288);
-    graphics.lineStyle(1, 0xffffff, 1);
-    GV.WALKPATH.draw(graphics); */
-
-    /* GV.FLYPATH = scene.add.path(0, 352);
-    GV.FLYPATH.lineTo(1920, 288);
-    GV.FLYPATH.draw(graphics); */
-    
-	//add map image
-	//scene.add.image(960, 512, mapBG).setDepth(0);
-
-	//add background music
-/* 	scene.bgm = scene.sound.add('castlegates');
-	scene.bgm.volume = 0.04;
-	scene.bgm.loop = true;
-	//bgm.play();			 */													//sounds
-
 	
 	//menu sounds
 	scene.menuSounds = scene.sound.add('menuSounds');
 	scene.menuSounds.volume = 0.04;
 	scene.menuSounds.loop = false;
-	//scene.menuSounds.play();
 	
 	//map sounds
 	scene.mapSounds = scene.sound.add('mapSounds');
 	scene.mapSounds.volume = 0.04;
 	scene.mapSounds.loop = false;
-	//scene.mapSounds.play();
 	
 	//error sounds
 	scene.errorSounds = scene.sound.add('errorSounds');
 	scene.errorSounds.volume = 0.04;
 	scene.errorSounds.loop = false;
-	//scene.errorSounds.play();
 	
 	//error sounds
 	scene.cancelSounds = scene.sound.add('cancelSounds');
 	scene.cancelSounds.volume = 0.04;
 	scene.cancelSounds.loop = false;
-	//scene.cancelSounds.play();
 	
 	//add HUD
 	scene.scene.add('HUD', CS.HUD, true, { x: 680, y: 66 });
@@ -257,7 +215,6 @@ export function highlightLoc(scene, i, j){
 		scene.lightBox.createEmitter({
 			x: x, 
 			y: y,
-			//tint: 0xff00ff,
 			scale: { start: 0.3, end: 0 },
 			frequency: 15,
 			blendMode: 'SCREEN',
@@ -568,7 +525,6 @@ export function upgradeTowerAction(i, j, scene, pointer, id){
 		}
 		else
 		{
-			//removeTowerAction(pointer, scene, i, j);
 			createButton(scene,1660, 1024, 0, "No Upgrades");
 
 		}
@@ -675,7 +631,6 @@ export function damageEnemy(enemy, attack) {
         // we remove the attack right away
         attack.setActive(false);
         attack.setVisible(false);
-        //damage.play();
 
 		switch(attack.id)
         {
@@ -735,10 +690,8 @@ export function damageEnemy(enemy, attack) {
                     enemies[i].burn();
                     enemies[i].receiveDamage(attack.damage, attack.atkType);
                 }
-				//enemy.burn();
 				break;
 			case 19:
-                //enemy.slow();
                 var enemies = getEnemies(enemy.x, enemy.y, attack.aoe, true);
                 for (var i = 0; i < enemies.length; i++) {
                     enemies[i].slow();
@@ -777,19 +730,10 @@ export function drawLines(graphics) {
 }	
 
 export function addAttack(x, y, angle, damage, type, towerID, enemy) {
-	//REMOVE try/catch once all attack classes are finished.
-/* 	try {
-		 var attack = GV.ATTACK_GROUP[towerID].get();
-	}
-	catch(err) {
-		 var attack = GV.ATTACK_GROUP[0].get();
-	} */
-   
    var attack = GV.ATTACK_GROUP[towerID].get();
    
     if (attack)
     {
-		//console.log(attack);
         attack.fire(x, y, angle, towerID, damage, type, enemy);
     }
 }

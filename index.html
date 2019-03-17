@@ -8,11 +8,14 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://s3.amazonaws.com/stitch-sdks/js/bundles/4.1.1/stitch.js"></script>
     <title>Tower defense</title>
+	<style>
+		body {background-color: #000000;}
+	</style>
 </head>
 <body>
     <div class="container-fluid text-center">
-        <h1>Tower Defense</h1>
-        <div class="login">
+         <!--<h1>Tower Defense</h1>
+       <div class="login">
             <form id="login">
                 <label for="Username">Username</label>
                 <input type="text" id="username" name="username" placeholder="Username" />
@@ -31,10 +34,10 @@
         </div>
         <div class="alert alert-danger" id="accountError" style="display:none" role="alert">
             Error - Username already in use
-        </div>
+        </div>-->
        <!-- <div id="content" class="container-fluid" style="display:none"></div> -->
         <div id="content" style="display:block; margin: 0; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)"></div>
-        <p>Left click to place tower, right click to remove tower along the yellow path.</p>
+        <!-- <p>Left click to place tower, right click to remove tower along the yellow path.</p> -->
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -46,7 +49,7 @@
     <script src="js/bundle.js"></script>
     <script src="js/googleFonts.js"></script>
     
-  <script>
+  <!--<script>
   const client = stitch.Stitch.initializeDefaultAppClient('html-game-onuim');
 
   const db = client.getServiceClient(stitch.RemoteMongoClient.factory, 'mongodb-atlas').db('fantasyTD');
@@ -58,6 +61,6 @@
   });
 
     </script>
-
+      -->
 </body>
 </html>

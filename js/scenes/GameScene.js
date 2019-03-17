@@ -21,9 +21,6 @@ export class GameScene extends Phaser.Scene {
 		
 		GV.WAVE_DETAIL = ['10 Skeletons', '10 Witches', '10 Goblins (fast)', '10 bats (flying)', '10 Skeletons + Boss', '10 Goblins (mass, fast)', '10 witches + 10 bats (flying)', '25 Skeletons (mass)' , '10 Skeletons, Witches & Goblins', '2 Ogre Boss'];
 		
-		//var graphics = this.add.graphics();    
-		//FN.drawLines(graphics);
-		
 		GV.TOWER_GROUP = [];
 		GV.ENEMY_GROUP = [];
 		GV.ATTACK_GROUP = [];
@@ -52,12 +49,8 @@ export class GameScene extends Phaser.Scene {
 			}
 		}
 		
-		//graphics.lineStyle(1, 0xffffff, 1);
-		//GV.WALKPATH.draw(graphics);
-		
 		GV.FLYPATH = this.add.path(-1, 352);
 		GV.FLYPATH.lineTo(1920, 288);
-		//GV.FLYPATH.draw(graphics);
 		
 		GV.MAP = [
 		[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -154,28 +147,20 @@ export class GameScene extends Phaser.Scene {
         //input related actions in userAction function
         this.input.on('pointerdown', function (pointer){FN.userAction(pointer, this)});
 
-		/////////////*TESTING*//////////////
-       /*  let win = this.add.text(30, 970, 'Force Win', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
+
+       let win = this.add.text(30, 970, 'Force Win', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
         win.setInteractive({ useHandCursor: true });
         win.on("pointerup", ()=>{
-            //this.scene.remove('HUD');
-            //this.scene.restart();
-			//this.bgm.stop();
-            //this.scene.start(CST.SCENES.TRANSITION1);
 			FN.levelVictory(this, CST.SCENES.TRANSITION1);	
 			
         });		
 		let lose = this.add.text(30, 990, 'Force Lose', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
         lose.setInteractive({ useHandCursor: true });
         lose.on("pointerup", ()=>{
-            //this.scene.remove('HUD');
-            //this.scene.restart();
-			//this.bgm.stop();
-            //this.scene.start(CST.SCENES.TRANSITION1);
 			FN.gameOver(this, CST.SCENES.GAMEOVER);	
 			
-        });	 */
-		/////////////*TESTING*//////////////
+        });	 
+
 
 		
     }
@@ -407,17 +392,6 @@ export class GameScene extends Phaser.Scene {
 						}
 						else if (GV.ENEMY_GROUP[4].countActive(true) === 0) {     
 							FN.levelVictory(this, CST.SCENES.TRANSITION1);					
-/* 							this.delay.destroy();
-							this.complete.destroy();
-							this.skipWave.destroy();
-							this.scene.remove('HUD');
-							this.bgm.stop();
-							this.add.text(this.game.renderer.width / 2 - 150, 200, 'VICTORY', { fontFamily: 'VT323', fontSize: 150, color: '#ffffff', align: 'center' });
-							this.scene.transition({
-								target: CST.SCENES.TRANSITION1,
-								duration: 3000,
-								moveBelow: true
-							}); */
 						}
 						break;
 				}

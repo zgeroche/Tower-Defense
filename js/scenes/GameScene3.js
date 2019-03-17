@@ -26,9 +26,6 @@ export class GameScene3 extends Phaser.Scene {
 		GV.BUTTON_GROUP = [];
 
         GV.WAVE_DETAIL = ['10 Imps', '10 Zombies', '15 Reapers (fast)', '5 Dragons (flying)', '15 Imps + Golem (miniBoss)', '20 Vampire + Zombie', '40 Imp + Reaper', '60 Dragon, Zombie, Vampire', '50 Reaper, Golem, Imp', '30 Dragons (Mass)'];
-
-		//var graphics = this.add.graphics();    
-		//FN.drawLines(graphics);
 		
 		this.add.image(960, 512, 'map3').setDepth(0);
 		
@@ -44,7 +41,6 @@ export class GameScene3 extends Phaser.Scene {
 			if(i == 0)
 			{
 				GV.WALKPATH = this.add.path((coords[0][i]+0.5)*64, (coords[1][i]+0.5)*64);		//start point for path coords
-				//GV.MAP[coords[1][i]-1][coords[0][i]-1] = 0
 			}
 			else
 			{
@@ -60,22 +56,15 @@ export class GameScene3 extends Phaser.Scene {
 			}
 			else
 			{
-				//GV.MAP[coords[1][i]-1][coords[0][i]-1] = 0
 				GV.WALKPATH2.lineTo((coords[2][i]+0.5)*64, (coords[3][i]+0.5)*64);
 			}
 		}
 		
-		//graphics.lineStyle(1, 0xffffff, 1);
-		//GV.WALKPATH.draw(graphics);
-		//GV.WALKPATH2.draw(graphics);
-		
 		GV.FLYPATH = this.add.path(-1.5*64, 12.5*64);
 		GV.FLYPATH.lineTo(15.5*64, 0.5*64);
-		//GV.FLYPATH.draw(graphics);
 		
 		GV.FLYPATH2 = this.add.path(30.5*64, 12.5*64);
 		GV.FLYPATH2.lineTo(15.5*64, 0.5*64);
-		//GV.FLYPATH2.draw(graphics);
 		
 		GV.MAP = [
 			[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -175,7 +164,7 @@ export class GameScene3 extends Phaser.Scene {
 		this.sceneOver = false;
 		
 				/////////////*TESTING*//////////////
-        /* let win = this.add.text(30, 970, 'Force Win', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
+        let win = this.add.text(30, 970, 'Force Win', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
         win.setInteractive({ useHandCursor: true });
         win.on("pointerup", ()=>{
             //this.scene.remove('HUD');
@@ -194,7 +183,7 @@ export class GameScene3 extends Phaser.Scene {
             //this.scene.start(CST.SCENES.TRANSITION1);
 			FN.gameOver(this, CST.SCENES.GAMEOVER);	
 			
-        });	 */
+        });	 
 		/////////////*TESTING*//////////////
 		
     }
@@ -480,9 +469,6 @@ export class GameScene3 extends Phaser.Scene {
                     }
                     else if (GV.ENEMY_GROUP[11].countActive(true) === 0) {
 						FN.levelVictory(this, CST.SCENES.GAMEVICTORY);
-                       /*  GV.SPAWNED = 0;
-                        GV.WAVE += 1;
-                        this.nextEnemy = time + GV.WAVE_DELAY; */
                     }
                     break;
             }

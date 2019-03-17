@@ -27,9 +27,6 @@ export class GameScene2 extends Phaser.Scene {
 		GV.BUTTON_GROUP = [];
 
         GV.WAVE_DETAIL = ['10 Slimes', '10 Deathknights', '10 Jackos', '10 Ghosts (flying)', '10 Jackos + Boss', '20 Deathknight + Slimes', '15 Ghosts (flying, Mass)', '50 Slimes (mass)', '60 Slimes, Deathknights & Jackos', '5 Minotaur Bosses'];
-
-		//var graphics = this.add.graphics();    
-		//FN.drawLines(graphics);
 		
 		this.add.image(960, 512, 'map2').setDepth(0);
 		
@@ -64,9 +61,6 @@ export class GameScene2 extends Phaser.Scene {
 			}
 		}
 		
-		//graphics.lineStyle(1, 0xffffff, 1);
-		//GV.WALKPATH.draw(graphics);
-		//GV.WALKPATH2.draw(graphics);
 
         var flyPoints = [
             3.5 * 64, 16.5 * 64,
@@ -77,7 +71,6 @@ export class GameScene2 extends Phaser.Scene {
             29.5*64, 7.5*64
         ];
         GV.FLYPATH = new Phaser.Curves.Spline(flyPoints);
-        //GV.FLYPATH.draw(graphics);
 
 		GV.MAP = [
 			[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -173,7 +166,7 @@ export class GameScene2 extends Phaser.Scene {
 		this.sceneOver = false;
 
 		/////////////*TESTING*//////////////
-        /* let win = this.add.text(30, 970, 'Force Win', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
+        let win = this.add.text(30, 970, 'Force Win', { fontFamily: 'Arial', fontSize: 25, color: '#ffffff' }).setDepth(1);
         win.setInteractive({ useHandCursor: true });
         win.on("pointerup", ()=>{
             //this.scene.remove('HUD');
@@ -192,7 +185,7 @@ export class GameScene2 extends Phaser.Scene {
             //this.scene.start(CST.SCENES.TRANSITION1);
 			FN.gameOver(this, CST.SCENES.GAMEOVER);	
 			
-        });	 */
+        });	 
 		/////////////*TESTING*//////////////	
 
 		
@@ -455,9 +448,6 @@ export class GameScene2 extends Phaser.Scene {
                     }
                     else if (GV.ENEMY_GROUP[17].countActive(true) === 0) {
 						FN.levelVictory(this, CST.SCENES.TRANSITION2);
-                       /*  GV.SPAWNED = 0;
-                        GV.WAVE += 1;
-                        this.nextEnemy = time + GV.WAVE_DELAY; */
                     }
                     break;
             }
