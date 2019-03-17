@@ -2213,6 +2213,7 @@ const client = Stitch.initializeDefaultAppClient('html-game-onuim');
 const db = client.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas');
 const collection = db.db('fantasyTD').collection('credentials');
 
+/*
 //Login button with verification
 loginButton = document.getElementById('Login');
 loginButton.addEventListener('click', function(event){
@@ -2289,7 +2290,7 @@ var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 for (var i = 0, len = code.length; i < len; ++i) {
   lookup[i] = code[i]
   revLookup[code.charCodeAt(i)] = i
-}
+}*/
 
 // Support decoding URL-safe base64 strings, as Node.js does.
 // See: https://en.wikipedia.org/wiki/Base64#URL_applications
